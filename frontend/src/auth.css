@@ -83,7 +83,7 @@
 }
 .btn-coral:hover { background: #d63a44; }
 .btn-coral:disabled { opacity: 0.8; cursor: wait; }
-.forgot-row { display: flex; justify-content: flex-end; margin-top: -8px; }
+.forgot-row { display: flex; justify-content: flex-end; margin-top: 4px; }
 .linklike { border: none; background: none; color: #E8454E; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; padding: 0; }
 .authx-foot { margin: 20px 0 0; font-size: 14px; color: #6B7280; text-align: center; }
 .authx-foot a { color: #0F172A; font-weight: 800; }
