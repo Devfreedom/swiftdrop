@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth, roleHome } from "../context/AuthContext";
+import PasswordInput from "../components/PasswordInput";
 
 export default function Login() {
   const { login } = useAuth();
@@ -30,7 +31,7 @@ export default function Login() {
       {err && <p className="error">{err}</p>}
       <form onSubmit={submit} className="form">
         <label>Email<input value={email} onChange={(e) => setEmail(e.target.value)} required /></label>
-        <label>Password<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required /></label>
+        <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
         <button className="btn primary" disabled={busy}>{busy ? "Signing in…" : "Login"}</button>
       </form>
       <p className="muted small">No account? <Link to="/register">Register as customer</Link></p>

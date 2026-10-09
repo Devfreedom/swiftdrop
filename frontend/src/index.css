@@ -20,6 +20,8 @@ input, select { padding: 10px; border: 1px solid var(--line); border-radius: 8px
 .btn.ghost { background: transparent; }
 .btn.small { padding: 4px 8px; font-size: 12px; }
 .btn:disabled { opacity: 0.6; cursor: default; }
+.pw-wrap { display: flex; gap: 8px; }
+.pw-wrap input { flex: 1; min-width: 0; }
 .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 8px 0; color: var(--ink); flex-wrap: wrap; }
 .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 12px 0; }
 .stat { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 4px; text-align: center; color: var(--ink); }
