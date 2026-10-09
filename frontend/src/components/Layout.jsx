@@ -1,23 +1,28 @@
-// App shell: dark sidebar for logged-in users, slim bar for guests.
+// App shell: sidebar for riders/admins, top navbar for customers, slim bar for guests.
+import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import {
+  History, LayoutDashboard, LogOut, Menu, Package,
+  PackageSearch, Plus, Truck, User, Users, Wallet, X,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import StatusBadge from "./StatusBadge";
 
 const LINKS = {
   CUSTOMER: [
-    ["/customer", "Dashboard", "📊"], ["/customer/deliveries", "My deliveries", "📦"],
-    ["/customer/create", "New delivery", "＋"], ["/customer/payments", "Payments", "💳"],
-    ["/profile", "Profile", "👤"],
+    ["/customer", "Dashboard", LayoutDashboard], ["/customer/deliveries", "My deliveries", Package],
+    ["/customer/create", "New delivery", Plus], ["/customer/payments", "Payments", Wallet],
+    ["/profile", "Profile", User],
   ],
   RIDER: [
-    ["/rider", "Dashboard", "📊"], ["/rider/available", "Open jobs", "🟢"],
-    ["/rider/assigned", "My jobs", "🛵"], ["/rider/history", "History", "📜"],
-    ["/profile", "Profile", "👤"],
+    ["/rider", "Dashboard", LayoutDashboard], ["/rider/available", "Open jobs", PackageSearch],
+    ["/rider/assigned", "My jobs", Truck], ["/rider/history", "History", History],
+    ["/profile", "Profile", User],
   ],
   ADMIN: [
-    ["/admin", "Dashboard", "📊"], ["/admin/deliveries", "Deliveries", "📦"],
-    ["/admin/users", "Users", "👥"], ["/admin/riders", "Riders", "🛵"],
-    ["/admin/payments", "Payments", "💳"], ["/profile", "Profile", "👤"],
+    ["/admin", "Dashboard", LayoutDashboard], ["/admin/deliveries", "Deliveries", Package],
+    ["/admin/users", "Users", Users], ["/admin/riders", "Riders", Truck],
+    ["/admin/payments", "Payments", Wallet], ["/profile", "Profile", User],
   ],
 };
 
@@ -27,18 +32,27 @@ function initials(name) {
   return (name || "?").split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 }
 
+function Brand({ dark = false }) {
+  return (
+    <Link to="/" className="brand" style={dark ? { color: "var(--ink)" } : undefined}>
+      <span className="logo">🚚</span>
+      <span>SwiftDrop<small>Delivery Platform</small></span>
+    </Link>
+  );
+}
+
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const nav = useNavigate();
+  const [open, setOpen] = useState(false);
+  const out = () => { logout(); nav("/login"); };
 
-  // Guests get a simple top bar (login / register screens).
+  // Guests get a simple top bar (landing / login / register screens).
   if (!user) {
     return (
       <div>
         <header className="topbar">
-          <Link to="/" className="brand" style={{ color: "var(--ink)" }}>
-            <span className="logo">🚚</span> SwiftDrop
-          </Link>
+          <Brand dark />
           <div className="top-right">
             <Link to="/login" className="btn ghost">Login</Link>
             <Link to="/register" className="btn primary">Sign up</Link>
@@ -49,21 +63,50 @@ export default function Layout({ children }) {
     );
   }
 
+  const links = LINKS[user.role] || [];
   const first = user.name.split(" ")[0];
   const today = new Date().toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
 
+  // Customers get a top navbar.
+  if (user.role === "CUSTOMER") {
+    return (
+      <div>
+        <header className="topbar">
+          <Brand dark />
+          <nav className={`cust-nav${open ? " open" : ""}`} aria-label="Customer">
+            {links.map(([to, label, Icon]) => (
+              <NavLink key={to} to={to} end={EXACT.includes(to)} onClick={() => setOpen(false)}
+                className={({ isActive }) => `cust-link${isActive ? " active" : ""}`}>
+                <Icon size={16} /> {label}
+              </NavLink>
+            ))}
+          </nav>
+          <div className="top-right">
+            <StatusBadge value={user.role} />
+            <button className="btn ghost small" onClick={out} aria-label="Logout">
+              <LogOut size={16} />
+            </button>
+            <button className="btn ghost menu-btn" onClick={() => setOpen((o) => !o)}
+              aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>
+              {open ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </header>
+        <main className="wrap">{children}</main>
+      </div>
+    );
+  }
+
+  // Riders and admins get a sidebar.
   return (
     <div className="shell">
       <aside className="sidebar">
-        <Link to="/" className="brand">
-          <span className="logo">🚚</span>
-          <span>SwiftDrop<small>Delivery Platform</small></span>
-        </Link>
-        <nav className="side-nav">
-          {(LINKS[user.role] || []).map(([to, label, icon]) => (
+        <Brand />
+        <nav className="side-nav" aria-label={`${user.role} menu`}>
+          {links.map(([to, label, Icon]) => (
             <NavLink key={to} to={to} end={EXACT.includes(to)}
               className={({ isActive }) => `side-link${isActive ? " active" : ""}`}>
-              <span className="ico">{icon}</span> {label}
+              <Icon size={17} /> {label}
             </NavLink>
           ))}
         </nav>
@@ -72,7 +115,9 @@ export default function Layout({ children }) {
             <span className="avatar">{initials(user.name)}</span>
             <span>{user.name}<small>{user.email}</small></span>
           </div>
-          <button className="btn ghost" onClick={() => { logout(); nav("/login"); }}>Logout</button>
+          <button className="btn ghost" onClick={out} aria-label="Logout">
+            <LogOut size={16} /> Logout
+          </button>
         </div>
       </aside>
       <div className="main">

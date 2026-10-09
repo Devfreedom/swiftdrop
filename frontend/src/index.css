@@ -199,7 +199,9 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   .sidebar .brand { padding-bottom: 8px; }
   .side-nav { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
   .side-link { white-space: nowrap; }
-  .side-foot { display: none; }
+  .side-foot { flex-direction: row; align-items: center; margin-top: 8px; }
+  .side-foot .user-chip { flex: 2; }
+  .side-foot .btn { flex: 1; white-space: nowrap; }
   .cust-nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); flex-direction: column; padding: 8px; border-bottom: 1px solid var(--line); box-shadow: var(--shadow); margin: 0; }
   .cust-nav.open { display: flex; }
   .menu-btn { display: inline-flex; margin-left: auto; }
