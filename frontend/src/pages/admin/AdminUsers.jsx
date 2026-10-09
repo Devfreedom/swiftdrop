@@ -69,18 +69,25 @@ export default function AdminUsers({ fixedRole }) {
         <div key={u.id} className="row">
           <span>#{u.id} {u.name} · {u.email}</span>
           <span>
-            <StatusBadge value={u.role} /> <StatusBadge value={u.status} />{" "}
+            <StatusBadge value={u.role} />{" "}
+            {u.status === "INACTIVE"
+              ? <span className="badge b-amber">Pending approval</span>
+              : <StatusBadge value={u.status} />}{" "}
             {u.role === "RIDER" && <StatusBadge value={u.availability} />}{" "}
-            <button className="btn small" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE" })}>Activate</button>{" "}
-            <button className="btn small" onClick={() => setTarget({ id: u.id, name: u.name, status: "SUSPENDED" })}>Suspend</button>
+            {u.status === "INACTIVE"
+              ? <button className="btn small" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE", from: "INACTIVE" })}>Approve</button>
+              : <button className="btn small" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE", from: u.status })}>Activate</button>}{" "}
+            <button className="btn small" onClick={() => setTarget({ id: u.id, name: u.name, status: "SUSPENDED", from: u.status })}>Suspend</button>
           </span>
         </div>
       ))}
-      <ConfirmModal open={!!target} title={`${target?.status === "SUSPENDED" ? "Suspend" : "Activate"} ${target?.name}?`}
+      <ConfirmModal open={!!target} title={`${target?.status === "SUSPENDED" ? "Suspend" : target?.from === "INACTIVE" ? "Approve" : "Activate"} ${target?.name}?`}
         message={target?.status === "SUSPENDED"
           ? "They won't be able to log in until reactivated."
-          : "They'll be able to log in again."}
-        confirmLabel={target?.status} danger={target?.status === "SUSPENDED"}
+          : target?.from === "INACTIVE"
+            ? "They'll be able to log in and start working."
+            : "They'll be able to log in again."}
+        confirmLabel={target?.status === "SUSPENDED" ? "Suspend" : target?.from === "INACTIVE" ? "Approve" : "Activate"} danger={target?.status === "SUSPENDED"}
         onConfirm={applyStatus} onCancel={() => !saving && setTarget(null)} />
       {saving && <p className="muted small"><Spinner dark /> Saving…</p>}
     </div>
