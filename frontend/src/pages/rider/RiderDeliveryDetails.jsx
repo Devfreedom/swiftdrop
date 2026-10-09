@@ -1,16 +1,20 @@
-// Rider delivery details: find job via assigned/history lists, then step status.
+// Rider delivery details: stepper + one-tap move to the next stage.
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../../api/client";
+import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
+import Stepper from "../../components/Stepper";
+import { CenterLoad, Spinner } from "../../components/Feedback";
 
 const NEXT = { ASSIGNED: "PICKED_UP", PICKED_UP: "IN_TRANSIT", IN_TRANSIT: "DELIVERED" };
 
 export default function RiderDeliveryDetails() {
   const { id } = useParams();
+  const toast = useToast();
   const [d, setD] = useState(null);
   const [err, setErr] = useState("");
-  const [msg, setMsg] = useState("");
+  const [moving, setMoving] = useState(false);
 
   async function load() {
     setErr("");
@@ -26,29 +30,34 @@ export default function RiderDeliveryDetails() {
   useEffect(() => { load(); }, [id]);
 
   async function advance() {
-    setErr(""); setMsg("");
+    setErr(""); setMoving(true);
     try {
       const r = await api(`/rider/deliveries/${id}/status`, {
         method: "PATCH", body: { status: NEXT[d.status] },
       });
       setD(r.delivery);
-      setMsg(`Moved to ${r.delivery.status}.`);
+      toast.success(`Job #${id} → ${r.delivery.status.replace("_", " ")}.`);
     } catch (e) {
       setErr(e.message);
+      toast.error(e.message);
+    } finally {
+      setMoving(false);
     }
   }
   if (err && !d) return <p className="error">{err}</p>;
-  if (!d) return <p className="muted">Loading…</p>;
+  if (!d) return <CenterLoad text="Loading job…" />;
   return (
     <div className="card">
       <h2>Job #{d.id} <StatusBadge value={d.status} /></h2>
+      <Stepper status={d.status} />
       {err && <p className="error">{err}</p>}
-      {msg && <p className="ok">{msg}</p>}
       <p><b>Pickup:</b> {d.pickupAddress} ({d.pickupContact}, {d.pickupPhone})</p>
       <p><b>Drop-off:</b> {d.deliveryAddress} ({d.deliveryContact}, {d.deliveryPhone})</p>
       <p><b>Parcel:</b> {d.packageDescription} · ₦{d.deliveryFee}</p>
       {NEXT[d.status] && (
-        <button className="btn primary" onClick={advance}>Mark {NEXT[d.status]}</button>
+        <button className="btn primary" onClick={advance} disabled={moving}>
+          {moving && <Spinner />} {moving ? "Updating…" : `Mark ${NEXT[d.status].replace("_", " ")}`}
+        </button>
       )}
     </div>
   );
