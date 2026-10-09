@@ -16,8 +16,8 @@ export default function CreateDelivery() {
   const nav = useNavigate();
   const toast = useToast();
   const [form, setForm] = useState({
-    pickupAddress: "", pickupContact: "", pickupPhone: "",
-    deliveryAddress: "", deliveryContact: "", deliveryPhone: "",
+    pickupAddress: "", pickupContact: "", pickupPhone: "", pickupLandmark: "",
+    deliveryAddress: "", deliveryContact: "", deliveryPhone: "", deliveryLandmark: "",
     packageDescription: "", packageWeightKg: "", deliveryFee: "",
   });
   const [errs, setErrs] = useState({});
@@ -37,6 +37,8 @@ export default function CreateDelivery() {
     try {
       const body = { ...form };
       body.packageWeightKg = body.packageWeightKg === "" ? undefined : Number(body.packageWeightKg);
+      if (body.pickupLandmark === "") body.pickupLandmark = undefined;
+      if (body.deliveryLandmark === "") body.deliveryLandmark = undefined;
       body.deliveryFee = Number(body.deliveryFee);
       const d = await api("/deliveries", { method: "POST", body });
       toast.success(`Delivery #${d.delivery.id} created.`);
@@ -62,6 +64,18 @@ export default function CreateDelivery() {
             {errs[k] && <p className="field-error">{errs[k]}</p>}
           </div>
         ))}
+        <div>
+          <label>Pickup landmark (optional)
+            <input value={form.pickupLandmark} onChange={set("pickupLandmark")}
+              placeholder="e.g. Opposite the mall main gate" />
+          </label>
+        </div>
+        <div>
+          <label>Drop-off landmark (optional)
+            <input value={form.deliveryLandmark} onChange={set("deliveryLandmark")}
+              placeholder="e.g. Blue house after the junction" />
+          </label>
+        </div>
         <div>
           <label>Weight (kg, optional)
             <input type="number" min="0" step="0.1" value={form.packageWeightKg}

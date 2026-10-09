@@ -22,7 +22,9 @@ module.exports = {
       {
         id: 2, customer_id: id["ama@demo.local"], rider_id: null,
         pickup_address: "Junction Mall, Nungua", pickup_contact: "Ama", pickup_phone: "0200000005",
+        pickup_landmark: "Opposite the mall main gate",
         delivery_address: "Cantonments, Accra", delivery_contact: "Efua", delivery_phone: "0200000004",
+        delivery_landmark: "Blue house after the embassy",
         package_description: "Documents envelope", package_weight_kg: 0.3, delivery_fee: 18.5,
         status: "CONFIRMED", created_at: now, updated_at: now,
       },
@@ -43,7 +45,9 @@ module.exports = {
       {
         id: 5, customer_id: id["bob@demo.local"], rider_id: id["efua@demo.local"],
         pickup_address: "West Hills Mall, Weija", pickup_contact: "Kofi", pickup_phone: "0200000006",
+        pickup_landmark: "Car park B, near the fountain",
         delivery_address: "Dansoman, Accra", delivery_contact: "Ama", delivery_phone: "0200000005",
+        delivery_landmark: "Yellow storey building",
         package_description: "Phone accessories box", package_weight_kg: 1.2, delivery_fee: 45.0,
         status: "DELIVERED", assigned_at: now, picked_up_at: now, delivered_at: now,
         created_at: now, updated_at: now,
