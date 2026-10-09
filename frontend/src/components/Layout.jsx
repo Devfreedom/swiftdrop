@@ -1,11 +1,12 @@
 // App shell: sidebar for riders/admins, top navbar for customers, slim bar for guests.
 import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   History, LayoutDashboard, LogOut, Menu, Package,
   PackageSearch, Plus, Truck, User, Users, Wallet, X,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { BRAND } from "../brand";
 import StatusBadge from "./StatusBadge";
 
 const LINKS = {
@@ -36,7 +37,7 @@ function Brand({ dark = false }) {
   return (
     <Link to="/" className="brand" style={dark ? { color: "var(--ink)" } : undefined}>
       <span className="logo">🚚</span>
-      <span>SwiftDrop<small>Delivery Platform</small></span>
+      <span>{BRAND}<small>Delivery Platform</small></span>
     </Link>
   );
 }
@@ -44,10 +45,23 @@ function Brand({ dark = false }) {
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const nav = useNavigate();
+  const loc = useLocation();
   const [open, setOpen] = useState(false);
   const out = () => { logout(); nav("/login"); };
 
-  // Guests get a simple top bar (landing / login / register screens).
+  // Auth pages get the dark gradient screen with no top bar.
+  if (!user && (loc.pathname === "/login" || loc.pathname === "/register")) {
+    return (
+      <div className="auth-screen">
+        <Link to="/" className="auth-brand">
+          <span className="authx-logo"><Truck size={20} /></span> {BRAND}
+        </Link>
+        <main>{children}</main>
+      </div>
+    );
+  }
+
+  // Guests get a simple top bar (landing screen).
   if (!user) {
     return (
       <div>
