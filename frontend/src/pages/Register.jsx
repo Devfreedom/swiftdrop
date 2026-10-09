@@ -80,7 +80,7 @@ export default function Register() {
   }
 
   return (
-    <div className="authx-card">
+    <div className={role === "RIDER" ? "authx-card wide" : "authx-card"}>
       <div className="authx-logo"><Truck size={26} /></div>
       <h2 className="authx-title">Join {BRAND}</h2>
       <p className="authx-sub">Create your account to get started.</p>
@@ -95,7 +95,7 @@ export default function Register() {
         </button>
       </div>
       {err && <p className="error" style={{ textAlign: "left", marginTop: 16 }}>{err}</p>}
-      <form onSubmit={submit} className="authx-form" noValidate>
+      <form onSubmit={submit} className={role === "RIDER" ? "authx-form grid" : "authx-form"} noValidate>
         <TextField label="Full Name" icon={User} placeholder="Ama Mensah"
           value={name} onChange={(e) => setName(e.target.value)} error={errs.name} />
         <TextField label="Email Address" icon={Mail} placeholder="you@example.com"

@@ -87,6 +87,14 @@
 .linklike { border: none; background: none; color: #E8454E; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; padding: 0; }
 .authx-foot { margin: 20px 0 0; font-size: 14px; color: #6B7280; text-align: center; }
 .authx-foot a { color: #0F172A; font-weight: 800; }
+/* Rider mode: wider card, two-column form — ends up the same height as customer. */
+.authx-card.wide { width: 660px; }
+.authx-form.grid { grid-template-columns: 1fr 1fr; }
+.authx-form.grid > .btn-coral { grid-column: 1 / -1; }
+@media (max-width: 700px) {
+  .authx-card.wide { width: 100%; }
+  .authx-form.grid { grid-template-columns: 1fr; }
+}
 /* Small phones (360px): nearly full-width card. */
 @media (max-width: 440px) {
   .auth-screen { padding: 56px 12px 24px; }
