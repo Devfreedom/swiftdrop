@@ -1,122 +1,70 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+// Router: public auth pages + role-guarded sections. Root redirects by role.
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { AuthProvider, useAuth, roleHome } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./components/Layout";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import CustomerDashboard from "./pages/customer/CustomerDashboard";
+import CreateDelivery from "./pages/customer/CreateDelivery";
+import MyDeliveries from "./pages/customer/MyDeliveries";
+import CustomerDeliveryDetails from "./pages/customer/CustomerDeliveryDetails";
+import CustomerPayments from "./pages/customer/CustomerPayments";
+import RiderDashboard from "./pages/rider/RiderDashboard";
+import AvailableJobs from "./pages/rider/AvailableJobs";
+import AssignedJobs from "./pages/rider/AssignedJobs";
+import RiderDeliveryDetails from "./pages/rider/RiderDeliveryDetails";
+import RiderHistory from "./pages/rider/RiderHistory";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminDeliveries from "./pages/admin/AdminDeliveries";
+import AdminDeliveryDetails from "./pages/admin/AdminDeliveryDetails";
+import AdminPayments from "./pages/admin/AdminPayments";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function IndexRedirect() {
+  const { user, token, loading } = useAuth();
+  if (loading) return <p className="muted">Loading…</p>;
+  if (!token || !user) return <Navigate to="/login" replace />;
+  return <Navigate to={roleHome(user.role)} replace />;
 }
 
-export default App
+const guard = (el, roles) => <ProtectedRoute roles={roles}>{el}</ProtectedRoute>;
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Layout>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<IndexRedirect />} />
+            {/* Customer */}
+            <Route path="/customer" element={guard(<CustomerDashboard />, ["CUSTOMER"])} />
+            <Route path="/customer/create" element={guard(<CreateDelivery />, ["CUSTOMER"])} />
+            <Route path="/customer/deliveries" element={guard(<MyDeliveries />, ["CUSTOMER"])} />
+            <Route path="/customer/deliveries/:id" element={guard(<CustomerDeliveryDetails />, ["CUSTOMER"])} />
+            <Route path="/customer/payments" element={guard(<CustomerPayments />, ["CUSTOMER"])} />
+            {/* Rider */}
+            <Route path="/rider" element={guard(<RiderDashboard />, ["RIDER"])} />
+            <Route path="/rider/available" element={guard(<AvailableJobs />, ["RIDER"])} />
+            <Route path="/rider/assigned" element={guard(<AssignedJobs />, ["RIDER"])} />
+            <Route path="/rider/deliveries/:id" element={guard(<RiderDeliveryDetails />, ["RIDER"])} />
+            <Route path="/rider/history" element={guard(<RiderHistory />, ["RIDER"])} />
+            {/* Admin */}
+            <Route path="/admin" element={guard(<AdminDashboard />, ["ADMIN"])} />
+            <Route path="/admin/users" element={guard(<AdminUsers />, ["ADMIN"])} />
+            <Route path="/admin/riders" element={guard(<AdminUsers fixedRole="RIDER" />, ["ADMIN"])} />
+            <Route path="/admin/deliveries" element={guard(<AdminDeliveries />, ["ADMIN"])} />
+            <Route path="/admin/deliveries/:id" element={guard(<AdminDeliveryDetails />, ["ADMIN"])} />
+            <Route path="/admin/payments" element={guard(<AdminPayments />, ["ADMIN"])} />
+            {/* Shared */}
+            <Route path="/profile" element={guard(<Profile />)} />
+            <Route path="*" element={<p>Page not found. <a href="/">Home</a></p>} />
+          </Routes>
+        </Layout>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
