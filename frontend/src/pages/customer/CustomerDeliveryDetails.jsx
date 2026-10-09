@@ -1,4 +1,5 @@
 // Delivery details: status, rider, payments. Actions: pay + cancel.
+// CASH stays PENDING until an admin confirms it; CARD/TRANSFER are instant.
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../../api/client";
@@ -24,8 +25,10 @@ export default function CustomerDeliveryDetails() {
   async function pay() {
     setErr(""); setMsg("");
     try {
-      await api(`/deliveries/${id}/pay`, { method: "POST", body: { method } });
-      setMsg(`Paid with ${method}.`);
+      const r = await api(`/deliveries/${id}/pay`, { method: "POST", body: { method } });
+      setMsg(r.payment.status === "PENDING"
+        ? "Cash payment recorded as pending — pay the rider on delivery."
+        : `Paid with ${method}.`);
       load();
     } catch (e) {
       setErr(e.message);
@@ -44,6 +47,7 @@ export default function CustomerDeliveryDetails() {
   if (err && !d) return <p className="error">{err}</p>;
   if (!d) return <p className="muted">Loading…</p>;
   const paid = (d.payments || []).some((p) => p.status === "SUCCESSFUL");
+  const pending = !paid && (d.payments || []).some((p) => p.status === "PENDING");
   return (
     <div className="card">
       <h2>Delivery #{d.id} <StatusBadge value={d.status} /></h2>
@@ -58,7 +62,8 @@ export default function CustomerDeliveryDetails() {
       {(d.payments || []).map((p) => (
         <p key={p.id}>#{p.id} ₦{p.amount} <StatusBadge value={p.method} /> <StatusBadge value={p.status} /></p>
       ))}
-      {!paid && d.status !== "CANCELLED" && d.status !== "DELIVERED" && (
+      {pending && <p className="muted">Cash payment pending — an admin confirms it once collected.</p>}
+      {!paid && !pending && d.status !== "CANCELLED" && d.status !== "DELIVERED" && (
         <div className="inline">
           <select value={method} onChange={(e) => setMethod(e.target.value)}>
             <option>CASH</option><option>CARD</option><option>TRANSFER</option>

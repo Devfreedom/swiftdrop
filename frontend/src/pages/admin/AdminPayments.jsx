@@ -1,7 +1,8 @@
-// All payments + refund button for SUCCESSFUL ones.
+// All payments: confirm PENDING (cash) ones, refund SUCCESSFUL ones.
 import { useEffect, useState } from "react";
 import { api } from "../../api/client";
 import StatusBadge from "../../components/StatusBadge";
+import { PAYMENT_STATUSES } from "../../constants";
 
 export default function AdminPayments() {
   const [items, setItems] = useState([]);
@@ -20,6 +21,16 @@ export default function AdminPayments() {
   }
   useEffect(() => { load(); }, [status]);
 
+  async function confirm(id) {
+    setErr(""); setMsg("");
+    try {
+      await api(`/admin/payments/${id}/confirm`, { method: "POST" });
+      setMsg(`Payment #${id} confirmed as collected.`);
+      load();
+    } catch (e) {
+      setErr(e.message);
+    }
+  }
   async function refund(id) {
     setErr(""); setMsg("");
     try {
@@ -36,13 +47,14 @@ export default function AdminPayments() {
       {err && <p className="error">{err}</p>}
       {msg && <p className="ok">{msg}</p>}
       <select value={status} onChange={(e) => setStatus(e.target.value)}>
-        <option value="">All statuses</option><option>PENDING</option><option>SUCCESSFUL</option><option>FAILED</option><option>REFUNDED</option>
+        {["", ...PAYMENT_STATUSES].map((s) => <option key={s} value={s}>{s || "All statuses"}</option>)}
       </select>
       {items.map((p) => (
         <div key={p.id} className="row">
           <span>#{p.id} delivery #{p.deliveryId} · ₦{p.amount}</span>
           <span>
             <StatusBadge value={p.method} /> <StatusBadge value={p.status} />{" "}
+            {p.status === "PENDING" && <button className="btn small" onClick={() => confirm(p.id)}>Confirm</button>}
             {p.status === "SUCCESSFUL" && <button className="btn small" onClick={() => refund(p.id)}>Refund</button>}
           </span>
         </div>
