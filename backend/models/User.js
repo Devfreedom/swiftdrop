@@ -21,6 +21,8 @@ const User = sequelize.define(
       defaultValue: "ACTIVE",
     },
     phone: { type: DataTypes.STRING, allowNull: true },
+    vehicleType: { type: DataTypes.STRING, allowNull: true, field: "vehicle_type" },
+    plateNumber: { type: DataTypes.STRING, allowNull: true, field: "plate_number" },
     availability: {
       type: DataTypes.ENUM("AVAILABLE", "BUSY", "OFFLINE"),
       allowNull: false,
