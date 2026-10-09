@@ -1,16 +1,21 @@
-// Delivery details: status, rider, payments. Actions: pay + cancel.
-// CASH stays PENDING until an admin confirms it; CARD/TRANSFER are instant.
+// Delivery details: stepper, rider, payments. Actions: pay + cancel (confirmed).
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../../api/client";
+import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
+import Stepper from "../../components/Stepper";
+import ConfirmModal from "../../components/ConfirmModal";
+import { CenterLoad, Spinner } from "../../components/Feedback";
 
 export default function CustomerDeliveryDetails() {
   const { id } = useParams();
+  const toast = useToast();
   const [d, setD] = useState(null);
   const [err, setErr] = useState("");
-  const [msg, setMsg] = useState("");
   const [method, setMethod] = useState("CARD");
+  const [paying, setPaying] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
 
   async function load() {
     try {
@@ -23,36 +28,42 @@ export default function CustomerDeliveryDetails() {
   useEffect(() => { load(); }, [id]);
 
   async function pay() {
-    setErr(""); setMsg("");
+    setErr(""); setPaying(true);
     try {
       const r = await api(`/deliveries/${id}/pay`, { method: "POST", body: { method } });
-      setMsg(r.payment.status === "PENDING"
-        ? "Cash payment recorded as pending — pay the rider on delivery."
-        : `Paid with ${method}.`);
+      toast.success(r.payment.status === "PENDING"
+        ? "Cash payment recorded — pay the rider on delivery."
+        : `Paid ₦${r.payment.amount} with ${method}.`);
       load();
     } catch (e) {
       setErr(e.message);
+      toast.error(e.message);
+    } finally {
+      setPaying(false);
     }
   }
   async function cancel() {
-    setErr(""); setMsg("");
+    setConfirmCancel(false);
+    setErr("");
     try {
       const r = await api(`/deliveries/${id}/cancel`, { method: "PATCH", body: {} });
       setD(r.delivery);
-      setMsg("Delivery cancelled.");
+      toast.success("Delivery cancelled.");
     } catch (e) {
       setErr(e.message);
+      toast.error(e.message);
     }
   }
   if (err && !d) return <p className="error">{err}</p>;
-  if (!d) return <p className="muted">Loading…</p>;
+  if (!d) return <CenterLoad text="Loading delivery…" />;
   const paid = (d.payments || []).some((p) => p.status === "SUCCESSFUL");
   const pending = !paid && (d.payments || []).some((p) => p.status === "PENDING");
+  const cancellable = ["PENDING", "CONFIRMED", "ASSIGNED"].includes(d.status);
   return (
     <div className="card">
       <h2>Delivery #{d.id} <StatusBadge value={d.status} /></h2>
+      <Stepper status={d.status} />
       {err && <p className="error">{err}</p>}
-      {msg && <p className="ok">{msg}</p>}
       <p><b>Pickup:</b> {d.pickupAddress} ({d.pickupContact}, {d.pickupPhone})</p>
       <p><b>Drop-off:</b> {d.deliveryAddress} ({d.deliveryContact}, {d.deliveryPhone})</p>
       <p><b>Parcel:</b> {d.packageDescription} · ₦{d.deliveryFee}</p>
@@ -65,15 +76,22 @@ export default function CustomerDeliveryDetails() {
       {pending && <p className="muted">Cash payment pending — an admin confirms it once collected.</p>}
       {!paid && !pending && d.status !== "CANCELLED" && d.status !== "DELIVERED" && (
         <div className="inline">
-          <select value={method} onChange={(e) => setMethod(e.target.value)}>
+          <select value={method} onChange={(e) => setMethod(e.target.value)} aria-label="Payment method">
             <option>CASH</option><option>CARD</option><option>TRANSFER</option>
           </select>
-          <button className="btn primary" onClick={pay}>Pay ₦{d.deliveryFee}</button>
+          <button className="btn primary" onClick={pay} disabled={paying}>
+            {paying && <Spinner />} {paying ? "Paying…" : `Pay ₦${d.deliveryFee}`}
+          </button>
         </div>
       )}
-      <div className="inline">
-        <button className="btn danger" onClick={cancel}>Cancel delivery</button>
-      </div>
+      {cancellable && (
+        <div className="inline">
+          <button className="btn danger" onClick={() => setConfirmCancel(true)}>Cancel delivery</button>
+        </div>
+      )}
+      <ConfirmModal open={confirmCancel} title={`Cancel delivery #${d.id}?`}
+        message="The rider (if any) will be freed. This can't be undone."
+        confirmLabel="Yes, cancel" onConfirm={cancel} onCancel={() => setConfirmCancel(false)} />
     </div>
   );
 }
