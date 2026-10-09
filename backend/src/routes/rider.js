@@ -3,12 +3,8 @@ const auth = require("../middleware/auth");
 const requireRole = require("../middleware/requireRole");
 const validate = require("../middleware/validate");
 const c = require("../controllers/riderController");
-const { listMyPayments } = require("../controllers/deliveryController");
 
 const riderOnly = [auth, requireRole("RIDER")];
-
-// payments for the customer's own deliveries
-router.get("/payments", auth, requireRole("CUSTOMER"), listMyPayments);
 
 router.patch(
   "/rider/availability",

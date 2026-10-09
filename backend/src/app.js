@@ -11,6 +11,13 @@ app.use(express.json());
 // health check: proves the server and (via db check in server.js) the DB are up
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api", require("./routes/users")); // /api/me
+app.use("/api/deliveries", require("./routes/deliveries"));
+app.use("/api/payments", require("./routes/payments"));
+app.use("/api", require("./routes/rider")); // /api/rider/...
+app.use("/api/admin", require("./routes/admin"));
+
 // unknown route under /api
 app.use("/api", (req, res) => {
   res.status(404).json({ error: { message: "Route not found" } });

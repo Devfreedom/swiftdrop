@@ -26,7 +26,10 @@ function validate(rules) {
         details.push(`${field} must be a whole number`);
       }
       if (rule.email && !EMAIL_RE.test(value)) details.push(`${field} must be a valid email`);
-      if (rule.min !== undefined && value < rule.min) details.push(`${field} must be at least ${rule.min}`);
+      if (rule.min !== undefined) {
+        const tooSmall = typeof value === "string" ? value.length < rule.min : value < rule.min;
+        if (tooSmall) details.push(`${field} must be at least ${rule.min}`);
+      }
       if (rule.enum && !rule.enum.includes(value)) {
         details.push(`${field} must be one of: ${rule.enum.join(", ")}`);
       }
