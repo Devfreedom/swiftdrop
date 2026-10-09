@@ -5,13 +5,14 @@ const Delivery = require("./Delivery");
 const Payment = require("./Payment");
 
 // a customer places many deliveries; a rider is assigned many deliveries
-User.hasMany(Delivery, { as: "customerDeliveries", foreignKey: "customer_id" });
-User.hasMany(Delivery, { as: "riderDeliveries", foreignKey: "rider_id" });
-Delivery.belongsTo(User, { as: "customer", foreignKey: "customer_id" });
-Delivery.belongsTo(User, { as: "rider", foreignKey: "rider_id" });
+// (camelCase names here: underscored:true maps them to snake_case columns)
+User.hasMany(Delivery, { as: "customerDeliveries", foreignKey: "customerId" });
+User.hasMany(Delivery, { as: "riderDeliveries", foreignKey: "riderId" });
+Delivery.belongsTo(User, { as: "customer", foreignKey: "customerId" });
+Delivery.belongsTo(User, { as: "rider", foreignKey: "riderId" });
 
 // a delivery can have several payment attempts, but only one SUCCESSFUL one
-Delivery.hasMany(Payment, { as: "payments", foreignKey: "delivery_id" });
-Payment.belongsTo(Delivery, { as: "delivery", foreignKey: "delivery_id" });
+Delivery.hasMany(Payment, { as: "payments", foreignKey: "deliveryId" });
+Payment.belongsTo(Delivery, { as: "delivery", foreignKey: "deliveryId" });
 
 module.exports = { sequelize, User, Delivery, Payment };
