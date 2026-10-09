@@ -1,7 +1,7 @@
 // Password field with a show/hide toggle.
 import { useState } from "react";
 
-export default function PasswordInput({ value, onChange, label = "Password", required = true }) {
+export default function PasswordInput({ value, onChange, label = "Password", required = true, invalid = false }) {
   const [show, setShow] = useState(false);
   return (
     <label>{label}
@@ -11,12 +11,14 @@ export default function PasswordInput({ value, onChange, label = "Password", req
           value={value}
           onChange={onChange}
           required={required}
+          aria-invalid={invalid}
         />
         <button
           type="button"
           className="btn small ghost"
           onClick={() => setShow((s) => !s)}
           aria-label={show ? "Hide password" : "Show password"}
+          aria-pressed={show}
         >
           {show ? "Hide" : "Show"}
         </button>
