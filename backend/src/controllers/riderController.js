@@ -1,6 +1,5 @@
 // Rider job flow: toggle availability, see open jobs, accept one,
 // then move it one step at a time to DELIVERED.
-const { Op } = require("sequelize");
 const { Delivery, User, sequelize } = require("../../models");
 const { fail } = require("../utils/errors");
 const { ACTIVE_RIDER_STATUSES } = require("../utils/transitions");
