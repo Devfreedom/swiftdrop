@@ -27,16 +27,31 @@ export default function Register() {
     }
   }
   return (
-    <div className="card narrow">
-      <h2>Create customer account</h2>
-      {err && <p className="error">{err}</p>}
-      <form onSubmit={submit} className="form">
-        <label>Name<input value={name} onChange={(e) => setName(e.target.value)} required /></label>
-        <label>Email<input value={email} onChange={(e) => setEmail(e.target.value)} required /></label>
-        <PasswordInput label="Password (min 6)" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button className="btn primary" disabled={busy}>{busy ? "Creating…" : "Register"}</button>
-      </form>
-      <p className="muted small">Have an account? <Link to="/login">Login</Link></p>
+    <div className="auth-wrap">
+      <div className="auth-card">
+        <div className="auth-side">
+          <span className="logo lg">🚚</span>
+          <h1>SwiftDrop</h1>
+          <p>Create an account and send your first parcel today.</p>
+          <ul>
+            <li>⚡ Delivery requests in under a minute</li>
+            <li>📍 Pickup-to-doorstep tracking</li>
+            <li>🔒 Secure login & payments</li>
+          </ul>
+        </div>
+        <div className="auth-form">
+          <h2>Create account</h2>
+          <p className="muted small">Join as a customer — it’s free.</p>
+          {err && <p className="error">{err}</p>}
+          <form onSubmit={submit} className="form">
+            <label>Name<input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ama Mensah" required /></label>
+            <label>Email<input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required /></label>
+            <PasswordInput label="Password (min 6)" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <button className="btn primary" disabled={busy}>{busy ? "Creating…" : "Register"}</button>
+          </form>
+          <p className="muted small">Have an account? <Link to="/login">Login</Link></p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -26,16 +26,31 @@ export default function Login() {
     }
   }
   return (
-    <div className="card narrow">
-      <h2>Login</h2>
-      {err && <p className="error">{err}</p>}
-      <form onSubmit={submit} className="form">
-        <label>Email<input value={email} onChange={(e) => setEmail(e.target.value)} required /></label>
-        <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button className="btn primary" disabled={busy}>{busy ? "Signing in…" : "Login"}</button>
-      </form>
-      <p className="muted small">No account? <Link to="/register">Register as customer</Link></p>
-      <p className="muted small">Demo: admin@demo.local · efua@demo.local · ama@demo.local (Password123!)</p>
+    <div className="auth-wrap">
+      <div className="auth-card">
+        <div className="auth-side">
+          <span className="logo lg">🚚</span>
+          <h1>SwiftDrop</h1>
+          <p>Door-to-door delivery, tracked end to end.</p>
+          <ul>
+            <li>📦 Request a pickup in seconds</li>
+            <li>🛵 Live rider assignment & tracking</li>
+            <li>💳 Cash, card or transfer</li>
+          </ul>
+        </div>
+        <div className="auth-form">
+          <h2>Welcome back</h2>
+          <p className="muted small">Log in to manage your deliveries.</p>
+          {err && <p className="error">{err}</p>}
+          <form onSubmit={submit} className="form">
+            <label>Email<input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required /></label>
+            <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
+            <button className="btn primary" disabled={busy}>{busy ? "Signing in…" : "Login"}</button>
+          </form>
+          <p className="muted small">No account? <Link to="/register">Register as customer</Link></p>
+          <p className="muted small">Demo: admin@demo.local · efua@demo.local · ama@demo.local (Password123!)</p>
+        </div>
+      </div>
     </div>
   );
 }
