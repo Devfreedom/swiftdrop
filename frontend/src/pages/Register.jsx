@@ -33,7 +33,7 @@ export default function Register() {
       <form onSubmit={submit} className="form">
         <label>Name<input value={name} onChange={(e) => setName(e.target.value)} required /></label>
         <label>Email<input value={email} onChange={(e) => setEmail(e.target.value)} required /></label>
-        <label>Password (min 6)<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required /></label>
+        <PasswordInput label="Password (min 6)" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button className="btn primary" disabled={busy}>{busy ? "Creating…" : "Register"}</button>
       </form>
       <p className="muted small">Have an account? <Link to="/login">Login</Link></p>
