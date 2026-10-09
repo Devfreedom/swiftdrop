@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../api/client";
 import StatusBadge from "../../components/StatusBadge";
-
-const FILTERS = ["", "PENDING", "CONFIRMED", "ASSIGNED", "PICKED_UP", "IN_TRANSIT", "DELIVERED", "CANCELLED"];
+import { DELIVERY_STATUSES } from "../../constants";
 
 export default function MyDeliveries() {
   const [items, setItems] = useState([]);
@@ -24,7 +23,7 @@ export default function MyDeliveries() {
     <div>
       <h2>My deliveries</h2>
       <select value={status} onChange={(e) => setStatus(e.target.value)}>
-        {FILTERS.map((f) => <option key={f} value={f}>{f || "All statuses"}</option>)}
+        {["", ...DELIVERY_STATUSES].map((f) => <option key={f} value={f}>{f || "All statuses"}</option>)}
       </select>
       {err && <p className="error">{err}</p>}
       {loading ? <p className="muted">Loading…</p> : items.map((d) => (
