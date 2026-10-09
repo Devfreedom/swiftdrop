@@ -1,4 +1,4 @@
-# SwiftDrop — Delivery Platform (full-stack)
+# Dropline — Delivery Platform (full-stack)
 
 React (Vite) frontend + Express + PostgreSQL (Sequelize) backend.
 Roles: CUSTOMER, RIDER, ADMIN. Money is shown in ₦.
@@ -36,12 +36,20 @@ admin confirms + assigns rider → rider picks up → in transit → delivered.
 Cash payments stay PENDING until an admin confirms them
 (Admin → Payments → Confirm). CARD/TRANSFER are instant.
 
+Riders can sign up from the Register page (Customer/Rider toggle).
+New rider accounts start INACTIVE — an admin approves them
+(Admin → Riders → Approve) before they can log in.
+
 ## Deploy
 
 Backend (Render/Railway/Fly-style host):
 
 - Build: `npm install` · Start: `npm start` (`node server.js`)
 - Then run once: `npx sequelize db:migrate` (+ `npx sequelize db:seed:all` for demos)
+- On the hosted database, run the same migrate command with the
+  production env vars set (it applies pending files such as
+  `202410090006-add-rider-fields-to-users`):
+  `NODE_ENV=production npx sequelize db:migrate`
 - Env vars to set: `DATABASE_URL`, `JWT_SECRET`, `CLIENT_URL`,
   `NODE_ENV=production` (`PORT` is set by the host; `JWT_EXPIRES_IN` optional, defaults to `7d`)
 
