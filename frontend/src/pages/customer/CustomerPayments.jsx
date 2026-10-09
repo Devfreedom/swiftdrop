@@ -18,7 +18,7 @@ export default function CustomerPayments() {
       {err && <p className="error">{err}</p>}
       {items.map((p) => (
         <div key={p.id} className="row">
-          <span>#{p.id} delivery #{p.deliveryId} · ₵{p.amount}</span>
+          <span>#{p.id} delivery #{p.deliveryId} · ₦{p.amount}</span>
           <span><StatusBadge value={p.method} /> <StatusBadge value={p.status} /></span>
         </div>
       ))}

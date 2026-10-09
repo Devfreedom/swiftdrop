@@ -30,7 +30,7 @@ export default function CustomerDashboard() {
       {err && <p className="error">{err}</p>}
       <div className="grid3">
         <div className="stat"><b>{payments.length}</b><span>payments recorded</span></div>
-        <div className="stat"><b>₵{paid.toFixed(2)}</b><span>total paid</span></div>
+        <div className="stat"><b>₦{paid.toFixed(2)}</b><span>total paid</span></div>
         <Link to="/customer/create" className="stat link">＋<span>new delivery</span></Link>
       </div>
       <h3>Recent deliveries</h3>

@@ -40,7 +40,7 @@ export default function AdminPayments() {
       </select>
       {items.map((p) => (
         <div key={p.id} className="row">
-          <span>#{p.id} delivery #{p.deliveryId} · ₵{p.amount}</span>
+          <span>#{p.id} delivery #{p.deliveryId} · ₦{p.amount}</span>
           <span>
             <StatusBadge value={p.method} /> <StatusBadge value={p.status} />{" "}
             {p.status === "SUCCESSFUL" && <button className="btn small" onClick={() => refund(p.id)}>Refund</button>}

@@ -64,8 +64,9 @@ async function cancelMine(req, res) {
   res.json({ delivery });
 }
 
-// Simulated payment: no gateway, we just record it as SUCCESSFUL.
-// The DB index blocks a second SUCCESSFUL payment for the same delivery.
+// Payment recording: CARD/TRANSFER are instant (SUCCESSFUL), CASH stays
+// PENDING until an admin confirms collection. The DB index blocks a second
+// SUCCESSFUL payment for the same delivery.
 async function pay(req, res) {
   const delivery = await Delivery.findOne({
     where: { id: req.params.id, customerId: req.user.id },
@@ -75,16 +76,20 @@ async function pay(req, res) {
   if (delivery.status === "DELIVERED") fail(422, "Delivery already completed");
 
   const existing = await Payment.findOne({
-    where: { deliveryId: delivery.id, status: "SUCCESSFUL" },
+    where: { deliveryId: delivery.id, status: ["SUCCESSFUL", "PENDING"] },
   });
-  if (existing) fail(409, "This delivery is already paid");
+  if (existing) {
+    fail(409, existing.status === "SUCCESSFUL"
+      ? "This delivery is already paid"
+      : "A payment for this delivery is already pending");
+  }
 
   const ref = `TXN-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
   const payment = await Payment.create({
     deliveryId: delivery.id,
     amount: delivery.deliveryFee,
     method: req.body.method,
-    status: "SUCCESSFUL",
+    status: req.body.method === "CASH" ? "PENDING" : "SUCCESSFUL",
     transactionRef: ref,
   });
 

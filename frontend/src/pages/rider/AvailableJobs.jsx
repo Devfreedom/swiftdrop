@@ -37,7 +37,7 @@ export default function AvailableJobs() {
       {err && <p className="error">{err}</p>}
       {loading ? <p className="muted">Loading…</p> : items.map((d) => (
         <div key={d.id} className="row">
-          <span>#{d.id} {d.pickupAddress} → {d.deliveryAddress} (₵{d.deliveryFee})</span>
+          <span>#{d.id} {d.pickupAddress} → {d.deliveryAddress} (₦{d.deliveryFee})</span>
           <span><StatusBadge value={d.status} /> <button className="btn primary" onClick={() => accept(d.id)}>Accept</button></span>
         </div>
       ))}

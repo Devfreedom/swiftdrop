@@ -51,19 +51,19 @@ export default function CustomerDeliveryDetails() {
       {msg && <p className="ok">{msg}</p>}
       <p><b>Pickup:</b> {d.pickupAddress} ({d.pickupContact}, {d.pickupPhone})</p>
       <p><b>Drop-off:</b> {d.deliveryAddress} ({d.deliveryContact}, {d.deliveryPhone})</p>
-      <p><b>Parcel:</b> {d.packageDescription} · ₵{d.deliveryFee}</p>
+      <p><b>Parcel:</b> {d.packageDescription} · ₦{d.deliveryFee}</p>
       <p><b>Rider:</b> {d.rider ? `${d.rider.name} (${d.rider.phone || "no phone"})` : "not assigned yet"}</p>
       <h3>Payments</h3>
       {(d.payments || []).length === 0 && <p className="muted">No payment yet.</p>}
       {(d.payments || []).map((p) => (
-        <p key={p.id}>#{p.id} ₵{p.amount} <StatusBadge value={p.method} /> <StatusBadge value={p.status} /></p>
+        <p key={p.id}>#{p.id} ₦{p.amount} <StatusBadge value={p.method} /> <StatusBadge value={p.status} /></p>
       ))}
       {!paid && d.status !== "CANCELLED" && d.status !== "DELIVERED" && (
         <div className="inline">
           <select value={method} onChange={(e) => setMethod(e.target.value)}>
             <option>CASH</option><option>CARD</option><option>TRANSFER</option>
           </select>
-          <button className="btn primary" onClick={pay}>Pay ₵{d.deliveryFee}</button>
+          <button className="btn primary" onClick={pay}>Pay ₦{d.deliveryFee}</button>
         </div>
       )}
       <div className="inline">

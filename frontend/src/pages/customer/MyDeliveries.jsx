@@ -29,7 +29,7 @@ export default function MyDeliveries() {
       {err && <p className="error">{err}</p>}
       {loading ? <p className="muted">Loading…</p> : items.map((d) => (
         <Link key={d.id} to={`/customer/deliveries/${d.id}`} className="row">
-          <span>#{d.id} → {d.deliveryAddress} (₵{d.deliveryFee})</span>
+          <span>#{d.id} → {d.deliveryAddress} (₦{d.deliveryFee})</span>
           <StatusBadge value={d.status} />
         </Link>
       ))}

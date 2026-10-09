@@ -30,7 +30,7 @@ export default function AdminDashboard() {
           <div key={r.availability} className="stat"><b>{r.count}</b><span>{r.availability}</span></div>
         ))}
       </div>
-      <p className="muted">Revenue: ₵{Number(s.successfulPayments?.revenue || 0).toFixed(2)} from {s.successfulPayments?.count || 0} payments</p>
+      <p className="muted">Revenue: ₦{Number(s.successfulPayments?.revenue || 0).toFixed(2)} from {s.successfulPayments?.count || 0} payments</p>
     </div>
   );
 }

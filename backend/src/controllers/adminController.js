@@ -158,6 +158,18 @@ async function listPayments(req, res) {
   res.json({ payments });
 }
 
+// Confirm a PENDING (cash) payment once the money is collected.
+async function confirmPayment(req, res) {
+  const payment = await Payment.findByPk(req.params.id);
+  if (!payment) fail(404, "Payment not found");
+  if (payment.status !== "PENDING") {
+    fail(422, `Only PENDING payments can be confirmed (is ${payment.status})`);
+  }
+  payment.status = "SUCCESSFUL";
+  await payment.save();
+  res.json({ payment });
+}
+
 // Refund only a SUCCESSFUL payment (usually after a cancellation).
 async function refundPayment(req, res) {
   const payment = await Payment.findByPk(req.params.id);

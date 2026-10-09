@@ -46,7 +46,7 @@ export default function RiderDeliveryDetails() {
       {msg && <p className="ok">{msg}</p>}
       <p><b>Pickup:</b> {d.pickupAddress} ({d.pickupContact}, {d.pickupPhone})</p>
       <p><b>Drop-off:</b> {d.deliveryAddress} ({d.deliveryContact}, {d.deliveryPhone})</p>
-      <p><b>Parcel:</b> {d.packageDescription} · ₵{d.deliveryFee}</p>
+      <p><b>Parcel:</b> {d.packageDescription} · ₦{d.deliveryFee}</p>
       {NEXT[d.status] && (
         <button className="btn primary" onClick={advance}>Mark {NEXT[d.status]}</button>
       )}

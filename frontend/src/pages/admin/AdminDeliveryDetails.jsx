@@ -49,7 +49,7 @@ export default function AdminDeliveryDetails() {
       <p><b>Customer:</b> {d.customer?.name} ({d.customer?.email})</p>
       <p><b>Rider:</b> {d.rider ? `${d.rider.name}` : "unassigned"}</p>
       <p><b>Route:</b> {d.pickupAddress} → {d.deliveryAddress}</p>
-      <p><b>Fee:</b> ₵{d.deliveryFee}</p>
+      <p><b>Fee:</b> ₦{d.deliveryFee}</p>
       <div className="inline">
         <button className="btn primary" onClick={() => act(`/admin/deliveries/${id}/confirm`, {}, "Confirmed.")}>Confirm</button>
         <button className="btn danger" onClick={() => act(`/admin/deliveries/${id}/cancel`, {}, "Cancelled.")}>Cancel</button>
