@@ -1,4 +1,4 @@
-// Login: shared by all roles, redirects by role. Dropline auth design.
+// Login: shared by all roles, redirects by role. SwiftDrop auth design.
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Mail, Truck } from "lucide-react";
@@ -48,7 +48,7 @@ export default function Login() {
       <p className="authx-sub">Sign in to continue.</p>
       {err && <p className="error" style={{ textAlign: "left", marginTop: 16 }}>{err}</p>}
       <form onSubmit={submit} className="authx-form" noValidate>
-        <TextField label="Email Address" icon={Mail} placeholder="you@example.com"
+        <TextField label="Email" icon={Mail} placeholder="you@example.com"
           value={email} onChange={(e) => setEmail(e.target.value)} error={errs.email} />
         <div>
           <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)}
@@ -60,7 +60,7 @@ export default function Login() {
             </button>
           </div>
         </div>
-        <button className="btn-coral" disabled={busy}>
+        <button className="btn-auth" disabled={busy}>
           {busy ? <><Spinner /> Signing in…</> : <>Sign in <ArrowRight size={18} /></>}
         </button>
       </form>

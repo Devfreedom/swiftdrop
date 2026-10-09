@@ -72,7 +72,7 @@ export default function Register() {
         <p className="ok" style={{ textAlign: "left", marginTop: 16 }}>
           Account created. An admin must approve your account before you can log in.
         </p>
-        <Link to="/login" className="btn-coral" style={{ marginTop: 16 }}>
+        <Link to="/login" className="btn-auth" style={{ marginTop: 16 }}>
           Go to Sign in <ArrowRight size={18} />
         </Link>
       </div>
@@ -120,7 +120,7 @@ export default function Register() {
               value={plateNumber} onChange={(e) => setPlateNumber(e.target.value)} />
           </>
         )}
-        <button className="btn-coral" disabled={busy}>
+        <button className="btn-auth" disabled={busy}>
           {busy ? <><Spinner /> Creating…</> : <>Create {role === "RIDER" ? "Rider" : "Customer"} Account <ArrowRight size={18} /></>}
         </button>
       </form>

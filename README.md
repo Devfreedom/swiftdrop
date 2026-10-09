@@ -1,4 +1,4 @@
-# Dropline — Delivery Platform (full-stack)
+# SwiftDrop — Delivery Platform (full-stack)
 
 React (Vite) frontend + Express + PostgreSQL (Sequelize) backend.
 Roles: CUSTOMER, RIDER, ADMIN. Money is shown in ₦.
