@@ -156,22 +156,29 @@ GET {{base}}/stats/search?minLikes=3&page=2&limit=5
 #    (Optionally change WINDOW to 60 for a 1 minute window.)
 # 2. Restart the server: node server.js
 # 3. Clear the old counter so you start from zero, otherwise the key already
-#    exists and you will immediately be blocked:
+#    exists and you will be blocked immediately:
 #
-#        redis-cli DEL "rate:::ffff:127.0.0.1"
+#        redis-cli --scan --pattern "rate:*"
+#        redis-cli DEL "rate::1"          <- the exact key printed above
 #
-#    (your key may differ, list them all with: redis-cli --scan --pattern "rate:*")
-# 4. Send the request below more than 5 times in a row. The first 5 succeed,
+#    IMPORTANT: always delete the key name that redis-cli actually prints.
+#    It depends on how your machine resolves localhost, so it may be
+#    "rate::1" (IPv6) or "rate:::ffff:127.0.0.1" (IPv4).
+# 4. Send GET /posts below more than 5 times in a row. The first 5 succeed,
 #    the 6th and later return:
 #        HTTP/1.1 429 Too Many Requests
 #        {"error":"Too Many Requests"}
 #
+#    Use /posts, NOT the root route. The root route "/" is registered in
+#    server.js BEFORE the rate limiter is mounted, so it is never counted.
 # 5. To reset again, delete the key (see step 3) or wait 15 minutes.
 #    The window restarts automatically on the first request after the expiry.
 
-GET {{base}}/
+GET {{base}}/posts
 
 ###
 
-# The root route is the simplest one to spam, since it needs no login.
-GET {{base}}/
+# Send the request above a few times in a row and watch the counter climb:
+#     redis-cli GET "rate::1"
+#     redis-cli TTL "rate::1"
+GET {{base}}/stats/users-count

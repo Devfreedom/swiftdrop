@@ -1,6 +1,6 @@
 const redis = require("../config/redis");
 
-const LIMIT = 5;          // TEMP lowered for testing
+const LIMIT = 100;          // max requests
 const WINDOW = 15 * 60;     // 15 minutes, in seconds
 
 module.exports = async (req, res, next) => {
