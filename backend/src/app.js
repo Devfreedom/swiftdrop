@@ -5,7 +5,9 @@ const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
+// CORS: production frontend URL from CLIENT_URL, plus localhost for local dev.
+const allowedOrigins = [process.env.CLIENT_URL, "http://localhost:5173"].filter(Boolean);
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 // health check: proves the server and (via db check in server.js) the DB are up
