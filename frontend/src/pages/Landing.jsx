@@ -1,6 +1,7 @@
 // Landing page for logged-out visitors: what the platform is + how to join.
 import { Link } from "react-router-dom";
 import { Bike, Package, ShieldCheck, Wallet } from "lucide-react";
+import { BRAND } from "../brand";
 import StatusBadge from "../components/StatusBadge";
 
 const STEPS = [
@@ -18,7 +19,7 @@ export default function Landing() {
           <StatusBadge value="DELIVERY PLATFORM" />
           <h1>Door-to-door delivery, <em>tracked end to end.</em></h1>
           <p>
-            SwiftDrop connects customers, riders and admins in one system:
+            {BRAND} connects customers, riders and admins in one system:
             request a pickup, pay your way, and follow every parcel from
             counter to doorstep.
           </p>
