@@ -1,22 +1,21 @@
-/* Dropline auth screens: dark gradient backdrop, centered white card. */
+/* SwiftDrop auth screens: dark gradient backdrop, centered white card. */
 .auth-screen {
   min-height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 64px 16px 36px;
   background:
-    radial-gradient(700px 420px at 12% 18%, rgba(128, 40, 70, 0.55), transparent 65%),
-    radial-gradient(760px 480px at 50% 42%, rgba(28, 42, 92, 0.6), transparent 65%),
-    radial-gradient(820px 520px at 88% 88%, rgba(18, 80, 92, 0.55), transparent 65%),
-    linear-gradient(135deg, #2B1530 0%, #121C3A 52%, #102E3A 100%);
+    radial-gradient(800px 500px at 88% 90%, rgba(91, 78, 240, 0.22), transparent 65%),
+    radial-gradient(700px 460px at 82% 94%, rgba(45, 212, 191, 0.12), transparent 65%),
+    linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%);
   position: relative; overflow: hidden;
 }
 /* Soft out-of-focus blobs (CSS only, no images). */
 .auth-screen::before, .auth-screen::after {
   content: ""; position: absolute; border-radius: 50%;
-  filter: blur(90px); opacity: 0.5; pointer-events: none;
+  filter: blur(90px); opacity: 0.45; pointer-events: none;
 }
-.auth-screen::before { width: 420px; height: 420px; left: -120px; top: -100px; background: #5b2138; }
-.auth-screen::after { width: 460px; height: 460px; right: -140px; bottom: -140px; background: #0e4a5a; }
+.auth-screen::before { width: 420px; height: 420px; left: -120px; top: -100px; background: #4338ca; }
+.auth-screen::after { width: 460px; height: 460px; right: -140px; bottom: -140px; background: #0f766e; }
 .auth-brand {
   position: absolute; top: 22px; left: 26px; z-index: 1;
   display: flex; gap: 10px; align-items: center;
@@ -53,8 +52,8 @@
 .input-wrap select { appearance: none; }
 .input-wrap input.with-eye { padding-right: 46px; }
 .input-wrap input:focus, .input-wrap select:focus {
-  outline: none; border-color: #E8454E;
-  box-shadow: 0 0 0 4px rgba(232, 69, 78, 0.14);
+  outline: none; border-color: #5B4EF0;
+  box-shadow: 0 0 0 4px rgba(91, 78, 240, 0.14);
 }
 .input-wrap input[aria-invalid="true"] { border-color: #DC2626; }
 .eye-btn {
@@ -73,24 +72,24 @@
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   cursor: pointer;
 }
-.seg-btn[aria-pressed="true"] { background: #fff; color: #E8454E; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); }
-/* Coral primary button. */
-.btn-coral {
+.seg-btn[aria-pressed="true"] { background: #fff; color: #5B4EF0; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); }
+/* Purple primary button. */
+.btn-auth {
   width: 100%; height: 52px; border: none; border-radius: 13px;
-  background: #E8454E; color: #fff; font-weight: 800; font-size: 16px; font-family: inherit;
+  background: #5B4EF0; color: #fff; font-weight: 800; font-size: 16px; font-family: inherit;
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  cursor: pointer; box-shadow: 0 12px 24px -10px rgba(232, 69, 78, 0.3);
+  cursor: pointer; box-shadow: 0 12px 24px -10px rgba(91, 78, 240, 0.35);
 }
-.btn-coral:hover { background: #d63a44; }
-.btn-coral:disabled { opacity: 0.8; cursor: wait; }
+.btn-auth:hover { background: #4B3FD6; }
+.btn-auth:disabled { opacity: 0.8; cursor: wait; }
 .forgot-row { display: flex; justify-content: flex-end; margin-top: 4px; }
-.linklike { border: none; background: none; color: #E8454E; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; padding: 0; }
+.linklike { border: none; background: none; color: #5B4EF0; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; padding: 0; }
 .authx-foot { margin: 20px 0 0; font-size: 14px; color: #6B7280; text-align: center; }
 .authx-foot a { color: #0F172A; font-weight: 800; }
 /* Rider mode: wider card, two-column form — ends up the same height as customer. */
 .authx-card.wide { width: 660px; }
 .authx-form.grid { grid-template-columns: 1fr 1fr; }
-.authx-form.grid > .btn-coral { grid-column: 1 / -1; }
+.authx-form.grid > .btn-auth { grid-column: 1 / -1; }
 @media (max-width: 700px) {
   .authx-card.wide { width: 100%; }
   .authx-form.grid { grid-template-columns: 1fr; }
