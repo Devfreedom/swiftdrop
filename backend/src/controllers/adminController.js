@@ -185,5 +185,5 @@ async function refundPayment(req, res) {
 module.exports = {
   stats, listUsers, createUser, setUserStatus,
   listDeliveries, confirmDelivery, assignDelivery, cancelDelivery,
-  listPayments, refundPayment,
+  listPayments, confirmPayment, refundPayment,
 };

@@ -35,6 +35,7 @@ router.post(
 router.patch("/deliveries/:id/cancel", c.cancelDelivery);
 
 router.get("/payments", c.listPayments);
+router.post("/payments/:id/confirm", c.confirmPayment);
 router.post("/payments/:id/refund", c.refundPayment);
 
 module.exports = router;
