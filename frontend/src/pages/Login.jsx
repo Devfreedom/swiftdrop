@@ -1,10 +1,14 @@
-// Login: any role. Redirects to the role home on success.
+// Login: shared by all roles, redirects by role. Dropline auth design.
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, Mail, Truck } from "lucide-react";
 import { useAuth, roleHome } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
-import PasswordInput from "../components/PasswordInput";
+import { BRAND } from "../brand";
+import { PasswordInput, TextField } from "../components/AuthFields";
 import { Spinner } from "../components/Feedback";
+
+const EMAIL_RE = /^\S+@\S+\.\S+$/;
 
 export default function Login() {
   const { login } = useAuth();
@@ -20,7 +24,7 @@ export default function Login() {
     e.preventDefault();
     const v = {};
     if (!email.trim()) v.email = "Email is required.";
-    else if (!email.includes("@")) v.email = "Enter a valid email address.";
+    else if (!EMAIL_RE.test(email.trim())) v.email = "Enter a valid email address.";
     if (!password) v.password = "Password is required.";
     setErrs(v);
     if (Object.keys(v).length) return;
@@ -38,38 +42,30 @@ export default function Login() {
     }
   }
   return (
-    <div className="auth-wrap">
-      <div className="auth-card">
-        <div className="auth-side">
-          <span className="logo lg">🚚</span>
-          <h1>SwiftDrop</h1>
-          <p>Door-to-door delivery, tracked end to end.</p>
-          <ul>
-            <li>📦 Request a pickup in seconds</li>
-            <li>🛵 Live rider assignment & tracking</li>
-            <li>💳 Cash, card or transfer</li>
-          </ul>
-        </div>
-        <div className="auth-form">
-          <h2>Welcome back</h2>
-          <p className="muted small">Log in to manage your deliveries.</p>
-          {err && <p className="error">{err}</p>}
-          <form onSubmit={submit} className="form" noValidate>
-            <label>Email
-              <input value={email} onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com" aria-invalid={!!errs.email} />
-            </label>
-            {errs.email && <p className="field-error">{errs.email}</p>}
-            <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} invalid={!!errs.password} />
-            {errs.password && <p className="field-error">{errs.password}</p>}
-            <button className="btn primary" disabled={busy}>
-              {busy && <Spinner />} {busy ? "Signing in…" : "Login"}
+    <div className="authx-card">
+      <div className="authx-logo"><Truck size={26} /></div>
+      <h2 className="authx-title">Welcome back</h2>
+      <p className="authx-sub">Sign in to continue.</p>
+      {err && <p className="error" style={{ textAlign: "left", marginTop: 16 }}>{err}</p>}
+      <form onSubmit={submit} className="authx-form" noValidate>
+        <TextField label="Email Address" icon={Mail} placeholder="you@example.com"
+          value={email} onChange={(e) => setEmail(e.target.value)} error={errs.email} />
+        <div>
+          <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password" error={errs.password} />
+          <div className="forgot-row">
+            <button type="button" className="linklike"
+              onClick={() => toast.success("Password reset isn't available yet — contact support.")}>
+              Forgot password?
             </button>
-          </form>
-          <p className="muted small">No account? <Link to="/register">Register as customer</Link></p>
-          <p className="muted small">Demo: admin@demo.local · efua@demo.local · ama@demo.local (Password123!)</p>
+          </div>
         </div>
-      </div>
+        <button className="btn-coral" disabled={busy}>
+          {busy ? <><Spinner /> Signing in…</> : <>Sign in <ArrowRight size={18} /></>}
+        </button>
+      </form>
+      <p className="authx-foot">Don&apos;t have an account? <Link to="/register">Sign up</Link></p>
+      <p className="authx-foot muted small" style={{ marginTop: 8 }}>{BRAND} delivery platform</p>
     </div>
   );
 }
