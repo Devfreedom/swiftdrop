@@ -1,0 +1,12 @@
+// Signs a login token. Payload is tiny on purpose: just id + role.
+const jwt = require("jsonwebtoken");
+
+function signToken(user) {
+  return jwt.sign(
+    { id: user.id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
+  );
+}
+
+module.exports = { signToken };
