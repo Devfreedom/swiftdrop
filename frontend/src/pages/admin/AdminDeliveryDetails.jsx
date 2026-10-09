@@ -58,6 +58,8 @@ export default function AdminDeliveryDetails() {
       <p><b>Customer:</b> {d.customer?.name} ({d.customer?.email})</p>
       <p><b>Rider:</b> {d.rider ? `${d.rider.name}` : "unassigned"}</p>
       <p><b>Route:</b> {d.pickupAddress} → {d.deliveryAddress}</p>
+      {d.pickupLandmark && <p><b>Pickup landmark:</b> {d.pickupLandmark}</p>}
+      {d.deliveryLandmark && <p><b>Drop-off landmark:</b> {d.deliveryLandmark}</p>}
       <p><b>Fee:</b> ₦{d.deliveryFee}</p>
       <div className="inline">
         <button className="btn primary" disabled={busy}

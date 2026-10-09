@@ -1,7 +1,7 @@
-// Rider dashboard: availability toggle + job stats + active jobs.
+// Rider dashboard: availability toggle, job stats, earnings summary, active jobs.
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { PackageCheck, Power, Truck } from "lucide-react";
+import { PackageCheck, Power, Truck, Wallet } from "lucide-react";
 import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
@@ -12,7 +12,7 @@ export default function RiderDashboard() {
   const toast = useToast();
   const [me, setMe] = useState(null);
   const [assigned, setAssigned] = useState([]);
-  const [done, setDone] = useState(0);
+  const [history, setHistory] = useState([]);
   const [err, setErr] = useState("");
   const [switching, setSwitching] = useState(false);
 
@@ -21,7 +21,7 @@ export default function RiderDashboard() {
       const [m, a, h] = await Promise.all([api("/me"), api("/rider/assigned"), api("/rider/history")]);
       setMe(m.user);
       setAssigned(a.deliveries);
-      setDone(h.deliveries.length);
+      setHistory(h.deliveries);
     } catch (e) {
       setErr(e.message);
     }
@@ -43,6 +43,9 @@ export default function RiderDashboard() {
     }
   }
   if (!me) return <CenterLoad text="Loading dashboard…" />;
+  // Earnings: fees carried on finished (DELIVERED) jobs.
+  const delivered = history.filter((d) => d.status === "DELIVERED");
+  const earned = delivered.reduce((s, d) => s + Number(d.deliveryFee), 0);
   return (
     <div>
       <h2>Rider dashboard</h2>
@@ -50,7 +53,8 @@ export default function RiderDashboard() {
       <div className="grid3">
         <StatCard icon={Power} value={me.availability} label="your status" />
         <StatCard icon={Truck} value={assigned.length} label="active jobs" />
-        <StatCard icon={PackageCheck} value={done} label="completed" />
+        <StatCard icon={PackageCheck} value={delivered.length} label="completed" />
+        <StatCard icon={Wallet} value={`₦${earned.toFixed(2)}`} label="total earned" />
       </div>
       <div className="inline">
         <button className="btn primary" disabled={switching} onClick={() => setAvail("AVAILABLE")}>

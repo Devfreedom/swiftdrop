@@ -65,7 +65,9 @@ export default function CustomerDeliveryDetails() {
       <Stepper status={d.status} />
       {err && <p className="error">{err}</p>}
       <p><b>Pickup:</b> {d.pickupAddress} ({d.pickupContact}, {d.pickupPhone})</p>
+      {d.pickupLandmark && <p><b>Pickup landmark:</b> {d.pickupLandmark}</p>}
       <p><b>Drop-off:</b> {d.deliveryAddress} ({d.deliveryContact}, {d.deliveryPhone})</p>
+      {d.deliveryLandmark && <p><b>Drop-off landmark:</b> {d.deliveryLandmark}</p>}
       <p><b>Parcel:</b> {d.packageDescription} · ₦{d.deliveryFee}</p>
       <p><b>Rider:</b> {d.rider ? `${d.rider.name} (${d.rider.phone || "no phone"})` : "not assigned yet"}</p>
       <h3>Payments</h3>

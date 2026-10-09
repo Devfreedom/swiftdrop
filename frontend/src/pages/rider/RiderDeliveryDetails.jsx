@@ -52,7 +52,9 @@ export default function RiderDeliveryDetails() {
       <Stepper status={d.status} />
       {err && <p className="error">{err}</p>}
       <p><b>Pickup:</b> {d.pickupAddress} ({d.pickupContact}, {d.pickupPhone})</p>
+      {d.pickupLandmark && <p><b>Pickup landmark:</b> {d.pickupLandmark}</p>}
       <p><b>Drop-off:</b> {d.deliveryAddress} ({d.deliveryContact}, {d.deliveryPhone})</p>
+      {d.deliveryLandmark && <p><b>Drop-off landmark:</b> {d.deliveryLandmark}</p>}
       <p><b>Parcel:</b> {d.packageDescription} · ₦{d.deliveryFee}</p>
       {NEXT[d.status] && (
         <button className="btn primary" onClick={advance} disabled={moving}>
