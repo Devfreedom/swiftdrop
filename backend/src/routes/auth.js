@@ -7,7 +7,11 @@ router.post(
   validate({
     name: { required: true, type: "string" },
     email: { required: true, type: "string", email: true },
-    password: { required: true, type: "string", min: 6 },
+    password: { required: true, type: "string", min: 8 },
+    phone: { required: true, type: "string" },
+    role: { enum: ["CUSTOMER", "RIDER"] },
+    vehicleType: { enum: ["Bike", "Car", "Van"] },
+    plateNumber: { type: "string" },
   }),
   register
 );
