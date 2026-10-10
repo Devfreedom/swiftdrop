@@ -5,7 +5,7 @@ import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import ConfirmModal from "../../components/ConfirmModal";
-import { PAYMENT_STATUSES } from "../../constants";
+import { PAYMENT_STATUSES, formatNaira, trackingId } from "../../constants";
 import { EmptyState, SkeletonList } from "../../components/Feedback";
 
 export default function AdminPayments() {
@@ -63,7 +63,7 @@ export default function AdminPayments() {
         <EmptyState icon={Wallet} title="No payments found" hint="Try a different filter." />
       ) : items.map((p) => (
         <div key={p.id} className="row">
-          <span>#{p.id} delivery #{p.deliveryId} · ₦{p.amount}</span>
+          <span>{trackingId(p.deliveryId)} · {formatNaira(p.amount)}</span>
           <span>
             <StatusBadge value={p.method} /> <StatusBadge value={p.status} />{" "}
             {p.status === "PENDING" && <button className="btn small" onClick={() => confirm(p.id)}>Confirm</button>}

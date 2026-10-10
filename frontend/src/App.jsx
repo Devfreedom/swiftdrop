@@ -1,5 +1,5 @@
 // Router: landing for guests, role-guarded sections for users.
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth, roleHome } from "./context/AuthContext";
 import { ToastProvider } from "./components/Toast";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -35,6 +35,16 @@ function IndexRoute() {
 
 const guard = (el, roles) => <ProtectedRoute roles={roles}>{el}</ProtectedRoute>;
 
+function NotFound() {
+  return (
+    <div className="card narrow not-found">
+      <h2>Page not found</h2>
+      <p className="muted">This page moved or never existed.</p>
+      <Link to="/" className="btn primary">Back home</Link>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -67,7 +77,7 @@ export default function App() {
             {/* Shared */}
             <Route path="/profile" element={guard(<Profile />)} />
             <Route path="/settings" element={guard(<Settings />)} />
-              <Route path="*" element={<p>Page not found. <a href="/">Home</a></p>} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>
         </AuthProvider>

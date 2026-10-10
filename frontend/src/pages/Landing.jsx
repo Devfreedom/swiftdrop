@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Bike, Check, CreditCard, Mail, MapPin, Menu, Package,
-  Phone, ShieldCheck, Truck, X,
+  Phone, ShieldCheck, Truck, UserCheck, X,
 } from "lucide-react";
 import { BRAND, SUPPORT_EMAIL, SUPPORT_PHONE } from "../brand";
 
@@ -18,18 +18,23 @@ const NAV_LINKS = [
 const STEPS = [
   {
     icon: Package,
-    title: "Request a delivery",
+    title: "Request",
     text: "Tell us what to move and where. Pickup and drop-off in under a minute.",
   },
   {
-    icon: Bike,
-    title: "A rider picks it up",
-    text: "An admin confirms your request and assigns a rider to your parcel.",
+    icon: UserCheck,
+    title: "Rider assigned",
+    text: "An admin confirms your request and assigns an available rider.",
   },
   {
-    icon: MapPin,
-    title: "Track it to the door",
-    text: "Follow every step — pickup, transit, delivered — right to the doorstep.",
+    icon: Truck,
+    title: "Picked up and in transit",
+    text: "The rider picks up your parcel and you follow it live to the door.",
+  },
+  {
+    icon: Check,
+    title: "Delivered",
+    text: "Signed, sealed, delivered at the doorstep.",
   },
 ];
 
@@ -122,9 +127,10 @@ export default function Landing() {
               <Link to="/login" className="btn">Login</Link>
             </div>
           </div>
-          {/* CSS + lucide illustration only: parcel route card */}
+          {/* CSS + lucide illustration only: static example tracker preview */}
           <div className="lp-art" aria-hidden="true">
             <div className="lp-art-card">
+              <p className="lp-art-tag"><span className="badge b-purple">Example</span></p>
               <div className="lp-art-row">
                 <span className="lp-art-ico"><Package size={18} /></span>
                 <div>
@@ -159,7 +165,7 @@ export default function Landing() {
         {/* 3. How it works */}
         <section id="how" className="lp-section">
           <h2>How it works</h2>
-          <p className="muted">Three steps from pickup to doorstep.</p>
+          <p className="muted">Four steps from pickup to doorstep.</p>
           <div className="lp-grid3">
             {STEPS.map(({ icon: Icon, title, text }, i) => (
               <div key={title} className="lp-card">

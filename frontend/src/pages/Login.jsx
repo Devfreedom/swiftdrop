@@ -54,10 +54,7 @@ export default function Login() {
           <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password" error={errs.password} />
           <div className="forgot-row">
-            <button type="button" className="linklike"
-              onClick={() => toast.success("Password reset isn't available yet — contact support.")}>
-              Forgot password?
-            </button>
+            <span className="muted small">Password reset coming soon — contact support if you&apos;re locked out.</span>
           </div>
         </div>
         <button className="btn-auth" disabled={busy}>
