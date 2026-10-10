@@ -84,7 +84,7 @@ export default function CustomerDeliveryDetails() {
             <option>CASH</option><option>CARD</option><option>TRANSFER</option>
           </select>
           <button className="btn primary" onClick={pay} disabled={paying}>
-            {paying && <Spinner />} {paying ? "Paying…" : `Pay ₦${d.deliveryFee}`}
+            {paying && <Spinner />} {paying ? "Paying…" : `Pay ${formatNaira(d.deliveryFee)}`}
           </button>
         </div>
       )}
@@ -93,7 +93,7 @@ export default function CustomerDeliveryDetails() {
           <button className="btn danger" onClick={() => setConfirmCancel(true)}>Cancel delivery</button>
         </div>
       )}
-      <ConfirmModal open={confirmCancel} title={`Cancel delivery #${d.id}?`}
+      <ConfirmModal open={confirmCancel} title={`Cancel delivery ${trackingId(d.id)}?`}
         message="The rider (if any) will be freed. This can't be undone."
         confirmLabel="Yes, cancel" onConfirm={cancel} onCancel={() => setConfirmCancel(false)} />
     </div>
