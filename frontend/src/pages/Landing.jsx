@@ -51,9 +51,10 @@ const ROLES = [
   },
 ];
 
+const YEAR = new Date().getFullYear();
+
 export default function Landing() {
   const [open, setOpen] = useState(false);
-  const year = new Date().getFullYear();
 
   useEffect(() => {
     document.title = `${BRAND} — Deliveries made simple`;
@@ -230,7 +231,7 @@ export default function Landing() {
 
       {/* 7. Footer */}
       <footer className="lp-footer">
-        <span><strong>{BRAND}</strong> · © {year}</span>
+        <span><strong>{BRAND}</strong> · © {YEAR}</span>
         <nav aria-label="Footer">
           {NAV_LINKS.map(([href, label]) => (
             <a key={href} href={href}>{label}</a>
