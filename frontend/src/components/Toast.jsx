@@ -1,6 +1,6 @@
 // Toast notifications: success/error popups. Wrap the app once, use anywhere.
 import { createContext, useCallback, useContext, useState } from "react";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Info } from "lucide-react";
 
 const ToastCtx = createContext(null);
 let nextId = 1;
@@ -15,17 +15,23 @@ export function ToastProvider({ children }) {
   }, [dismiss]);
   const success = useCallback((m) => push("ok", m), [push]);
   const error = useCallback((m) => push("err", m), [push]);
+  const info = useCallback((m) => push("info", m), [push]);
+
+  const icons = { ok: CheckCircle2, err: AlertCircle, info: Info };
 
   return (
-    <ToastCtx.Provider value={{ success, error }}>
+    <ToastCtx.Provider value={{ success, error, info }}>
       {children}
       <div className="toast-stack" aria-live="polite">
-        {toasts.map((t) => (
-          <div key={t.id} className={`toast ${t.type}`} role="status">
-            {t.type === "ok" ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
-            <span>{t.message}</span>
-          </div>
-        ))}
+        {toasts.map((t) => {
+          const Icon = icons[t.type] || AlertCircle;
+          return (
+            <div key={t.id} className={`toast ${t.type}`} role="status">
+              <Icon size={18} aria-hidden="true" />
+              <span>{t.message}</span>
+            </div>
+          );
+        })}
       </div>
     </ToastCtx.Provider>
   );

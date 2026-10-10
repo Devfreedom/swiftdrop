@@ -6,8 +6,10 @@ import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import Stepper from "../../components/Stepper";
 import ConfirmModal from "../../components/ConfirmModal";
+import Button from "../../ui/Button";
+import { SelectInput } from "../../ui/fields";
 import { formatNaira, trackingId } from "../../constants";
-import { CenterLoad, Spinner } from "../../components/Feedback";
+import { CenterLoad, ErrorState } from "../../components/Feedback";
 
 export default function CustomerDeliveryDetails() {
   const { id } = useParams();
@@ -55,7 +57,7 @@ export default function CustomerDeliveryDetails() {
       toast.error(e.message);
     }
   }
-  if (err && !d) return <p className="error">{err}</p>;
+  if (err && !d) return <ErrorState title="Delivery not found" hint={err} onRetry={load} />;
   if (!d) return <CenterLoad text="Loading delivery…" />;
   const paid = (d.payments || []).some((p) => p.status === "SUCCESSFUL");
   const pending = !paid && (d.payments || []).some((p) => p.status === "PENDING");
@@ -72,7 +74,7 @@ export default function CustomerDeliveryDetails() {
       <p><b>Parcel:</b> {d.packageDescription}{d.packageWeightKg != null && ` · ${d.packageWeightKg} kg`}</p>
       <p><b>Price:</b> {formatNaira(d.deliveryFee)}</p>
       <p><b>Rider:</b> {d.rider ? `${d.rider.name} (${d.rider.phone || "no phone"})` : "not assigned yet"}</p>
-      <h3>Payments</h3>
+      <h3 className="eyebrow">Payments</h3>
       {(d.payments || []).length === 0 && <p className="muted">No payment yet.</p>}
       {(d.payments || []).map((p) => (
         <p key={p.id}>{trackingId(d.id)} · {formatNaira(p.amount)} <StatusBadge value={p.method} /> <StatusBadge value={p.status} /></p>
@@ -80,17 +82,17 @@ export default function CustomerDeliveryDetails() {
       {pending && <p className="muted">Cash payment pending — an admin confirms it once collected.</p>}
       {!paid && !pending && d.status !== "CANCELLED" && d.status !== "DELIVERED" && (
         <div className="inline">
-          <select value={method} onChange={(e) => setMethod(e.target.value)} aria-label="Payment method">
+          <SelectInput aria-label="Payment method" value={method} onChange={(e) => setMethod(e.target.value)}>
             <option>CASH</option><option>CARD</option><option>TRANSFER</option>
-          </select>
-          <button className="btn primary" onClick={pay} disabled={paying}>
-            {paying && <Spinner />} {paying ? "Paying…" : `Pay ${formatNaira(d.deliveryFee)}`}
-          </button>
+          </SelectInput>
+          <Button variant="primary" onClick={pay} loading={paying}>
+            {paying ? "Paying…" : `Pay ${formatNaira(d.deliveryFee)}`}
+          </Button>
         </div>
       )}
       {cancellable && (
         <div className="inline">
-          <button className="btn danger" onClick={() => setConfirmCancel(true)}>Cancel delivery</button>
+          <Button variant="danger" onClick={() => setConfirmCancel(true)}>Cancel delivery</Button>
         </div>
       )}
       <ConfirmModal open={confirmCancel} title={`Cancel delivery ${trackingId(d.id)}?`}

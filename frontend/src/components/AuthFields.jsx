@@ -65,4 +65,4 @@ export function strengthOf(pw) {
   return Math.min(s, 4);
 }
 export const STRENGTH_LABELS = ["", "Weak", "Fair", "Good", "Strong"];
-export const STRENGTH_COLORS = ["", "#DC2626", "#EA580C", "#15803d", "#0F172A"];
+export const STRENGTH_COLORS = ["", "var(--danger-bright)", "var(--warning-solid)", "var(--success)", "var(--ink)"];

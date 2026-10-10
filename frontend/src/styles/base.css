@@ -1,0 +1,66 @@
+/* Base: Inter + system fallback, type scale, global focus, min 12px text. */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-16);
+  line-height: var(--lh-16);
+  color: var(--body);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, p { margin-top: 0; }
+
+h1 {
+  font-size: var(--text-32);
+  line-height: var(--lh-32);
+  letter-spacing: -0.02em;
+  font-weight: var(--weight-extrabold);
+  color: var(--ink);
+}
+h2 {
+  font-size: var(--text-24);
+  line-height: var(--lh-24);
+  letter-spacing: -0.02em;
+  font-weight: var(--weight-extrabold);
+  color: var(--ink);
+  margin-bottom: var(--space-3);
+}
+h3 {
+  font-size: var(--text-20);
+  line-height: var(--lh-20);
+  font-weight: var(--weight-bold);
+  color: var(--ink);
+}
+
+/* Small-caps section label (the old bare-h3 pattern, now explicit). */
+.eyebrow {
+  font-size: var(--text-12);
+  line-height: var(--lh-12);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--body);
+  margin: var(--space-5) 0 var(--space-2);
+}
+
+a { color: var(--brand-hover); text-decoration: none; }
+a:hover { color: var(--brand-active); }
+
+/* No text below 12px, app-wide. */
+small, .small, .field-error, .tl-label, .badge,
+.data-table th, .updated-box span, .dest-block span {
+  font-size: max(12px, 1em);
+}
+
+.muted { color: var(--muted); }
+.small { font-size: var(--text-14); }
+
+/* One accessible focus ring everywhere. */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid var(--brand-ring);
+  outline-offset: 2px;
+}

@@ -5,6 +5,8 @@ import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import ConfirmModal from "../../components/ConfirmModal";
+import Button from "../../ui/Button";
+import { SelectInput } from "../../ui/fields";
 import { EmptyState, SkeletonList, Spinner } from "../../components/Feedback";
 
 export default function AdminUsers({ fixedRole }) {
@@ -55,13 +57,13 @@ export default function AdminUsers({ fixedRole }) {
       {err && <p className="error">{err}</p>}
       <div className="inline">
         {!fixedRole && (
-          <select value={role} onChange={(e) => setRole(e.target.value)} aria-label="Filter by role">
+          <SelectInput aria-label="Filter by role" value={role} onChange={(e) => setRole(e.target.value)}>
             <option value="">All roles</option><option>CUSTOMER</option><option>RIDER</option><option>ADMIN</option>
-          </select>
+          </SelectInput>
         )}
-        <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Filter by status">
+        <SelectInput aria-label="Filter by status" value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="">All statuses</option><option>ACTIVE</option><option>INACTIVE</option><option>SUSPENDED</option>
-        </select>
+        </SelectInput>
       </div>
       {loading ? <SkeletonList /> : items.length === 0 ? (
         <EmptyState icon={Users} title="No users found" hint="Try a different filter." />
@@ -75,9 +77,9 @@ export default function AdminUsers({ fixedRole }) {
               : <StatusBadge value={u.status} />}{" "}
             {u.role === "RIDER" && <StatusBadge value={u.availability} />}{" "}
             {u.status === "INACTIVE"
-              ? <button className="btn small" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE", from: "INACTIVE" })}>Approve</button>
-              : <button className="btn small" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE", from: u.status })}>Activate</button>}{" "}
-            <button className="btn small" onClick={() => setTarget({ id: u.id, name: u.name, status: "SUSPENDED", from: u.status })}>Suspend</button>
+              ? <Button size="sm" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE", from: "INACTIVE" })}>Approve</Button>
+              : <Button size="sm" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE", from: u.status })}>Activate</Button>}{" "}
+            <Button size="sm" onClick={() => setTarget({ id: u.id, name: u.name, status: "SUSPENDED", from: u.status })}>Suspend</Button>
           </span>
         </div>
       ))}

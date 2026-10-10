@@ -7,7 +7,8 @@ import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import StatCard from "../../components/StatCard";
 import { formatNaira, trackingId } from "../../constants";
-import { CenterLoad, EmptyState, Spinner } from "../../components/Feedback";
+import Button from "../../ui/Button";
+import { CenterLoad, EmptyState } from "../../components/Feedback";
 
 export default function RiderDashboard() {
   const toast = useToast();
@@ -58,12 +59,12 @@ export default function RiderDashboard() {
         <StatCard icon={Wallet} value={formatNaira(earned)} label="total earned" />
       </div>
       <div className="inline">
-        <button className="btn primary" disabled={switching} onClick={() => setAvail("AVAILABLE")}>
-          {switching && <Spinner />} Go available
-        </button>
-        <button className="btn" disabled={switching} onClick={() => setAvail("OFFLINE")}>Go offline</button>
+        <Button variant="primary" loading={switching} onClick={() => setAvail("AVAILABLE")}>
+          Go available
+        </Button>
+        <Button disabled={switching} onClick={() => setAvail("OFFLINE")}>Go offline</Button>
       </div>
-      <h3>Active jobs ({assigned.length})</h3>
+      <h3 className="eyebrow">Active jobs ({assigned.length})</h3>
       {assigned.length === 0 ? (
         <EmptyState icon={Truck} title="No active jobs"
           hint="Go available, then claim a job from Open jobs."

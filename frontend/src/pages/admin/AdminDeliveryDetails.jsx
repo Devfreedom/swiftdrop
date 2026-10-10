@@ -7,7 +7,9 @@ import StatusBadge from "../../components/StatusBadge";
 import Stepper from "../../components/Stepper";
 import ConfirmModal from "../../components/ConfirmModal";
 import { formatNaira, trackingId } from "../../constants";
-import { CenterLoad, Spinner } from "../../components/Feedback";
+import Button from "../../ui/Button";
+import { SelectInput } from "../../ui/fields";
+import { CenterLoad, ErrorState } from "../../components/Feedback";
 
 export default function AdminDeliveryDetails() {
   const { id } = useParams();
@@ -49,7 +51,7 @@ export default function AdminDeliveryDetails() {
       setBusy(false);
     }
   }
-  if (err && !d) return <p className="error">{err}</p>;
+  if (err && !d) return <ErrorState title="Delivery not found" hint={err} onRetry={load} />;
   if (!d) return <CenterLoad text="Loading delivery…" />;
   return (
     <div className="card">
@@ -63,24 +65,24 @@ export default function AdminDeliveryDetails() {
       {d.deliveryLandmark && <p><b>Drop-off landmark:</b> {d.deliveryLandmark}</p>}
       <p><b>Fee:</b> {formatNaira(d.deliveryFee)}</p>
       <div className="inline">
-        <button className="btn primary" disabled={busy}
+        <Button variant="primary" loading={busy}
           onClick={() => act(`/admin/deliveries/${id}/confirm`, {}, "Delivery confirmed.")}>
-          {busy && <Spinner />} Confirm
-        </button>
-        <button className="btn danger" disabled={busy} onClick={() => setConfirmCancel(true)}>Cancel</button>
+          Confirm
+        </Button>
+        <Button variant="danger" disabled={busy} onClick={() => setConfirmCancel(true)}>Cancel</Button>
       </div>
-      <h3>Assign rider (CONFIRMED + AVAILABLE only)</h3>
+      <h3 className="eyebrow">Assign rider (CONFIRMED + AVAILABLE only)</h3>
       <div className="inline">
-        <select value={riderId} onChange={(e) => setRiderId(e.target.value)} aria-label="Pick a rider">
+        <SelectInput aria-label="Pick a rider" value={riderId} onChange={(e) => setRiderId(e.target.value)}>
           <option value="">Pick a rider</option>
           {riders.map((r) => (
             <option key={r.id} value={r.id}>#{r.id} {r.name} ({r.availability})</option>
           ))}
-        </select>
-        <button className="btn primary" disabled={!riderId || busy}
+        </SelectInput>
+        <Button variant="primary" disabled={!riderId || busy} loading={busy}
           onClick={() => act(`/admin/deliveries/${id}/assign`, { riderId: Number(riderId) }, "Rider assigned.", true)}>
-          {busy && <Spinner />} Assign
-        </button>
+          Assign
+        </Button>
       </div>
       <ConfirmModal open={confirmCancel} title={`Cancel delivery ${trackingId(d.id)}?`}
         message="The rider (if any) will be freed. This can't be undone."

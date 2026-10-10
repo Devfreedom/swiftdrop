@@ -69,10 +69,10 @@ export default function Register() {
       <div className="authx-card">
         <div className="authx-logo"><Truck size={26} /></div>
         <h2 className="authx-title">Join {BRAND}</h2>
-        <p className="ok" style={{ textAlign: "left", marginTop: 16 }}>
+        <p className="ok text-left mt-4">
           Account created. An admin must approve your account before you can log in.
         </p>
-        <Link to="/login" className="btn-auth" style={{ marginTop: 16 }}>
+        <Link to="/login" className="btn-auth mt-4">
           Go to Sign in <ArrowRight size={18} />
         </Link>
       </div>
@@ -94,7 +94,7 @@ export default function Register() {
           <Bike size={17} /> Rider
         </button>
       </div>
-      {err && <p className="error" style={{ textAlign: "left", marginTop: 16 }}>{err}</p>}
+      {err && <p className="error text-left mt-4">{err}</p>}
       <form onSubmit={submit} className={role === "RIDER" ? "authx-form grid" : "authx-form"} noValidate>
         <TextField label="Full Name" icon={User} placeholder="Ama Mensah"
           value={name} onChange={(e) => setName(e.target.value)} error={errs.name} />

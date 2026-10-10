@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
-import { Spinner } from "../../components/Feedback";
+import Button from "../../ui/Button";
+import PageHeader from "../../ui/PageHeader";
+import { TextInput, TextareaInput } from "../../ui/fields";
 import {
   BASE_FEE, PER_KG_FEE, estimateDeliveryFee, formatNaira,
   resolveWeightKg, trackingId,
@@ -16,15 +18,6 @@ const REQUIRED = [
   ["deliveryContact", "Delivery contact"], ["deliveryPhone", "Delivery phone"],
   ["packageDescription", "Parcel description"],
 ];
-
-function Field({ label, error, children }) {
-  return (
-    <div>
-      <label>{label}{children}</label>
-      {error && <p className="field-error">{error}</p>}
-    </div>
-  );
-}
 
 export default function CreateDelivery() {
   const nav = useNavigate();
@@ -67,69 +60,53 @@ export default function CreateDelivery() {
   }
   return (
     <div className="card">
-      <h2>New delivery</h2>
-      <p className="muted small">Tell us what to move and where — we handle the rest.</p>
+      <PageHeader title="New delivery" sub="Tell us what to move and where — we handle the rest." />
       {err && <p className="error">{err}</p>}
       <form onSubmit={submit} noValidate>
-        <h3>Pickup</h3>
+        <h3 className="eyebrow">Pickup</h3>
         <div className="form grid2">
-          <Field label="Pickup address" error={errs.pickupAddress}>
-            <input value={form.pickupAddress} onChange={set("pickupAddress")}
-              name="pickupAddress" autoComplete="street-address" aria-invalid={!!errs.pickupAddress} />
-          </Field>
-          <Field label="Pickup contact" error={errs.pickupContact}>
-            <input value={form.pickupContact} onChange={set("pickupContact")}
-              name="pickupContact" autoComplete="name" aria-invalid={!!errs.pickupContact} />
-          </Field>
-          <Field label="Pickup phone" error={errs.pickupPhone}>
-            <input type="tel" value={form.pickupPhone} onChange={set("pickupPhone")}
-              name="pickupPhone" autoComplete="tel" placeholder="e.g. 020 000 0000"
-              aria-invalid={!!errs.pickupPhone} />
-          </Field>
-          <Field label="Pickup landmark (optional)">
-            <input value={form.pickupLandmark} onChange={set("pickupLandmark")}
-              name="pickupLandmark" autoComplete="off"
-              placeholder="e.g. Opposite the mall main gate" />
-          </Field>
+          <TextInput label="Pickup address" error={errs.pickupAddress}
+            value={form.pickupAddress} onChange={set("pickupAddress")}
+            name="pickupAddress" autoComplete="street-address" />
+          <TextInput label="Pickup contact" error={errs.pickupContact}
+            value={form.pickupContact} onChange={set("pickupContact")}
+            name="pickupContact" autoComplete="name" />
+          <TextInput label="Pickup phone" error={errs.pickupPhone}
+            type="tel" value={form.pickupPhone} onChange={set("pickupPhone")}
+            name="pickupPhone" autoComplete="tel" placeholder="e.g. 020 000 0000" />
+          <TextInput label="Pickup landmark (optional)"
+            value={form.pickupLandmark} onChange={set("pickupLandmark")}
+            name="pickupLandmark" autoComplete="off"
+            placeholder="e.g. Opposite the mall main gate" />
         </div>
 
-        <h3>Drop-off</h3>
+        <h3 className="eyebrow">Drop-off</h3>
         <div className="form grid2">
-          <Field label="Delivery address" error={errs.deliveryAddress}>
-            <input value={form.deliveryAddress} onChange={set("deliveryAddress")}
-              name="deliveryAddress" autoComplete="shipping street-address"
-              aria-invalid={!!errs.deliveryAddress} />
-          </Field>
-          <Field label="Delivery contact" error={errs.deliveryContact}>
-            <input value={form.deliveryContact} onChange={set("deliveryContact")}
-              name="deliveryContact" autoComplete="shipping name"
-              aria-invalid={!!errs.deliveryContact} />
-          </Field>
-          <Field label="Delivery phone" error={errs.deliveryPhone}>
-            <input type="tel" value={form.deliveryPhone} onChange={set("deliveryPhone")}
-              name="deliveryPhone" autoComplete="shipping tel" placeholder="e.g. 020 000 0000"
-              aria-invalid={!!errs.deliveryPhone} />
-          </Field>
-          <Field label="Drop-off landmark (optional)">
-            <input value={form.deliveryLandmark} onChange={set("deliveryLandmark")}
-              name="deliveryLandmark" autoComplete="off"
-              placeholder="e.g. Blue house after the junction" />
-          </Field>
+          <TextInput label="Delivery address" error={errs.deliveryAddress}
+            value={form.deliveryAddress} onChange={set("deliveryAddress")}
+            name="deliveryAddress" autoComplete="shipping street-address" />
+          <TextInput label="Delivery contact" error={errs.deliveryContact}
+            value={form.deliveryContact} onChange={set("deliveryContact")}
+            name="deliveryContact" autoComplete="shipping name" />
+          <TextInput label="Delivery phone" error={errs.deliveryPhone}
+            type="tel" value={form.deliveryPhone} onChange={set("deliveryPhone")}
+            name="deliveryPhone" autoComplete="shipping tel" placeholder="e.g. 020 000 0000" />
+          <TextInput label="Drop-off landmark (optional)"
+            value={form.deliveryLandmark} onChange={set("deliveryLandmark")}
+            name="deliveryLandmark" autoComplete="off"
+            placeholder="e.g. Blue house after the junction" />
         </div>
 
-        <h3>Package</h3>
+        <h3 className="eyebrow">Package</h3>
         <div className="form grid2">
-          <Field label="Parcel description" error={errs.packageDescription}>
-            <textarea value={form.packageDescription} onChange={set("packageDescription")}
-              name="packageDescription" rows={3}
-              placeholder="e.g. Laptop in a padded box"
-              aria-invalid={!!errs.packageDescription} />
-          </Field>
-          <Field label="Weight (kg, optional)" error={errs.packageWeightKg}>
-            <input type="number" min="0" step="0.1" value={form.packageWeightKg}
-              onChange={set("packageWeightKg")} name="packageWeightKg"
-              placeholder="Defaults to 1 kg" aria-invalid={!!errs.packageWeightKg} />
-          </Field>
+          <TextareaInput label="Parcel description" error={errs.packageDescription}
+            value={form.packageDescription} onChange={set("packageDescription")}
+            name="packageDescription" rows={3}
+            placeholder="e.g. Laptop in a padded box" />
+          <TextInput label="Weight (kg, optional)" error={errs.packageWeightKg}
+            type="number" min="0" step="0.1" value={form.packageWeightKg}
+            onChange={set("packageWeightKg")} name="packageWeightKg"
+            placeholder="Defaults to 1 kg" hint="Price updates live below." />
         </div>
 
         <div className="price-box" role="status" aria-live="polite">
@@ -141,9 +118,9 @@ export default function CreateDelivery() {
         </div>
 
         <div className="inline">
-          <button className="btn primary" disabled={busy}>
-            {busy && <Spinner />} {busy ? "Creating…" : "Create delivery"}
-          </button>
+          <Button type="submit" variant="primary" loading={busy}>
+            {busy ? "Creating…" : "Create delivery"}
+          </Button>
         </div>
       </form>
     </div>

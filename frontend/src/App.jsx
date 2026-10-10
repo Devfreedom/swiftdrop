@@ -1,9 +1,10 @@
 // Router: landing for guests, role-guarded sections for users.
 // Pages are code-split with React.lazy; shell pieces stay in the main chunk.
 import { Suspense, lazy } from "react";
-import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth, roleHome } from "./context/AuthContext";
 import { ToastProvider } from "./components/Toast";
+import Button from "./ui/Button";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import { CenterLoad } from "./components/Feedback";
@@ -28,6 +29,8 @@ const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminDeliveries = lazy(() => import("./pages/admin/AdminDeliveries"));
 const AdminDeliveryDetails = lazy(() => import("./pages/admin/AdminDeliveryDetails"));
 const AdminPayments = lazy(() => import("./pages/admin/AdminPayments"));
+// Design review page: dev only, never linked from the app UI.
+const Design = import.meta.env.DEV ? lazy(() => import("./pages/Design")) : null;
 
 function IndexRoute() {
   const { user, token, loading } = useAuth();
@@ -43,7 +46,7 @@ function NotFound() {
     <div className="card narrow not-found">
       <h2>Page not found</h2>
       <p className="muted">This page moved or never existed.</p>
-      <Link to="/" className="btn primary">Back home</Link>
+      <Button to="/" variant="primary">Back home</Button>
     </div>
   );
 }
@@ -81,6 +84,7 @@ export default function App() {
                 {/* Shared */}
                 <Route path="/profile" element={guard(<Profile />)} />
                 <Route path="/settings" element={guard(<Settings />)} />
+                {Design && <Route path="/design" element={<Design />} />}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

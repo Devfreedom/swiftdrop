@@ -1,12 +1,12 @@
 // Public landing page at "/": navbar, hero, how it works, roles, about, contact, footer.
 // Logged-in redirect lives in App.jsx IndexRoute — this component is guests only.
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Bike, Check, CreditCard, Mail, MapPin, Menu, Package,
   Phone, ShieldCheck, Truck, UserCheck, X,
 } from "lucide-react";
 import { BRAND, SUPPORT_EMAIL, SUPPORT_PHONE } from "../brand";
+import Button from "../ui/Button";
 
 const NAV_LINKS = [
   ["#how", "How it works"],
@@ -87,8 +87,8 @@ export default function Landing() {
             ))}
           </nav>
           <div className="lp-nav-cta">
-            <Link to="/login" className="btn ghost">Login</Link>
-            <Link to="/register" className="btn primary">Sign up</Link>
+            <Button to="/login" variant="ghost">Login</Button>
+            <Button to="/register" variant="primary">Sign up</Button>
           </div>
           <button
             className="icon-btn lp-burger"
@@ -105,8 +105,8 @@ export default function Landing() {
               <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>
             ))}
             <div className="lp-mobile-cta">
-              <Link to="/login" className="btn ghost" onClick={() => setOpen(false)}>Login</Link>
-              <Link to="/register" className="btn primary" onClick={() => setOpen(false)}>Sign up</Link>
+              <Button to="/login" variant="ghost" onClick={() => setOpen(false)}>Login</Button>
+              <Button to="/register" variant="primary" onClick={() => setOpen(false)}>Sign up</Button>
             </div>
           </nav>
         )}
@@ -123,8 +123,8 @@ export default function Landing() {
               request a pickup and follow it to the doorstep.
             </p>
             <div className="hero-cta">
-              <Link to="/register" className="btn primary">Get started</Link>
-              <Link to="/login" className="btn">Login</Link>
+              <Button to="/register" variant="primary" size="lg">Get started</Button>
+              <Button to="/login" size="lg">Login</Button>
             </div>
           </div>
           {/* CSS + lucide illustration only: static example tracker preview */}

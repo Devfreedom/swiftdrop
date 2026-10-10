@@ -4,6 +4,7 @@ import { Wallet } from "lucide-react";
 import { api } from "../../api/client";
 import StatusBadge from "../../components/StatusBadge";
 import { PAYMENT_STATUSES, formatNaira, trackingId } from "../../constants";
+import { SelectInput } from "../../ui/fields";
 import { CenterLoad, EmptyState } from "../../components/Feedback";
 
 export default function CustomerPayments() {
@@ -20,9 +21,9 @@ export default function CustomerPayments() {
   return (
     <div>
       <h2>Payments</h2>
-      <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Filter by status">
+      <SelectInput aria-label="Filter by status" value={status} onChange={(e) => setStatus(e.target.value)}>
         {["", ...PAYMENT_STATUSES].map((s) => <option key={s} value={s}>{s || "All statuses"}</option>)}
-      </select>
+      </SelectInput>
       {err && <p className="error">{err}</p>}
       {shown.length === 0 ? (
         <EmptyState icon={Wallet} title="No payments yet"

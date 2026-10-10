@@ -5,6 +5,7 @@ import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import { formatNaira, trackingId } from "../../constants";
+import Button from "../../ui/Button";
 import { EmptyState, SkeletonList } from "../../components/Feedback";
 
 export default function AvailableJobs() {
@@ -53,9 +54,9 @@ export default function AvailableJobs() {
         <div key={d.id} className="row">
           <span>{trackingId(d.id)} {d.pickupAddress} → {d.deliveryAddress} ({formatNaira(d.deliveryFee)})</span>
           <span><StatusBadge value={d.status} />{" "}
-            <button className="btn primary small" disabled={taking === d.id} onClick={() => accept(d.id)}>
+            <Button variant="primary" size="sm" loading={taking === d.id} onClick={() => accept(d.id)}>
               {taking === d.id ? "Taking…" : "Accept"}
-            </button>
+            </Button>
           </span>
         </div>
       ))}

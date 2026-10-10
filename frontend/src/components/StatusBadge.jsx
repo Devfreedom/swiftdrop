@@ -1,24 +1,23 @@
-// Colored pill with a small icon per status.
+// Colored status pill with a small icon per status (built on kit Badge).
 import { Ban, Check, CircleDollarSign, Clock, Truck, UserCheck, UserX, WifiOff } from "lucide-react";
+import Badge from "../ui/Badge";
 
 const STYLES = {
-  PENDING: ["b-amber", Clock], CONFIRMED: ["b-blue", Check],
-  ASSIGNED: ["b-indigo", UserCheck], PICKED_UP: ["b-indigo", Check],
-  IN_TRANSIT: ["b-cyan", Truck], DELIVERED: ["b-green", Check],
-  CANCELLED: ["b-red", Ban], SUCCESSFUL: ["b-green", Check],
-  FAILED: ["b-red", Ban], REFUNDED: ["b-amber", CircleDollarSign],
-  AVAILABLE: ["b-green", Check], BUSY: ["b-amber", Clock],
-  OFFLINE: ["b-gray", WifiOff], ACTIVE: ["b-green", Check],
-  INACTIVE: ["b-gray", Clock], SUSPENDED: ["b-red", UserX],
-  CASH: ["b-gray", CircleDollarSign], CARD: ["b-blue", CircleDollarSign],
-  TRANSFER: ["b-purple", CircleDollarSign],
+  PENDING: ["amber", Clock], CONFIRMED: ["blue", Check],
+  ASSIGNED: ["indigo", UserCheck], PICKED_UP: ["indigo", Check],
+  IN_TRANSIT: ["cyan", Truck], DELIVERED: ["green", Check],
+  CANCELLED: ["red", Ban], SUCCESSFUL: ["green", Check],
+  FAILED: ["red", Ban], REFUNDED: ["amber", CircleDollarSign],
+  AVAILABLE: ["green", Check], BUSY: ["amber", Clock],
+  OFFLINE: ["gray", WifiOff], ACTIVE: ["green", Check],
+  INACTIVE: ["gray", Clock], SUSPENDED: ["red", UserX],
+  CASH: ["gray", CircleDollarSign], CARD: ["blue", CircleDollarSign],
+  TRANSFER: ["purple", CircleDollarSign],
 };
 
 export default function StatusBadge({ value }) {
-  const [cls, Icon] = STYLES[value] || ["b-gray", Clock];
+  const [tone, Icon] = STYLES[value] || ["gray", Clock];
   return (
-    <span className={`badge ${cls}`}>
-      {Icon && <Icon size={12} aria-hidden="true" />} {value}
-    </span>
+    <Badge tone={tone} icon={Icon}>{value}</Badge>
   );
 }

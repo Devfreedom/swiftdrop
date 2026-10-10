@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { BRAND, SUPPORT_EMAIL } from "../brand";
+import Button from "../ui/Button";
 import Notifications from "./Notifications";
 
 const MENUS = {
@@ -82,8 +83,8 @@ export default function Layout({ children }) {
         <header className="app-header">
           <Logo />
           <div className="header-right">
-            <Link to="/login" className="btn ghost">Login</Link>
-            <Link to="/register" className="btn primary">Sign up</Link>
+            <Button to="/login" variant="ghost">Login</Button>
+            <Button to="/register" variant="primary">Sign up</Button>
           </div>
         </header>
         <main className="wrap">{children}</main>

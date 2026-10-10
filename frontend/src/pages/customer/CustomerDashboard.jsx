@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { ChevronRight, MapPin, Package, PackageCheck, Plus, Wallet } from "lucide-react";
 import { api } from "../../api/client";
 import { useAuth } from "../../context/AuthContext";
+import Button from "../../ui/Button";
+import PageHeader from "../../ui/PageHeader";
 import StatusBadge from "../../components/StatusBadge";
 import StatCard from "../../components/StatCard";
 import Stepper from "../../components/Stepper";
@@ -40,13 +42,15 @@ export default function CustomerDashboard() {
   if (loading) return <CenterLoad text="Loading dashboard…" />;
   return (
     <div>
-      <div className="page-head">
-        <div>
-          <h2>Welcome back, {user.name.split(" ")[0]}! 👋</h2>
-          <p className="muted">Here is what&apos;s happening with your deliveries today.</p>
-        </div>
-        <Link to="/customer/create" className="btn primary"><Plus size={16} aria-hidden="true" /> Create New Delivery</Link>
-      </div>
+      <PageHeader
+        title={`Welcome back, ${user.name.split(" ")[0]}! 👋`}
+        sub="Here is what's happening with your deliveries today."
+        actions={
+          <Button to="/customer/create" variant="primary">
+            <Plus size={16} aria-hidden="true" /> Create New Delivery
+          </Button>
+        }
+      />
       {err && <p className="error">{err}</p>}
       <div className="grid3">
         <StatCard icon={Package} value={deliveries.length} label="Total deliveries" />
@@ -54,7 +58,7 @@ export default function CustomerDashboard() {
         <StatCard icon={PackageCheck} value={activeList.length} label="Active deliveries" />
       </div>
 
-      <h3>Active Delivery</h3>
+      <h3 className="eyebrow">Active Delivery</h3>
       {!active && (!latest || latest.status !== "CANCELLED") ? (
         <EmptyState icon={Package} title="No active delivery"
           hint="Create a request and track it here."
@@ -64,7 +68,7 @@ export default function CustomerDashboard() {
       )}
 
       <div className="table-head">
-        <h3>Recent Deliveries</h3>
+        <h3 className="eyebrow">Recent Deliveries</h3>
         <Link to="/customer/deliveries" className="view-link">View all <ChevronRight size={14} aria-hidden="true" /></Link>
       </div>
       <DataTable

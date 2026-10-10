@@ -6,6 +6,8 @@ import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import ConfirmModal from "../../components/ConfirmModal";
 import { PAYMENT_STATUSES, formatNaira, trackingId } from "../../constants";
+import Button from "../../ui/Button";
+import { SelectInput } from "../../ui/fields";
 import { EmptyState, SkeletonList } from "../../components/Feedback";
 
 export default function AdminPayments() {
@@ -56,9 +58,9 @@ export default function AdminPayments() {
     <div>
       <h2>Payments</h2>
       {err && <p className="error">{err}</p>}
-      <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Filter by status">
+      <SelectInput aria-label="Filter by status" value={status} onChange={(e) => setStatus(e.target.value)}>
         {["", ...PAYMENT_STATUSES].map((s) => <option key={s} value={s}>{s || "All statuses"}</option>)}
-      </select>
+      </SelectInput>
       {loading ? <SkeletonList /> : items.length === 0 ? (
         <EmptyState icon={Wallet} title="No payments found" hint="Try a different filter." />
       ) : items.map((p) => (
@@ -66,8 +68,8 @@ export default function AdminPayments() {
           <span>{trackingId(p.deliveryId)} · {formatNaira(p.amount)}</span>
           <span>
             <StatusBadge value={p.method} /> <StatusBadge value={p.status} />{" "}
-            {p.status === "PENDING" && <button className="btn small" onClick={() => confirm(p.id)}>Confirm</button>}
-            {p.status === "SUCCESSFUL" && <button className="btn small" onClick={() => setRefundId(p.id)}>Refund</button>}
+            {p.status === "PENDING" && <Button size="sm" onClick={() => confirm(p.id)}>Confirm</Button>}
+            {p.status === "SUCCESSFUL" && <Button size="sm" onClick={() => setRefundId(p.id)}>Refund</Button>}
           </span>
         </div>
       ))}

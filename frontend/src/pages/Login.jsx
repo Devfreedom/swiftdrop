@@ -46,7 +46,7 @@ export default function Login() {
       <div className="authx-logo"><Truck size={26} /></div>
       <h2 className="authx-title">Welcome back</h2>
       <p className="authx-sub">Sign in to continue.</p>
-      {err && <p className="error" style={{ textAlign: "left", marginTop: 16 }}>{err}</p>}
+      {err && <p className="error text-left mt-4">{err}</p>}
       <form onSubmit={submit} className="authx-form" noValidate>
         <TextField label="Email" icon={Mail} placeholder="you@example.com"
           value={email} onChange={(e) => setEmail(e.target.value)} error={errs.email} />
@@ -62,7 +62,7 @@ export default function Login() {
         </button>
       </form>
       <p className="authx-foot">Don&apos;t have an account? <Link to="/register">Sign up</Link></p>
-      <p className="authx-foot muted small" style={{ marginTop: 8 }}>{BRAND} delivery platform</p>
+      <p className="authx-foot muted small mt-2">{BRAND} delivery platform</p>
     </div>
   );
 }

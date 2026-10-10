@@ -6,7 +6,8 @@ import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import Stepper from "../../components/Stepper";
 import { formatNaira, trackingId } from "../../constants";
-import { CenterLoad, Spinner } from "../../components/Feedback";
+import Button from "../../ui/Button";
+import { CenterLoad, ErrorState } from "../../components/Feedback";
 
 const NEXT = { ASSIGNED: "PICKED_UP", PICKED_UP: "IN_TRANSIT", IN_TRANSIT: "DELIVERED" };
 
@@ -45,7 +46,7 @@ export default function RiderDeliveryDetails() {
       setMoving(false);
     }
   }
-  if (err && !d) return <p className="error">{err}</p>;
+  if (err && !d) return <ErrorState title="Job not found" hint={err} onRetry={load} />;
   if (!d) return <CenterLoad text="Loading job…" />;
   return (
     <div className="card">
@@ -58,9 +59,9 @@ export default function RiderDeliveryDetails() {
       {d.deliveryLandmark && <p><b>Drop-off landmark:</b> {d.deliveryLandmark}</p>}
       <p><b>Parcel:</b> {d.packageDescription} · {formatNaira(d.deliveryFee)}</p>
       {NEXT[d.status] && (
-        <button className="btn primary" onClick={advance} disabled={moving}>
-          {moving && <Spinner />} {moving ? "Updating…" : `Mark ${NEXT[d.status].replace("_", " ")}`}
-        </button>
+        <Button variant="primary" onClick={advance} loading={moving}>
+          {moving ? "Updating…" : `Mark ${NEXT[d.status].replace("_", " ")}`}
+        </Button>
       )}
     </div>
   );

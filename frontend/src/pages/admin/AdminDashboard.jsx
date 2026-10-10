@@ -6,7 +6,7 @@ import { api } from "../../api/client";
 import StatusBadge from "../../components/StatusBadge";
 import StatCard from "../../components/StatCard";
 import { formatNaira, trackingId } from "../../constants";
-import { CenterLoad } from "../../components/Feedback";
+import { CenterLoad, ErrorState } from "../../components/Feedback";
 
 const count = (rows, key, val) => (rows || []).find((r) => r[key] === val)?.count ?? 0;
 
@@ -19,7 +19,7 @@ export default function AdminDashboard() {
       .then(([stats, del]) => { setS(stats); setRecent(del.deliveries.slice(0, 5)); })
       .catch((e) => setErr(e.message));
   }, []);
-  if (err && !s) return <p className="error">{err}</p>;
+  if (err && !s) return <ErrorState title="Couldn't load stats" hint={err} />;
   if (!s) return <CenterLoad text="Loading dashboard…" />;
   return (
     <div>
@@ -31,17 +31,17 @@ export default function AdminDashboard() {
         <StatCard icon={Package} value={(s.deliveriesByStatus || []).reduce((a, r) => a + Number(r.count), 0)} label="deliveries" />
         <StatCard icon={Wallet} value={formatNaira(s.successfulPayments?.revenue || 0)} label="revenue" />
       </div>
-      <h3>Deliveries by status</h3>
+      <h3 className="eyebrow">Deliveries by status</h3>
       <div className="grid3">
         {(s.deliveriesByStatus || []).map((r) => (
           <StatCard key={r.status} value={r.count} label={r.status} />
         ))}
       </div>
-      <h3>Recent deliveries</h3>
+      <h3 className="eyebrow">Recent deliveries</h3>
       <div className="card">
         {recent.length === 0 && <p className="muted">No deliveries yet.</p>}
         {recent.map((d) => (
-          <Link key={d.id} to={`/admin/deliveries/${d.id}`} className="activity" style={{ textDecoration: "none", color: "inherit" }}>
+          <Link key={d.id} to={`/admin/deliveries/${d.id}`} className="activity">
             <span className="act-ico"><Package size={17} /></span>
             <span>{trackingId(d.id)} · {d.customer?.name} → {d.deliveryAddress}
               <small><StatusBadge value={d.status} /></small>

@@ -4,8 +4,9 @@ import { Settings as SettingsIcon } from "lucide-react";
 import { api } from "../api/client";
 import { useToast } from "../components/Toast";
 import StatusBadge from "../components/StatusBadge";
+import Button from "../ui/Button";
 import { PasswordInput } from "../components/AuthFields";
-import { CenterLoad, Spinner } from "../components/Feedback";
+import { CenterLoad, ErrorState } from "../components/Feedback";
 
 export default function Settings() {
   const toast = useToast();
@@ -17,9 +18,12 @@ export default function Settings() {
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
 
-  useEffect(() => {
+  useEffect(() => { load(); }, []);
+
+  function load() {
+    setErr("");
     api("/me").then((d) => setMe(d.user)).catch((e) => setErr(e.message));
-  }, []);
+  }
 
   async function submit(e) {
     e.preventDefault();
@@ -43,19 +47,20 @@ export default function Settings() {
     }
   }
 
-  if (err && !me) return <p className="error">{err}</p>;
+  if (err && !me) return <ErrorState title="Couldn't load settings" hint={err} onRetry={load} />;
   if (!me) return <CenterLoad text="Loading settings…" />;
   return (
     <div>
-      <h2><SettingsIcon size={22} style={{ verticalAlign: "-4px" }} aria-hidden="true" /> Settings</h2>
-      <div className="card narrow" style={{ margin: "0 0 16px" }}>
-        <h3>Account</h3>
+      <h2><SettingsIcon size={22} className="title-ico" aria-hidden="true" /> Settings</h2>
+      <div className="stack">
+      <div className="card narrow">
+        <h3 className="eyebrow">Account</h3>
         <p><strong>{me.name}</strong></p>
         <p className="muted">{me.email}</p>
         <p><StatusBadge value={me.role} /> <StatusBadge value={me.status} /></p>
       </div>
-      <div className="card narrow" style={{ margin: 0 }}>
-        <h3>Change password</h3>
+      <div className="card narrow">
+        <h3 className="eyebrow">Change password</h3>
         {err && <p className="error">{err}</p>}
         <form onSubmit={submit} className="form" noValidate>
           <PasswordInput label="Current password" value={current}
@@ -65,10 +70,11 @@ export default function Settings() {
             error={errs.next} />
           <PasswordInput label="Confirm new password" value={confirm}
             onChange={(e) => setConfirm(e.target.value)} error={errs.confirm} />
-          <button className="btn primary" disabled={busy}>
-            {busy && <Spinner />} {busy ? "Saving…" : "Change password"}
-          </button>
+          <Button type="submit" variant="primary" loading={busy}>
+            {busy ? "Saving…" : "Change password"}
+          </Button>
         </form>
+      </div>
       </div>
     </div>
   );

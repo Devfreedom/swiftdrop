@@ -4,6 +4,7 @@ import { History } from "lucide-react";
 import { api } from "../../api/client";
 import StatusBadge from "../../components/StatusBadge";
 import { DELIVERY_STATUSES, trackingId } from "../../constants";
+import { SelectInput } from "../../ui/fields";
 import { EmptyState, SkeletonList } from "../../components/Feedback";
 
 export default function RiderHistory() {
@@ -19,9 +20,9 @@ export default function RiderHistory() {
   return (
     <div>
       <h2>History</h2>
-      <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Filter by status">
+      <SelectInput aria-label="Filter by status" value={status} onChange={(e) => setStatus(e.target.value)}>
         {["", ...DELIVERY_STATUSES].map((s) => <option key={s} value={s}>{s || "All statuses"}</option>)}
-      </select>
+      </SelectInput>
       {err && <p className="error">{err}</p>}
       {loading ? <SkeletonList /> : shown.length === 0 ? (
         <EmptyState icon={History} title="Nothing finished yet"

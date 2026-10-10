@@ -5,6 +5,7 @@ import { Package } from "lucide-react";
 import { api } from "../../api/client";
 import StatusBadge from "../../components/StatusBadge";
 import { DELIVERY_STATUSES, formatNaira, trackingId } from "../../constants";
+import { SelectInput } from "../../ui/fields";
 import { EmptyState, SkeletonList } from "../../components/Feedback";
 
 export default function MyDeliveries() {
@@ -24,9 +25,9 @@ export default function MyDeliveries() {
   return (
     <div>
       <h2>My deliveries</h2>
-      <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Filter by status">
+      <SelectInput aria-label="Filter by status" value={status} onChange={(e) => setStatus(e.target.value)}>
         {["", ...DELIVERY_STATUSES].map((f) => <option key={f} value={f}>{f || "All statuses"}</option>)}
-      </select>
+      </SelectInput>
       {err && <p className="error">{err}</p>}
       {loading ? <SkeletonList /> : items.length === 0 ? (
         <EmptyState icon={Package} title={status ? `No ${status} deliveries` : "No deliveries yet"}

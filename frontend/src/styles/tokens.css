@@ -1,0 +1,126 @@
+/* ==========================================================================
+   SwiftDrop design tokens — the single source of truth for the frontend.
+   Every color pair used for text/badges meets WCAG AA (4.5:1); verified by
+   scripts/check-contrast.mjs. Spacing/type/radius/shadow/motion scales below.
+   ========================================================================== */
+:root {
+  /* ---- Spacing (4 8 12 16 24 32 48 64) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ---- Type scale (min 12px anywhere) + line heights + weights ---- */
+  --text-12: 12px; --lh-12: 16px;
+  --text-14: 14px; --lh-14: 20px;
+  --text-16: 16px; --lh-16: 24px;
+  --text-20: 20px; --lh-20: 28px;
+  --text-24: 24px; --lh-24: 32px;
+  --text-32: 32px; --lh-32: 40px;
+  --text-40: 40px; --lh-40: 48px;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* ---- Radius (8 12 16 24 full) ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+  /* Legacy aliases (same values, keep old markup working) */
+  --radius: var(--radius-lg);
+
+  /* ---- Shadows ---- */
+  --shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.06);
+  --shadow-md: 0 1px 2px rgba(17, 24, 39, 0.05), 0 10px 28px -14px rgba(91, 78, 240, 0.25);
+  --shadow-lg: 0 24px 60px -20px rgba(17, 24, 39, 0.3);
+  /* Legacy alias */
+  --shadow: var(--shadow-md);
+
+  /* ---- Z-index layers ---- */
+  --z-base: 0;
+  --z-sticky: 30;
+  --z-nav: 40;
+  --z-dropdown: 50;
+  --z-drawer: 60;
+  --z-modal: 90;
+  --z-toast: 100;
+  --z-wake: 110;
+
+  /* ---- Motion: two durations, one easing ---- */
+  --dur-fast: 150ms;
+  --dur-med: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---- Brand purple (+ hover / active / soft / ring) ---- */
+  --brand: #5B4EF0;
+  --brand-hover: #4B3FD6;
+  --brand-active: #4338CA;
+  --brand-soft: #EEF0FF;
+  --brand-ring: rgba(91, 78, 240, 0.45);
+  --brand-ring-soft: rgba(91, 78, 240, 0.16);
+  /* Legacy alias */
+  --brand-strong: var(--brand-hover);
+
+  /* ---- Neutral gray scale 50–900 ---- */
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
+  --gray-900: #111827;
+
+  /* ---- Surfaces & text (AA on white) ---- */
+  --bg: #F8F9FC;
+  --surface: #FFFFFF;
+  --surface-soft: var(--gray-50);
+  --ink: var(--gray-900);
+  --body: var(--gray-600);
+  --muted: var(--gray-500);
+  --faint: var(--gray-400); /* decorative only — never for text */
+  --line: var(--gray-200);
+  --text-on-brand: #FFFFFF;
+
+  /* ---- Semantic: solid / soft bg / text (all AA pairs) ---- */
+  --success: #15803D;
+  --success-soft: #DCFCE7;
+  --success-solid: #15803D;
+  --warning: #92400E;
+  --warning-soft: #FEF3C7;
+  --warning-solid: #B45309;
+  --danger: #991B1B;
+  --danger-bright: #DC2626;
+  --danger-soft: #FEE2E2;
+  --danger-solid: #DC2626;
+  --info: #0E7490;
+  --info-soft: #CCFBF1;
+  --info-solid: #0E7490;
+
+  /* Legacy aliases */
+  --ok: var(--success);
+  --ok-soft: var(--success-soft);
+  --warn: var(--warning);
+  --warn-soft: var(--warning-soft);
+}
+
+/* Non-essential animation off for users who ask for it. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
