@@ -322,4 +322,7 @@ html { scroll-behavior: smooth; }
 @media (max-width: 480px) {
   .page-title { display: none; }
   .header-user strong { font-size: 13px; }
+  .lp-nav-inner, .lp-hero, .lp-section { padding-left: 16px; padding-right: 16px; }
+  .hero-cta .btn { flex: 1; justify-content: center; }
+  .lp-footer { padding-left: 16px; padding-right: 16px; }
 }
