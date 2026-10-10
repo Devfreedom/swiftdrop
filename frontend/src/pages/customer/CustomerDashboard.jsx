@@ -95,7 +95,7 @@ function ActiveCard({ delivery: d }) {
       <div className="active-top">
         <div>
           <p className="active-title"><span className="live-dot" aria-hidden="true" /> Active Delivery</p>
-          <p className="tracking-code">Order #{trackingId(d.id)}</p>
+          <p className="tracking-code">Order {trackingId(d.id)}</p>
         </div>
         <div className="updated-box">
           <div><span>Updated</span><strong>{timeAgo(d.updatedAt)}</strong></div>

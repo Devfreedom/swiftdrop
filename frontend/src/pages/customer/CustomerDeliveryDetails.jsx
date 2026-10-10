@@ -75,7 +75,7 @@ export default function CustomerDeliveryDetails() {
       <h3>Payments</h3>
       {(d.payments || []).length === 0 && <p className="muted">No payment yet.</p>}
       {(d.payments || []).map((p) => (
-        <p key={p.id}>#{p.id} ₦{p.amount} <StatusBadge value={p.method} /> <StatusBadge value={p.status} /></p>
+        <p key={p.id}>{trackingId(d.id)} · {formatNaira(p.amount)} <StatusBadge value={p.method} /> <StatusBadge value={p.status} /></p>
       ))}
       {pending && <p className="muted">Cash payment pending — an admin confirms it once collected.</p>}
       {!paid && !pending && d.status !== "CANCELLED" && d.status !== "DELIVERED" && (

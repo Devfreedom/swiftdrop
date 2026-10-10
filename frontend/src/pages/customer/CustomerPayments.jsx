@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Wallet } from "lucide-react";
 import { api } from "../../api/client";
 import StatusBadge from "../../components/StatusBadge";
-import { PAYMENT_STATUSES } from "../../constants";
+import { PAYMENT_STATUSES, formatNaira, trackingId } from "../../constants";
 import { CenterLoad, EmptyState } from "../../components/Feedback";
 
 export default function CustomerPayments() {
@@ -29,7 +29,7 @@ export default function CustomerPayments() {
           hint="Payments for your deliveries will appear here." />
       ) : shown.map((p) => (
         <div key={p.id} className="row">
-          <span>#{p.id} delivery #{p.deliveryId} · ₦{p.amount}</span>
+          <span>{trackingId(p.deliveryId)} · {formatNaira(p.amount)}</span>
           <span><StatusBadge value={p.method} /> <StatusBadge value={p.status} /></span>
         </div>
       ))}
