@@ -6,6 +6,7 @@ import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import StatCard from "../../components/StatCard";
+import { formatNaira, trackingId } from "../../constants";
 import { CenterLoad, EmptyState, Spinner } from "../../components/Feedback";
 
 export default function RiderDashboard() {
