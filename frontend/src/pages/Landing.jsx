@@ -1,61 +1,242 @@
-// Landing page for logged-out visitors: what the platform is + how to join.
+// Public landing page at "/": navbar, hero, how it works, roles, about, contact, footer.
+// Logged-in redirect lives in App.jsx IndexRoute — this component is guests only.
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Bike, Package, ShieldCheck, Wallet } from "lucide-react";
-import { BRAND } from "../brand";
-import StatusBadge from "../components/StatusBadge";
+import {
+  Bike, Check, CreditCard, Mail, MapPin, Menu, Package,
+  Phone, ShieldCheck, Truck, X,
+} from "lucide-react";
+import { BRAND, SUPPORT_EMAIL, SUPPORT_PHONE } from "../brand";
+
+const NAV_LINKS = [
+  ["#how", "How it works"],
+  ["#roles", "For everyone"],
+  ["#about", "About"],
+  ["#contact", "Contact"],
+];
 
 const STEPS = [
-  ["1", "Request", "Send a pickup in under a minute."],
-  ["2", "Pay", "Cash, card or transfer — your choice."],
-  ["3", "Track", "Watch it move pickup → doorstep."],
-  ["4", "Receive", "Signed, sealed, delivered."],
+  {
+    icon: Package,
+    title: "Request a delivery",
+    text: "Tell us what to move and where. Pickup and drop-off in under a minute.",
+  },
+  {
+    icon: Bike,
+    title: "A rider picks it up",
+    text: "An admin confirms your request and assigns a rider to your parcel.",
+  },
+  {
+    icon: MapPin,
+    title: "Track it to the door",
+    text: "Follow every step — pickup, transit, delivered — right to the doorstep.",
+  },
+];
+
+const ROLES = [
+  {
+    icon: Package,
+    title: "Customers",
+    points: ["Create deliveries fast", "Pay cash, card or transfer", "Track progress live"],
+  },
+  {
+    icon: Bike,
+    title: "Riders",
+    points: ["Accept open jobs", "Update status step by step", "Earn on every drop"],
+  },
+  {
+    icon: ShieldCheck,
+    title: "Admins",
+    points: ["Assign riders", "Monitor every delivery", "Manage payments"],
+  },
 ];
 
 export default function Landing() {
+  const [open, setOpen] = useState(false);
+  const year = new Date().getFullYear();
+
+  useEffect(() => {
+    document.title = `${BRAND} — Deliveries made simple`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute(
+        "content",
+        `${BRAND} — request deliveries, track riders, and manage payments. Simple door-to-door delivery for customers, riders and admins.`
+      );
+    }
+  }, []);
+
   return (
-    <div className="landing">
-      <section className="hero">
-        <div>
-          <StatusBadge value="DELIVERY PLATFORM" />
-          <h1>Door-to-door delivery, <em>tracked end to end.</em></h1>
-          <p>
-            {BRAND} connects customers, riders and admins in one system:
-            request a pickup, pay your way, and follow every parcel from
-            counter to doorstep.
-          </p>
-          <div className="hero-cta">
-            <Link to="/register" className="btn primary">Get started</Link>
-            <Link to="/login" className="btn">Login</Link>
+    <div className="lp">
+      {/* 1. Sticky navbar */}
+      <header className="lp-nav">
+        <div className="lp-nav-inner">
+          <a href="#top" className="brand lp-brand">
+            <span className="brand-ico"><Truck size={20} aria-hidden="true" /></span>
+            <span className="brand-name">{BRAND}</span>
+          </a>
+          <nav className="lp-links" aria-label="Landing sections">
+            {NAV_LINKS.map(([href, label]) => (
+              <a key={href} href={href}>{label}</a>
+            ))}
+          </nav>
+          <div className="lp-nav-cta">
+            <Link to="/login" className="btn ghost">Login</Link>
+            <Link to="/register" className="btn primary">Sign up</Link>
           </div>
+          <button
+            className="icon-btn lp-burger"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+          >
+            {open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
+          </button>
         </div>
-        <div className="hero-card" aria-hidden="true">
-          <div className="row"><span>#1042 → Osu Oxford St</span><StatusBadge value="IN_TRANSIT" /></div>
-          <div className="row"><span>#1041 → Accra Mall</span><StatusBadge value="DELIVERED" /></div>
-          <div className="row"><span>#1043 → East Legon</span><StatusBadge value="PENDING" /></div>
-        </div>
-      </section>
-      <section className="pillars">
-        <div className="pillar">
-          <span className="stat-ico"><Package size={22} /></span>
-          <h4>Customers</h4>
-          <p>Create deliveries, pay cash/card/transfer and track progress live.</p>
-        </div>
-        <div className="pillar">
-          <span className="stat-ico"><Bike size={22} /></span>
-          <h4>Riders</h4>
-          <p>Go available, claim open jobs and step them to delivered.</p>
-        </div>
-        <div className="pillar">
-          <span className="stat-ico"><ShieldCheck size={22} /></span>
-          <h4>Admins</h4>
-          <p>Confirm requests, assign riders, confirm cash and refund.</p>
-        </div>
-        <div className="pillar">
-          <span className="stat-ico"><Wallet size={22} /></span>
-          <h4>How it flows</h4>
-          <p>{STEPS.map(([n, t]) => `${n}. ${t}`).join(" ")}</p>
-        </div>
-      </section>
+        {open && (
+          <nav className="lp-mobile" aria-label="Landing sections mobile">
+            {NAV_LINKS.map(([href, label]) => (
+              <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>
+            ))}
+            <div className="lp-mobile-cta">
+              <Link to="/login" className="btn ghost" onClick={() => setOpen(false)}>Login</Link>
+              <Link to="/register" className="btn primary" onClick={() => setOpen(false)}>Sign up</Link>
+            </div>
+          </nav>
+        )}
+      </header>
+
+      <main id="top">
+        {/* 2. Hero */}
+        <section className="lp-hero">
+          <div className="lp-hero-copy">
+            <span className="badge b-purple">DELIVERY PLATFORM</span>
+            <h1>Deliveries made <em>simple.</em></h1>
+            <p>
+              {BRAND} connects customers, riders and admins in one place —
+              request a pickup and follow it to the doorstep.
+            </p>
+            <div className="hero-cta">
+              <Link to="/register" className="btn primary">Get started</Link>
+              <Link to="/login" className="btn">Login</Link>
+            </div>
+          </div>
+          {/* CSS + lucide illustration only: parcel route card */}
+          <div className="lp-art" aria-hidden="true">
+            <div className="lp-art-card">
+              <div className="lp-art-row">
+                <span className="lp-art-ico"><Package size={18} /></span>
+                <div>
+                  <strong>Parcel picked up</strong>
+                  <small>Osu Oxford St</small>
+                </div>
+                <span className="badge b-green"><Check size={12} /> Done</span>
+              </div>
+              <div className="lp-art-route">
+                <span className="lp-dot" />
+                <span className="lp-line" />
+                <span className="lp-dot now"><Truck size={14} /></span>
+                <span className="lp-line" />
+                <span className="lp-dot" />
+              </div>
+              <div className="lp-art-row">
+                <span className="lp-art-ico soft"><MapPin size={18} /></span>
+                <div>
+                  <strong>On the way</strong>
+                  <small>Accra Mall · arriving soon</small>
+                </div>
+                <span className="badge b-cyan"><Truck size={12} /> Transit</span>
+              </div>
+              <div className="lp-art-foot">
+                <span className="lp-art-ico soft"><CreditCard size={16} /></span>
+                <small>Cash, card or transfer</small>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 3. How it works */}
+        <section id="how" className="lp-section">
+          <h2>How it works</h2>
+          <p className="muted">Three steps from pickup to doorstep.</p>
+          <div className="lp-grid3">
+            {STEPS.map(({ icon: Icon, title, text }, i) => (
+              <div key={title} className="lp-card">
+                <span className="stat-ico"><Icon size={22} aria-hidden="true" /></span>
+                <span className="lp-step-n">Step {i + 1}</span>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 4. For everyone */}
+        <section id="roles" className="lp-section">
+          <h2>For everyone</h2>
+          <p className="muted">One system for customers, riders and admins.</p>
+          <div className="lp-grid3">
+            {ROLES.map(({ icon: Icon, title, points }) => (
+              <div key={title} className="lp-card">
+                <span className="stat-ico"><Icon size={22} aria-hidden="true" /></span>
+                <h3>{title}</h3>
+                <ul className="lp-list">
+                  {points.map((p) => (
+                    <li key={p}><Check size={15} aria-hidden="true" /> {p}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 5. About */}
+        <section id="about" className="lp-section">
+          <h2>About {BRAND}</h2>
+          <div className="lp-card lp-wide">
+            <p>
+              {BRAND} is a delivery platform that brings customers, riders and
+              admins together in one simple flow. Customers create delivery
+              requests and pay their way, riders accept jobs and update each
+              step of the journey, and admins assign riders, monitor progress
+              and manage payments — so every parcel gets from pickup to
+              doorstep without the back-and-forth.
+            </p>
+          </div>
+        </section>
+
+        {/* 6. Contact */}
+        <section id="contact" className="lp-section">
+          <h2>Contact</h2>
+          <p className="muted">Need help? Reach our support team directly.</p>
+          <div className="lp-card lp-wide lp-contact">
+            <a className="lp-contact-row" href={`mailto:${SUPPORT_EMAIL}`}>
+              <span className="stat-ico"><Mail size={20} aria-hidden="true" /></span>
+              <span>
+                <strong>Contact Support</strong>
+                <small>{SUPPORT_EMAIL}</small>
+              </span>
+            </a>
+            <a className="lp-contact-row" href={`tel:${SUPPORT_PHONE.replace(/\s/g, "")}`}>
+              <span className="stat-ico"><Phone size={20} aria-hidden="true" /></span>
+              <span>
+                <strong>{SUPPORT_PHONE}</strong>
+                <small>Mon–Sat, 8am–8pm</small>
+              </span>
+            </a>
+          </div>
+        </section>
+      </main>
+
+      {/* 7. Footer */}
+      <footer className="lp-footer">
+        <span><strong>{BRAND}</strong> · © {year}</span>
+        <nav aria-label="Footer">
+          {NAV_LINKS.map(([href, label]) => (
+            <a key={href} href={href}>{label}</a>
+          ))}
+        </nav>
+      </footer>
     </div>
   );
 }

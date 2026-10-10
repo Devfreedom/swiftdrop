@@ -74,7 +74,9 @@ export default function Layout({ children }) {
   }
 
   // Guests get a simple top bar (landing screen).
+  // "/" renders full-bleed: Landing owns its own sticky navbar.
   if (!user) {
+    if (loc.pathname === "/") return <main>{children}</main>;
     return (
       <div>
         <header className="app-header">
