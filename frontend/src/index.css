@@ -316,7 +316,14 @@ html { scroll-behavior: smooth; }
   .lp-hero { grid-template-columns: 1fr; padding-top: 32px; }
   .lp-grid3 { grid-template-columns: 1fr; }
   .page-head h2 { font-size: 20px; }
-  .tl-label { font-size: 9px; }
+  /* Stepper becomes a vertical list with readable labels under 768px. */
+  .timeline { flex-direction: column; gap: 0; align-items: stretch; }
+  .tl-step { display: flex; gap: 12px; align-items: flex-start; text-align: left; padding-bottom: 16px; }
+  .tl-step:last-child { padding-bottom: 0; }
+  .tl-dot { margin: 0; flex-shrink: 0; width: 28px; height: 28px; font-size: 12px; }
+  .tl-label { font-size: 14px; padding-top: 3px; }
+  .tl-bar { top: 30px; bottom: -2px; left: 13px; width: 2px; height: auto; }
+  .tl-step:first-child .tl-bar { display: block; }
   /* Table turns into stacked cards. */
   .data-table { background: transparent; border: none; box-shadow: none; }
   .data-table table, .data-table tbody, .data-table tr, .data-table td { display: block; width: 100%; }
