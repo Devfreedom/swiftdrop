@@ -2,6 +2,7 @@
 // pay (simulated), and list payments for own deliveries.
 const { Delivery, Payment, User, sequelize } = require("../../models");
 const { fail } = require("../utils/errors");
+const { calculateDeliveryFee, resolveWeightKg } = require("../utils/pricing");
 
 const DELIVERY_STATUSES = ["PENDING", "CONFIRMED", "ASSIGNED", "PICKED_UP", "IN_TRANSIT", "DELIVERED", "CANCELLED"];
 
@@ -9,7 +10,16 @@ const DELIVERY_STATUSES = ["PENDING", "CONFIRMED", "ASSIGNED", "PICKED_UP", "IN_
 const CANCELLABLE = ["PENDING", "CONFIRMED", "ASSIGNED"];
 
 async function createDelivery(req, res) {
-  const delivery = await Delivery.create({ ...req.body, customerId: req.user.id });
+  // Price integrity: any fee sent by the client is ignored. The fee is always
+  // calculated server-side from the package weight (defaults to 1 kg).
+  const { deliveryFee, ...body } = req.body;
+  const weightKg = resolveWeightKg(body.packageWeightKg);
+  const delivery = await Delivery.create({
+    ...body,
+    packageWeightKg: weightKg,
+    deliveryFee: calculateDeliveryFee(weightKg),
+    customerId: req.user.id,
+  });
   res.status(201).json({ delivery });
 }
 

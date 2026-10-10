@@ -17,7 +17,9 @@ const ADDRESS_RULES = {
   deliveryLandmark: { type: "string" },
   packageDescription: { required: true, type: "string" },
   packageWeightKg: { type: "number", min: 0 },
-  deliveryFee: { required: true, type: "number", min: 0 },
+  // Optional + ignored: the fee is calculated server-side (see utils/pricing).
+  // Kept in the schema so older clients that still send it don't 400.
+  deliveryFee: { type: "number", min: 0 },
 };
 
 router.post("/", ...customerOnly, validate(ADDRESS_RULES), c.createDelivery);
