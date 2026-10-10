@@ -126,6 +126,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 /* ---- Lists ---- */
 .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 13px 15px; margin: 8px 0; color: var(--ink); flex-wrap: wrap; box-shadow: var(--shadow-sm); transition: border-color 0.15s, box-shadow 0.15s, transform 0.06s; }
 a.row:hover { border-color: var(--brand); box-shadow: var(--shadow); transform: translateY(-1px); }
+.activity { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3) 2px; border-bottom: 1px dashed var(--line); font-size: 14px; }
+.activity:last-child { border-bottom: none; }
+.activity .act-ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-soft); border: 1px solid var(--line); color: var(--brand); flex-shrink: 0; }
+.activity small { color: var(--muted); display: block; }
 
 /* ---- Forms ---- */
 .form { display: grid; gap: var(--space-3); margin-top: var(--space-3); }
