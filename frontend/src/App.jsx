@@ -9,6 +9,7 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import CreateDelivery from "./pages/customer/CreateDelivery";
 import MyDeliveries from "./pages/customer/MyDeliveries";
@@ -63,8 +64,9 @@ export default function App() {
               <Route path="/admin/deliveries" element={guard(<AdminDeliveries />, ["ADMIN"])} />
               <Route path="/admin/deliveries/:id" element={guard(<AdminDeliveryDetails />, ["ADMIN"])} />
               <Route path="/admin/payments" element={guard(<AdminPayments />, ["ADMIN"])} />
-              {/* Shared */}
-              <Route path="/profile" element={guard(<Profile />)} />
+            {/* Shared */}
+            <Route path="/profile" element={guard(<Profile />)} />
+            <Route path="/settings" element={guard(<Settings />)} />
               <Route path="*" element={<p>Page not found. <a href="/">Home</a></p>} />
             </Routes>
           </Layout>

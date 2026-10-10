@@ -10,8 +10,6 @@ import { useAuth } from "../context/AuthContext";
 import { BRAND, SUPPORT_EMAIL } from "../brand";
 import Notifications from "./Notifications";
 
-export { SUPPORT_EMAIL };
-
 const MENUS = {
   CUSTOMER: [
     ["/customer", "Dashboard", LayoutGrid], ["/customer/deliveries", "My Deliveries", Package],

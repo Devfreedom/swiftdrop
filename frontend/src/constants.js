@@ -9,9 +9,6 @@ export const PAYMENT_STATUSES = [
   "PENDING", "SUCCESSFUL", "FAILED", "REFUNDED",
 ];
 
-// Support contact shown in the sidebar help card.
-export const SUPPORT_EMAIL = "support@swiftdrop.com";
-
 // Friendly tracking code derived from the id (no DB change needed).
 export const trackingId = (id) => `DEL-${String(id).padStart(4, "0")}`;
 
