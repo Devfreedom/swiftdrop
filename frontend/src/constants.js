@@ -9,6 +9,23 @@ export const PAYMENT_STATUSES = [
   "PENDING", "SUCCESSFUL", "FAILED", "REFUNDED",
 ];
 
+// Delivery pricing mirrors backend src/utils/pricing.js — the server is the
+// authority (client fee is ignored); this is only for live estimates in the UI.
+// Fee = BASE_FEE + PER_KG_FEE × weight, weight defaults to DEFAULT_WEIGHT_KG.
+export const BASE_FEE = 1000;
+export const PER_KG_FEE = 200;
+export const DEFAULT_WEIGHT_KG = 1;
+
+export function resolveWeightKg(value) {
+  if (value === undefined || value === null || value === "") return DEFAULT_WEIGHT_KG;
+  const n = Number(value);
+  if (Number.isNaN(n) || n < 0) return DEFAULT_WEIGHT_KG;
+  return n;
+}
+
+export const estimateDeliveryFee = (weightKg) =>
+  BASE_FEE + PER_KG_FEE * resolveWeightKg(weightKg);
+
 // Friendly tracking code derived from the id (no DB change needed).
 export const trackingId = (id) => `DEL-${String(id).padStart(4, "0")}`;
 
