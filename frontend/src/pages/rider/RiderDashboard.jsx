@@ -55,7 +55,7 @@ export default function RiderDashboard() {
         <StatCard icon={Power} value={me.availability} label="your status" />
         <StatCard icon={Truck} value={assigned.length} label="active jobs" />
         <StatCard icon={PackageCheck} value={delivered.length} label="completed" />
-        <StatCard icon={Wallet} value={`₦${earned.toFixed(2)}`} label="total earned" />
+        <StatCard icon={Wallet} value={formatNaira(earned)} label="total earned" />
       </div>
       <div className="inline">
         <button className="btn primary" disabled={switching} onClick={() => setAvail("AVAILABLE")}>
@@ -70,7 +70,7 @@ export default function RiderDashboard() {
           actionTo="/rider/available" actionLabel="See open jobs" />
       ) : assigned.map((d) => (
         <Link key={d.id} to={`/rider/deliveries/${d.id}`} className="row">
-          <span>#{d.id} → {d.deliveryAddress}</span>
+          <span>{trackingId(d.id)} → {d.deliveryAddress}</span>
           <StatusBadge value={d.status} />
         </Link>
       ))}

@@ -30,7 +30,7 @@ export default function AdminDeliveries() {
           hint="New customer requests will appear here." />
       ) : items.map((d) => (
         <Link key={d.id} to={`/admin/deliveries/${d.id}`} className="row">
-          <span>#{d.id} {d.customer?.name} → {d.deliveryAddress}</span>
+          <span>{trackingId(d.id)} {d.customer?.name} → {d.deliveryAddress}</span>
           <StatusBadge value={d.status} />
         </Link>
       ))}

@@ -34,7 +34,7 @@ export default function MyDeliveries() {
           actionTo="/customer/create" actionLabel="＋ New delivery" />
       ) : items.map((d) => (
         <Link key={d.id} to={`/customer/deliveries/${d.id}`} className="row">
-          <span>#{d.id} → {d.deliveryAddress} (₦{d.deliveryFee})</span>
+          <span>{trackingId(d.id)} → {d.deliveryAddress} ({formatNaira(d.deliveryFee)})</span>
           <StatusBadge value={d.status} />
         </Link>
       ))}

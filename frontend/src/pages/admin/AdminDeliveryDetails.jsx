@@ -53,7 +53,7 @@ export default function AdminDeliveryDetails() {
   if (!d) return <CenterLoad text="Loading delivery…" />;
   return (
     <div className="card">
-      <h2>Delivery #{d.id} <StatusBadge value={d.status} /></h2>
+      <h2>Delivery {trackingId(d.id)} <StatusBadge value={d.status} /></h2>
       <Stepper status={d.status} />
       {err && <p className="error">{err}</p>}
       <p><b>Customer:</b> {d.customer?.name} ({d.customer?.email})</p>
@@ -61,7 +61,7 @@ export default function AdminDeliveryDetails() {
       <p><b>Route:</b> {d.pickupAddress} → {d.deliveryAddress}</p>
       {d.pickupLandmark && <p><b>Pickup landmark:</b> {d.pickupLandmark}</p>}
       {d.deliveryLandmark && <p><b>Drop-off landmark:</b> {d.deliveryLandmark}</p>}
-      <p><b>Fee:</b> ₦{d.deliveryFee}</p>
+      <p><b>Fee:</b> {formatNaira(d.deliveryFee)}</p>
       <div className="inline">
         <button className="btn primary" disabled={busy}
           onClick={() => act(`/admin/deliveries/${id}/confirm`, {}, "Delivery confirmed.")}>
@@ -82,7 +82,7 @@ export default function AdminDeliveryDetails() {
           {busy && <Spinner />} Assign
         </button>
       </div>
-      <ConfirmModal open={confirmCancel} title={`Cancel delivery #${d.id}?`}
+      <ConfirmModal open={confirmCancel} title={`Cancel delivery ${trackingId(d.id)}?`}
         message="The rider (if any) will be freed. This can't be undone."
         confirmLabel="Yes, cancel"
         onConfirm={() => { setConfirmCancel(false); act(`/admin/deliveries/${id}/cancel`, {}, "Delivery cancelled."); }}

@@ -30,7 +30,7 @@ export default function AssignedJobs() {
           actionTo="/rider/available" actionLabel="See open jobs" />
       ) : shown.map((d) => (
         <Link key={d.id} to={`/rider/deliveries/${d.id}`} className="row">
-          <span>#{d.id} → {d.deliveryAddress}</span>
+          <span>{trackingId(d.id)} → {d.deliveryAddress}</span>
           <StatusBadge value={d.status} />
         </Link>
       ))}

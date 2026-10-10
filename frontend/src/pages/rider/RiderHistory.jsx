@@ -28,7 +28,7 @@ export default function RiderHistory() {
           hint="Delivered and cancelled jobs will show up here." />
       ) : shown.map((d) => (
         <div key={d.id} className="row">
-          <span>#{d.id} → {d.deliveryAddress}</span>
+          <span>{trackingId(d.id)} → {d.deliveryAddress}</span>
           <StatusBadge value={d.status} />
         </div>
       ))}

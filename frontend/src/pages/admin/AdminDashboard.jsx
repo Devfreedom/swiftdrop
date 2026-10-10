@@ -29,7 +29,7 @@ export default function AdminDashboard() {
         <StatCard icon={Users} value={count(s.usersByRole, "role", "CUSTOMER")} label="customers" />
         <StatCard icon={Bike} value={count(s.usersByRole, "role", "RIDER")} label="riders" />
         <StatCard icon={Package} value={(s.deliveriesByStatus || []).reduce((a, r) => a + Number(r.count), 0)} label="deliveries" />
-        <StatCard icon={Wallet} value={`₦${Number(s.successfulPayments?.revenue || 0).toFixed(2)}`} label="revenue" />
+        <StatCard icon={Wallet} value={formatNaira(s.successfulPayments?.revenue || 0)} label="revenue" />
       </div>
       <h3>Deliveries by status</h3>
       <div className="grid3">
@@ -43,7 +43,7 @@ export default function AdminDashboard() {
         {recent.map((d) => (
           <Link key={d.id} to={`/admin/deliveries/${d.id}`} className="activity" style={{ textDecoration: "none", color: "inherit" }}>
             <span className="act-ico"><Package size={17} /></span>
-            <span>#{d.id} · {d.customer?.name} → {d.deliveryAddress}
+            <span>{trackingId(d.id)} · {d.customer?.name} → {d.deliveryAddress}
               <small><StatusBadge value={d.status} /></small>
             </span>
           </Link>

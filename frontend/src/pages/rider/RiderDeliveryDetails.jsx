@@ -37,7 +37,7 @@ export default function RiderDeliveryDetails() {
         method: "PATCH", body: { status: NEXT[d.status] },
       });
       setD(r.delivery);
-      toast.success(`Job #${id} → ${r.delivery.status.replace("_", " ")}.`);
+      toast.success(`Job ${trackingId(id)} → ${r.delivery.status.replace("_", " ")}.`);
     } catch (e) {
       setErr(e.message);
       toast.error(e.message);
@@ -49,14 +49,14 @@ export default function RiderDeliveryDetails() {
   if (!d) return <CenterLoad text="Loading job…" />;
   return (
     <div className="card">
-      <h2>Job #{d.id} <StatusBadge value={d.status} /></h2>
+      <h2>Job {trackingId(d.id)} <StatusBadge value={d.status} /></h2>
       <Stepper status={d.status} />
       {err && <p className="error">{err}</p>}
       <p><b>Pickup:</b> {d.pickupAddress} ({d.pickupContact}, {d.pickupPhone})</p>
       {d.pickupLandmark && <p><b>Pickup landmark:</b> {d.pickupLandmark}</p>}
       <p><b>Drop-off:</b> {d.deliveryAddress} ({d.deliveryContact}, {d.deliveryPhone})</p>
       {d.deliveryLandmark && <p><b>Drop-off landmark:</b> {d.deliveryLandmark}</p>}
-      <p><b>Parcel:</b> {d.packageDescription} · ₦{d.deliveryFee}</p>
+      <p><b>Parcel:</b> {d.packageDescription} · {formatNaira(d.deliveryFee)}</p>
       {NEXT[d.status] && (
         <button className="btn primary" onClick={advance} disabled={moving}>
           {moving && <Spinner />} {moving ? "Updating…" : `Mark ${NEXT[d.status].replace("_", " ")}`}

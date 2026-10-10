@@ -33,7 +33,7 @@ export default function AvailableJobs() {
     setTaking(id);
     try {
       await api(`/rider/deliveries/${id}/accept`, { method: "POST" });
-      toast.success(`Job #${id} accepted — you're on it!`);
+      toast.success(`Job ${trackingId(id)} accepted — you're on it!`);
       load();
     } catch (e) {
       setErr(e.message);
@@ -51,7 +51,7 @@ export default function AvailableJobs() {
           hint="New confirmed requests will appear here. Check back soon." />
       ) : items.map((d) => (
         <div key={d.id} className="row">
-          <span>#{d.id} {d.pickupAddress} → {d.deliveryAddress} (₦{d.deliveryFee})</span>
+          <span>{trackingId(d.id)} {d.pickupAddress} → {d.deliveryAddress} ({formatNaira(d.deliveryFee)})</span>
           <span><StatusBadge value={d.status} />{" "}
             <button className="btn primary small" disabled={taking === d.id} onClick={() => accept(d.id)}>
               {taking === d.id ? "Taking…" : "Accept"}
