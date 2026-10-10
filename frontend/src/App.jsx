@@ -1,30 +1,33 @@
 // Router: landing for guests, role-guarded sections for users.
+// Pages are code-split with React.lazy; shell pieces stay in the main chunk.
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth, roleHome } from "./context/AuthContext";
 import { ToastProvider } from "./components/Toast";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import { CenterLoad } from "./components/Feedback";
-import Landing from "./pages/Landing";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import CustomerDashboard from "./pages/customer/CustomerDashboard";
-import CreateDelivery from "./pages/customer/CreateDelivery";
-import MyDeliveries from "./pages/customer/MyDeliveries";
-import CustomerDeliveryDetails from "./pages/customer/CustomerDeliveryDetails";
-import CustomerPayments from "./pages/customer/CustomerPayments";
-import RiderDashboard from "./pages/rider/RiderDashboard";
-import AvailableJobs from "./pages/rider/AvailableJobs";
-import AssignedJobs from "./pages/rider/AssignedJobs";
-import RiderDeliveryDetails from "./pages/rider/RiderDeliveryDetails";
-import RiderHistory from "./pages/rider/RiderHistory";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminDeliveries from "./pages/admin/AdminDeliveries";
-import AdminDeliveryDetails from "./pages/admin/AdminDeliveryDetails";
-import AdminPayments from "./pages/admin/AdminPayments";
+
+const Landing = lazy(() => import("./pages/Landing"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Settings = lazy(() => import("./pages/Settings"));
+const CustomerDashboard = lazy(() => import("./pages/customer/CustomerDashboard"));
+const CreateDelivery = lazy(() => import("./pages/customer/CreateDelivery"));
+const MyDeliveries = lazy(() => import("./pages/customer/MyDeliveries"));
+const CustomerDeliveryDetails = lazy(() => import("./pages/customer/CustomerDeliveryDetails"));
+const CustomerPayments = lazy(() => import("./pages/customer/CustomerPayments"));
+const RiderDashboard = lazy(() => import("./pages/rider/RiderDashboard"));
+const AvailableJobs = lazy(() => import("./pages/rider/AvailableJobs"));
+const AssignedJobs = lazy(() => import("./pages/rider/AssignedJobs"));
+const RiderDeliveryDetails = lazy(() => import("./pages/rider/RiderDeliveryDetails"));
+const RiderHistory = lazy(() => import("./pages/rider/RiderHistory"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminDeliveries = lazy(() => import("./pages/admin/AdminDeliveries"));
+const AdminDeliveryDetails = lazy(() => import("./pages/admin/AdminDeliveryDetails"));
+const AdminPayments = lazy(() => import("./pages/admin/AdminPayments"));
 
 function IndexRoute() {
   const { user, token, loading } = useAuth();
@@ -51,34 +54,36 @@ export default function App() {
       <ToastProvider>
         <AuthProvider>
           <Layout>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/" element={<IndexRoute />} />
-              {/* Customer */}
-              <Route path="/customer" element={guard(<CustomerDashboard />, ["CUSTOMER"])} />
-              <Route path="/customer/create" element={guard(<CreateDelivery />, ["CUSTOMER"])} />
-              <Route path="/customer/deliveries" element={guard(<MyDeliveries />, ["CUSTOMER"])} />
-              <Route path="/customer/deliveries/:id" element={guard(<CustomerDeliveryDetails />, ["CUSTOMER"])} />
-              <Route path="/customer/payments" element={guard(<CustomerPayments />, ["CUSTOMER"])} />
-              {/* Rider */}
-              <Route path="/rider" element={guard(<RiderDashboard />, ["RIDER"])} />
-              <Route path="/rider/available" element={guard(<AvailableJobs />, ["RIDER"])} />
-              <Route path="/rider/assigned" element={guard(<AssignedJobs />, ["RIDER"])} />
-              <Route path="/rider/deliveries/:id" element={guard(<RiderDeliveryDetails />, ["RIDER"])} />
-              <Route path="/rider/history" element={guard(<RiderHistory />, ["RIDER"])} />
-              {/* Admin */}
-              <Route path="/admin" element={guard(<AdminDashboard />, ["ADMIN"])} />
-              <Route path="/admin/users" element={guard(<AdminUsers />, ["ADMIN"])} />
-              <Route path="/admin/riders" element={guard(<AdminUsers fixedRole="RIDER" />, ["ADMIN"])} />
-              <Route path="/admin/deliveries" element={guard(<AdminDeliveries />, ["ADMIN"])} />
-              <Route path="/admin/deliveries/:id" element={guard(<AdminDeliveryDetails />, ["ADMIN"])} />
-              <Route path="/admin/payments" element={guard(<AdminPayments />, ["ADMIN"])} />
-            {/* Shared */}
-            <Route path="/profile" element={guard(<Profile />)} />
-            <Route path="/settings" element={guard(<Settings />)} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Suspense fallback={<CenterLoad />}>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/" element={<IndexRoute />} />
+                {/* Customer */}
+                <Route path="/customer" element={guard(<CustomerDashboard />, ["CUSTOMER"])} />
+                <Route path="/customer/create" element={guard(<CreateDelivery />, ["CUSTOMER"])} />
+                <Route path="/customer/deliveries" element={guard(<MyDeliveries />, ["CUSTOMER"])} />
+                <Route path="/customer/deliveries/:id" element={guard(<CustomerDeliveryDetails />, ["CUSTOMER"])} />
+                <Route path="/customer/payments" element={guard(<CustomerPayments />, ["CUSTOMER"])} />
+                {/* Rider */}
+                <Route path="/rider" element={guard(<RiderDashboard />, ["RIDER"])} />
+                <Route path="/rider/available" element={guard(<AvailableJobs />, ["RIDER"])} />
+                <Route path="/rider/assigned" element={guard(<AssignedJobs />, ["RIDER"])} />
+                <Route path="/rider/deliveries/:id" element={guard(<RiderDeliveryDetails />, ["RIDER"])} />
+                <Route path="/rider/history" element={guard(<RiderHistory />, ["RIDER"])} />
+                {/* Admin */}
+                <Route path="/admin" element={guard(<AdminDashboard />, ["ADMIN"])} />
+                <Route path="/admin/users" element={guard(<AdminUsers />, ["ADMIN"])} />
+                <Route path="/admin/riders" element={guard(<AdminUsers fixedRole="RIDER" />, ["ADMIN"])} />
+                <Route path="/admin/deliveries" element={guard(<AdminDeliveries />, ["ADMIN"])} />
+                <Route path="/admin/deliveries/:id" element={guard(<AdminDeliveryDetails />, ["ADMIN"])} />
+                <Route path="/admin/payments" element={guard(<AdminPayments />, ["ADMIN"])} />
+                {/* Shared */}
+                <Route path="/profile" element={guard(<Profile />)} />
+                <Route path="/settings" element={guard(<Settings />)} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
           </Layout>
         </AuthProvider>
       </ToastProvider>
