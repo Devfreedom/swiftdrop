@@ -12,7 +12,8 @@ const CANCELLABLE = ["PENDING", "CONFIRMED", "ASSIGNED"];
 async function createDelivery(req, res) {
   // Price integrity: any fee sent by the client is ignored. The fee is always
   // calculated server-side from the package weight (defaults to 1 kg).
-  const { deliveryFee, ...body } = req.body;
+  const body = { ...req.body };
+  delete body.deliveryFee;
   const weightKg = resolveWeightKg(body.packageWeightKg);
   const delivery = await Delivery.create({
     ...body,
