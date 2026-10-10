@@ -75,7 +75,7 @@ export default function CustomerDashboard() {
         rows={deliveries.slice(0, 5).map((d) => ({ ...d, to: `/customer/deliveries/${d.id}` }))}
         render={(key, d) => {
           if (key === "id") return <strong>{trackingId(d.id)}</strong>;
-          if (key === "dest") return <span className="dest-cell"><MapPin size={14} aria-hidden="true" /> {d.deliveryAddress}</span>;
+          if (key === "dest") return <span className="dest-cell"><MapPin size={14} aria-hidden="true" /> <span className="trunc">{d.deliveryAddress}</span></span>;
           if (key === "date") return <span className="muted">{formatDate(d.createdAt)}</span>;
           return <StatusBadge value={d.status} />;
         }}
