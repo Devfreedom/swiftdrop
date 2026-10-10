@@ -6,6 +6,7 @@ import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import Stepper from "../../components/Stepper";
 import ConfirmModal from "../../components/ConfirmModal";
+import { formatNaira, trackingId } from "../../constants";
 import { CenterLoad, Spinner } from "../../components/Feedback";
 
 export default function CustomerDeliveryDetails() {
@@ -33,7 +34,7 @@ export default function CustomerDeliveryDetails() {
       const r = await api(`/deliveries/${id}/pay`, { method: "POST", body: { method } });
       toast.success(r.payment.status === "PENDING"
         ? "Cash payment recorded — pay the rider on delivery."
-        : `Paid ₦${r.payment.amount} with ${method}.`);
+        : `Paid ${formatNaira(r.payment.amount)} with ${method}.`);
       load();
     } catch (e) {
       setErr(e.message);
@@ -61,14 +62,15 @@ export default function CustomerDeliveryDetails() {
   const cancellable = ["PENDING", "CONFIRMED", "ASSIGNED"].includes(d.status);
   return (
     <div className="card">
-      <h2>Delivery #{d.id} <StatusBadge value={d.status} /></h2>
+      <h2>Delivery {trackingId(d.id)} <StatusBadge value={d.status} /></h2>
       <Stepper status={d.status} />
       {err && <p className="error">{err}</p>}
       <p><b>Pickup:</b> {d.pickupAddress} ({d.pickupContact}, {d.pickupPhone})</p>
       {d.pickupLandmark && <p><b>Pickup landmark:</b> {d.pickupLandmark}</p>}
       <p><b>Drop-off:</b> {d.deliveryAddress} ({d.deliveryContact}, {d.deliveryPhone})</p>
       {d.deliveryLandmark && <p><b>Drop-off landmark:</b> {d.deliveryLandmark}</p>}
-      <p><b>Parcel:</b> {d.packageDescription} · ₦{d.deliveryFee}</p>
+      <p><b>Parcel:</b> {d.packageDescription}{d.packageWeightKg != null && ` · ${d.packageWeightKg} kg`}</p>
+      <p><b>Price:</b> {formatNaira(d.deliveryFee)}</p>
       <p><b>Rider:</b> {d.rider ? `${d.rider.name} (${d.rider.phone || "no phone"})` : "not assigned yet"}</p>
       <h3>Payments</h3>
       {(d.payments || []).length === 0 && <p className="muted">No payment yet.</p>}
