@@ -1,9 +1,10 @@
-// Public landing page at "/": original SwiftDrop marketing site.
-// Logged-in redirect lives in App.jsx IndexRoute — this component is guests only.
-// Numbers come from GET /api/stats (hidden if it fails); no invented figures,
-// no stock photos (inline SVG + CSS + lucide only), all copy original.
+// Public landing page at "/": viewable by everyone (guests + logged-in users).
+// Auth-aware via useAuth: logged-out users see Login/Sign up + register CTAs;
+// logged-in users see "Go to dashboard" + avatar, and customers get address
+// prefill straight into New Delivery. Numbers from GET /api/stats (hidden on
+// failure); no invented figures, no stock photos, all copy original.
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight, Box, Check, CreditCard, FileText, Gift, Lock,
   Mail, MapPin, Menu, Phone, ShieldCheck, Shirt, ShoppingBasket,
@@ -11,6 +12,7 @@ import {
 } from "lucide-react";
 import { BRAND, SUPPORT_EMAIL, SUPPORT_PHONE } from "../brand";
 import { api } from "../api/client";
+import { roleHome, useAuth } from "../context/AuthContext";
 import Stepper from "../components/Stepper";
 import StatusBadge from "../components/StatusBadge";
 import "../landing.css";
@@ -167,7 +169,34 @@ function CountUp({ value, start }) {
   return <>{n.toLocaleString()}</>;
 }
 
-function AddressForm({ id, buttonLabel, variant }) {
+function initialsOf(name) {
+  return (name || "?").split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+}
+
+function firstNameOf(name) {
+  return (name || "").split(" ")[0] || "there";
+}
+
+function DashboardButton({ to, className = "lp-btn lp-btn-red lp-btn-sm" }) {
+  return (
+    <Link className={className} to={to}>
+      Go to dashboard <ArrowRight size={16} aria-hidden="true" />
+    </Link>
+  );
+}
+
+/* Neutral skeleton for the navbar auth buttons while auth state loads —
+   prevents any flash of Login/Sign up vs dashboard. */
+function NavAuthSkeleton() {
+  return (
+    <span className="lp-nav-skel" aria-hidden="true">
+      <span className="lp-nav-skel-pill" />
+      <span className="lp-nav-skel-pill short" />
+    </span>
+  );
+}
+
+function AddressForm({ id, buttonLabel, variant, to = "/register" }) {
   const nav = useNavigate();
   const [addr, setAddr] = useState("");
   return (
@@ -180,7 +209,7 @@ function AddressForm({ id, buttonLabel, variant }) {
         } catch {
           /* private mode: navigation still works, prefill is skipped */
         }
-        nav("/register");
+        nav(to);
       }}
     >
       <label htmlFor={`${id}-pickup`} className="sr-only" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>
@@ -201,6 +230,9 @@ function AddressForm({ id, buttonLabel, variant }) {
 }
 
 export default function Landing() {
+  const { user, loading } = useAuth();
+  const dashboardTo = user ? roleHome(user.role) : "/";
+  const isCustomer = user?.role === "CUSTOMER";
   const [drawer, setDrawer] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [stats, setStats] = useState(null);

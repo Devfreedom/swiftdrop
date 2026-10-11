@@ -1,4 +1,4 @@
-// Router: landing for guests, role-guarded sections for users.
+// Router: public landing at "/", guest-only login/register, role-guarded sections.
 // Pages are code-split with React.lazy; shell pieces stay in the main chunk.
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -33,10 +33,18 @@ const AdminPayments = lazy(() => import("./pages/admin/AdminPayments"));
 const Design = import.meta.env.DEV ? lazy(() => import("./pages/Design")) : null;
 
 function IndexRoute() {
+  const { loading } = useAuth();
+  if (loading) return <CenterLoad />;
+  // Public landing for everyone — logged-in users stay on "/" until
+  // they choose "Go to dashboard". No redirect here.
+  return <Landing />;
+}
+
+function GuestRoute({ children }) {
   const { user, token, loading } = useAuth();
   if (loading) return <CenterLoad />;
-  if (!token || !user) return <Landing />;
-  return <Navigate to={roleHome(user.role)} replace />;
+  if (token && user) return <Navigate to={roleHome(user.role)} replace />;
+  return children;
 }
 
 const guard = (el, roles) => <ProtectedRoute roles={roles}>{el}</ProtectedRoute>;
@@ -50,6 +58,11 @@ function NotFound() {
       <h2>Page not found</h2>
       <p className="muted">This page moved or never existed.</p>
       <Button to={home} variant="primary">{label}</Button>
+      {user && (
+        <p className="muted" style={{ marginTop: 12 }}>
+          <a href="/">Home</a>
+        </p>
+      )}
     </div>
   );
 }
@@ -62,8 +75,8 @@ export default function App() {
           <Layout>
             <Suspense fallback={<CenterLoad />}>
               <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
+                <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
                 <Route path="/" element={<IndexRoute />} />
                 {/* Customer */}
                 <Route path="/customer" element={guard(<CustomerDashboard />, ["CUSTOMER"])} />
