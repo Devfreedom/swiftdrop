@@ -58,7 +58,7 @@ export default function Design() {
       <PageHeader
         title="Design system"
         sub="Every component and state. Dev only — not linked from the app."
-        actions={<Badge tone="purple">DEV</Badge>}
+        actions={<Badge tone="brand">DEV</Badge>}
       />
 
       <div className="card">
@@ -81,7 +81,7 @@ export default function Design() {
           <h3>Heading 3 · 20px</h3>
           <p>Body 16px — request a pickup and follow it to the doorstep.</p>
           <p className="muted small">Small 14px muted — secondary notes and timestamps.</p>
-          <span className="badge b-purple">Badge minimum 12px</span>
+          <span className="badge b-brand">Badge minimum 12px</span>
         </Section>
       </div>
 
