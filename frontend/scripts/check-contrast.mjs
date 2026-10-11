@@ -13,8 +13,6 @@ const pairs = [
   ["badge amber", "#92400E", "#FEF3C7"],
   ["badge amber on white", "#92400E", "#FFFFFF"],
   ["badge blue", "#1D4ED8", "#DBEAFE"],
-  ["badge purple", "#6D28D9", "#EDE9FE"],
-  ["badge indigo", "#4338CA", "#E0E7FF"],
   ["badge cyan", "#0E7490", "#CCFBF1"],
   ["badge gray", "#374151", "#F3F4F6"],
   ["ink on white", "#111827", "#FFFFFF"],
