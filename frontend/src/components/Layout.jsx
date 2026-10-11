@@ -3,26 +3,30 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
-  CreditCard, History, LayoutGrid, LifeBuoy, LogOut, Menu,
+  CreditCard, History, Home, LayoutGrid, LifeBuoy, LogOut, Menu,
   Package, PackageSearch, Plus, Settings, Truck, User, Users, X,
 } from "lucide-react";
 import { useAuth, roleHome } from "../context/AuthContext";
 import { BRAND, SUPPORT_EMAIL } from "../brand";
 import Button from "../ui/Button";
 import Notifications from "./Notifications";
+import { CenterLoad } from "./Feedback";
 
 const MENUS = {
   CUSTOMER: [
+    ["/", "Home", Home],
     ["/customer", "Dashboard", LayoutGrid], ["/customer/deliveries", "My Deliveries", Package],
     ["/customer/create", "New Delivery", Plus], ["/customer/payments", "Payments", CreditCard],
     ["/profile", "Profile", User], ["/settings", "Settings", Settings],
   ],
   RIDER: [
+    ["/", "Home", Home],
     ["/rider", "Dashboard", LayoutGrid], ["/rider/available", "Available Jobs", PackageSearch],
     ["/rider/assigned", "My Deliveries", Truck], ["/rider/history", "History", History],
     ["/profile", "Profile", User], ["/settings", "Settings", Settings],
   ],
   ADMIN: [
+    ["/", "Home", Home],
     ["/admin", "Dashboard", LayoutGrid], ["/admin/deliveries", "Deliveries", Package],
     ["/admin/riders", "Riders", Truck], ["/admin/users", "Users", Users],
     ["/admin/payments", "Payments", CreditCard], ["/settings", "Settings", Settings],
@@ -41,7 +45,7 @@ const TITLES = {
   "/rider/deliveries": "My Deliveries",
 };
 
-const EXACT = ["/customer", "/rider", "/admin"]; // dashboards match exactly
+const EXACT = ["/", "/customer", "/rider", "/admin"]; // exact-match links (Home + dashboards)
 
 function initials(name) {
   return (name || "?").split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
