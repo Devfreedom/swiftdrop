@@ -538,9 +538,15 @@ export default function Landing() {
                 Rider accounts are approved by an admin before the first trip.
               </p>
             </Reveal>
-            <a className="lp-btn lp-btn-black" href="/register?role=rider">
-              Ride with us <ArrowRight size={18} aria-hidden="true" />
-            </a>
+            {loading ? (
+              <span className="lp-nav-skel" aria-hidden="true"><span className="lp-nav-skel-pill" /></span>
+            ) : user ? (
+              <DashboardButton to={dashboardTo} className="lp-btn lp-btn-black" />
+            ) : (
+              <a className="lp-btn lp-btn-black" href="/register?role=rider">
+                Ride with us <ArrowRight size={18} aria-hidden="true" />
+              </a>
+            )}
           </div>
         </section>
 
@@ -557,9 +563,15 @@ export default function Landing() {
                   <li><span className="check-dot"><Check size={14} aria-hidden="true" /></span> Rider details once one is assigned</li>
                   <li><span className="check-dot"><Check size={14} aria-hidden="true" /></span> A recorded payment receipt for every trip</li>
                 </ul>
-                <a className="lp-btn lp-btn-red" href="/register">
-                  Create an account <ArrowRight size={18} aria-hidden="true" />
-                </a>
+                {loading ? (
+                  <span className="lp-nav-skel" aria-hidden="true"><span className="lp-nav-skel-pill" /></span>
+                ) : user ? (
+                  <DashboardButton to={dashboardTo} className="lp-btn lp-btn-red" />
+                ) : (
+                  <a className="lp-btn lp-btn-red" href="/register">
+                    Create an account <ArrowRight size={18} aria-hidden="true" />
+                  </a>
+                )}
               </Reveal>
               <Reveal delay={120}>
                 <div className="lp-mock">
@@ -622,7 +634,17 @@ export default function Landing() {
               </svg>
               <h2 id="lp-cta-h">Ready to send something? <em>Get started today.</em></h2>
               <p>Type your pickup address — we will carry it into your first delivery.</p>
-              <AddressForm id="cta" buttonLabel="Create account" variant="lp-btn-black" />
+              {loading ? (
+                <span className="lp-hero-skel" aria-hidden="true" />
+              ) : user ? (
+                isCustomer ? (
+                  <AddressForm id="cta" buttonLabel="Go to dashboard" variant="lp-btn-black" to="/customer/create" />
+                ) : (
+                  <DashboardButton to={dashboardTo} className="lp-btn lp-btn-black" />
+                )
+              ) : (
+                <AddressForm id="cta" buttonLabel="Create account" variant="lp-btn-black" />
+              )}
               <svg className="lp-scoot" width="72" height="40" viewBox="0 0 72 40" aria-hidden="true">
                 <circle cx="14" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
                 <circle cx="58" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
