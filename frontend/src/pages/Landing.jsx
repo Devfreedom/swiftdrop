@@ -311,15 +311,11 @@ export default function Landing() {
               <div
                 className="lp-phone"
                 role="img"
-                aria-label="Illustrative example of a SwiftDrop delivery tracker: pickup pin, dotted route, rider position, status badge and delivery steps."
+                aria-label="Illustrative example of a SwiftDrop delivery route: pickup pin, dotted route, rider position and destination."
               >
                 <div aria-hidden="true">
                   <div className="lp-phone-screen">
-                    <div className="lp-tag">
-                      <strong style={{ fontSize: 14 }}>{BRAND} tracker</strong>
-                      <span className="badge b-brand">Example</span>
-                    </div>
-                    <svg className="lp-phone-route" viewBox="0 0 300 190" width="100%" height="150" role="presentation">
+                    <svg className="lp-phone-route" viewBox="0 0 300 190" width="100%" height="230" role="presentation">
                       <circle cx="52" cy="150" r="9" fill="#D32F2F" />
                       <circle cx="52" cy="150" r="3.5" fill="#fff" />
                       <path
@@ -340,10 +336,6 @@ export default function Landing() {
                       )}
                       {REDUCED && <circle cx="150" cy="60" r="7" fill="#111" />}
                     </svg>
-                    <div style={{ margin: "6px 0 2px" }}>
-                      <StatusBadge value={PHONE_STAGES[stage]} />
-                    </div>
-                    <Stepper status={PHONE_STAGES[stage]} />
                   </div>
                     {PHONE_CHIPS.map((chip, i) => (
                       <span key={chip} className={`lp-chip lp-chip-${i + 1}${i === stage ? " on" : ""}`}>
