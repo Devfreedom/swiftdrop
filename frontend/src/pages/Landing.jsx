@@ -327,8 +327,22 @@ export default function Landing() {
               <a key={href} href={href} onClick={() => setDrawer(false)}>{label}</a>
             ))}
             <div className="lp-mobile-cta">
-              <a className="lp-login" href="/login">Login</a>
-              <a className="lp-btn lp-btn-red lp-btn-sm" href="/register">Sign up</a>
+              {loading ? (
+                <NavAuthSkeleton />
+              ) : user ? (
+                <>
+                  <span className="lp-userchip" aria-label={`Signed in as ${user.name}`}>
+                    <span className="lp-avatar" aria-hidden="true">{initialsOf(user.name)}</span>
+                    <span className="lp-username">{firstNameOf(user.name)}</span>
+                  </span>
+                  <DashboardButton to={dashboardTo} />
+                </>
+              ) : (
+                <>
+                  <a className="lp-login" href="/login">Login</a>
+                  <a className="lp-btn lp-btn-red lp-btn-sm" href="/register">Sign up</a>
+                </>
+              )}
             </div>
           </nav>
         )}
@@ -348,7 +362,17 @@ export default function Landing() {
                 rider, and track every stage to the doorstep.
               </p>
               <div className="hero-in" style={{ animationDelay: "240ms" }}>
-                <AddressForm id="hero" buttonLabel="Get started" variant="lp-btn-red" />
+                {loading ? (
+                  <span className="lp-hero-skel" aria-hidden="true" />
+                ) : user ? (
+                  isCustomer ? (
+                    <AddressForm id="hero" buttonLabel="Go to dashboard" variant="lp-btn-red" to="/customer/create" />
+                  ) : (
+                    <DashboardButton to={dashboardTo} className="lp-btn lp-btn-red" />
+                  )
+                ) : (
+                  <AddressForm id="hero" buttonLabel="Get started" variant="lp-btn-red" />
+                )}
               </div>
               <ul className="lp-facts hero-in" style={{ animationDelay: "320ms" }}>
                 <li><MapPin size={16} aria-hidden="true" /> Track every stage</li>
