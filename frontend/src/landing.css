@@ -278,7 +278,7 @@
 /* ---------- 9. Track every delivery ---------- */
 .lp-track-grid { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 56px; align-items: center; margin-top: 8px; }
 .lp-checks { list-style: none; margin: 26px 0 30px; padding: 0; display: grid; gap: 14px; }
-.lp-checks li { display: flex; gap: 12px; align-items: flex-start; font-size: var(--text-15, 15px); font-size: 15px; color: var(--body); }
+.lp-checks li { display: flex; gap: 12px; align-items: flex-start; font-size: var(--text-16); color: var(--body); }
 .check-dot {
   width: 24px; height: 24px; border-radius: 50%; background: var(--brand-soft); color: var(--brand-active);
   display: grid; place-items: center; flex-shrink: 0; margin-top: 1px;
