@@ -25,7 +25,7 @@
 .btn-primary:hover { background: var(--brand-hover); }
 .btn-primary:active { background: var(--brand-active); }
 .btn-ghost { background: transparent; border-color: transparent; color: var(--muted); }
-.btn-ghost:hover { color: var(--brand); background: var(--brand-soft); box-shadow: none; }
+.btn-ghost:hover { color: var(--brand-active); background: var(--brand-soft); box-shadow: none; }
 .btn-danger { background: var(--danger-solid); border-color: transparent; color: var(--text-on-brand); }
 .btn-danger:hover { background: var(--danger); }
 .btn-sm { padding: 6px var(--space-3); font-size: var(--text-12); line-height: var(--lh-12); }

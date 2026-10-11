@@ -20,8 +20,8 @@
 .side-nav { display: flex; flex-direction: column; gap: 4px; }
 .side-link { display: flex; align-items: center; gap: 10px; padding: 10px var(--space-3); border-radius: 10px; color: var(--muted); font-size: var(--text-14); font-weight: var(--weight-semibold); }
 .side-link svg { flex-shrink: 0; }
-.side-link:hover { background: var(--brand-soft); color: var(--brand); }
-.side-link.active { background: var(--brand-soft); color: var(--brand); }
+.side-link:hover { background: var(--brand-soft); color: var(--brand-active); }
+.side-link.active { background: var(--brand-soft); color: var(--brand-active); }
 .support-card { margin-top: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); padding: 14px; font-size: var(--text-14); color: var(--body); }
 .support-card p { margin: 0 0 6px; }
 .support-card a { color: var(--brand); font-weight: var(--weight-bold); }
