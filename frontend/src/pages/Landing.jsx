@@ -5,7 +5,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowRight, Bike, Box, Check, CreditCard, FileText, Gift, Lock,
+  ArrowRight, Box, Check, CreditCard, FileText, Gift, Lock,
   Mail, MapPin, Menu, Phone, ShieldCheck, Shirt, ShoppingBasket,
   Smartphone, Truck, UserCheck, Wallet, X, Plus,
 } from "lucide-react";
@@ -190,7 +190,6 @@ function AddressForm({ id, buttonLabel, variant }) {
 }
 
 export default function Landing() {
-  const nav = useNavigate();
   const [drawer, setDrawer] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [stats, setStats] = useState(null);
