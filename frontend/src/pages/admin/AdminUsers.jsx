@@ -78,8 +78,9 @@ export default function AdminUsers({ fixedRole }) {
             {u.role === "RIDER" && <StatusBadge value={u.availability} />}{" "}
             {u.status === "INACTIVE"
               ? <Button size="sm" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE", from: "INACTIVE" })}>Approve</Button>
-              : <Button size="sm" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE", from: u.status })}>Activate</Button>}{" "}
-            <Button size="sm" onClick={() => setTarget({ id: u.id, name: u.name, status: "SUSPENDED", from: u.status })}>Suspend</Button>
+              : u.status === "SUSPENDED"
+                ? <Button size="sm" onClick={() => setTarget({ id: u.id, name: u.name, status: "ACTIVE", from: u.status })}>Activate</Button>
+                : <Button size="sm" onClick={() => setTarget({ id: u.id, name: u.name, status: "SUSPENDED", from: u.status })}>Suspend</Button>}
           </span>
         </div>
       ))}

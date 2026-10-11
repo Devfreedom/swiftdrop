@@ -38,6 +38,7 @@ const TITLES = {
   "/admin": "Admin Dashboard", "/admin/deliveries": "Deliveries",
   "/admin/riders": "Riders", "/admin/users": "Users",
   "/admin/payments": "Payments", "/profile": "Profile", "/settings": "Settings",
+  "/rider/deliveries": "My Deliveries",
 };
 
 const EXACT = ["/customer", "/rider", "/admin"]; // dashboards match exactly
@@ -93,7 +94,11 @@ export default function Layout({ children }) {
   }
 
   const links = MENUS[user.role] || [];
-  const title = TITLES[loc.pathname] || TITLES[`/${user.role.toLowerCase()}`] || "Dashboard";
+  // Detail pages (/x/deliveries/:id) inherit the section title of their list page.
+  const section = Object.keys(TITLES)
+    .filter((k) => loc.pathname === k || loc.pathname.startsWith(`${k}/`))
+    .sort((a, b) => b.length - a.length)[0];
+  const title = (section && TITLES[section]) || TITLES[`/${user.role.toLowerCase()}`] || "Dashboard";
   const menu = (
     <>
       <nav className="side-nav" aria-label={`${user.role} menu`}>

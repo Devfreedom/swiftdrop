@@ -59,10 +59,15 @@ export default function RiderDashboard() {
         <StatCard icon={Wallet} value={formatNaira(earned)} label="total earned" />
       </div>
       <div className="inline">
-        <Button variant="primary" loading={switching} onClick={() => setAvail("AVAILABLE")}>
-          Go available
-        </Button>
-        <Button disabled={switching} onClick={() => setAvail("OFFLINE")}>Go offline</Button>
+        {me.availability === "AVAILABLE" ? (
+          <Button loading={switching} onClick={() => setAvail("OFFLINE")}>
+            Go offline
+          </Button>
+        ) : (
+          <Button variant="primary" loading={switching} onClick={() => setAvail("AVAILABLE")}>
+            Go available
+          </Button>
+        )}
       </div>
       <h3 className="eyebrow">Active jobs ({assigned.length})</h3>
       {assigned.length === 0 ? (

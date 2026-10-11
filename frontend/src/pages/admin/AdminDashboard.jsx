@@ -1,7 +1,7 @@
 // Admin dashboard: platform totals + recent deliveries.
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Bike, Package, Users, Wallet } from "lucide-react";
+import { Bike, Check, Clock, Package, PackageCheck, Truck, User, Users, Wallet, X } from "lucide-react";
 import { api } from "../../api/client";
 import StatusBadge from "../../components/StatusBadge";
 import StatCard from "../../components/StatCard";
@@ -9,6 +9,11 @@ import { formatNaira, trackingId } from "../../constants";
 import { CenterLoad, ErrorState } from "../../components/Feedback";
 
 const count = (rows, key, val) => (rows || []).find((r) => r[key] === val)?.count ?? 0;
+
+const STATUS_ICONS = {
+  PENDING: Clock, CONFIRMED: Check, ASSIGNED: User, PICKED_UP: Package,
+  IN_TRANSIT: Truck, DELIVERED: PackageCheck, CANCELLED: X,
+};
 
 export default function AdminDashboard() {
   const [s, setS] = useState(null);
@@ -34,7 +39,7 @@ export default function AdminDashboard() {
       <h3 className="eyebrow">Deliveries by status</h3>
       <div className="grid3">
         {(s.deliveriesByStatus || []).map((r) => (
-          <StatCard key={r.status} value={r.count} label={r.status} />
+          <StatCard key={r.status} icon={STATUS_ICONS[r.status] || Package} value={r.count} label={r.status} />
         ))}
       </div>
       <h3 className="eyebrow">Recent deliveries</h3>
