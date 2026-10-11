@@ -359,14 +359,10 @@ export default function Landing() {
         {/* 3. Rider banner */}
         <section className="lp-band-cream" aria-label="Rider signups">
           <div className="lp-inner lp-riderband">
-            <Reveal className="" delay={0}>
-              <div style={{ display: "flex", alignItems: "center", gap: 22, flexWrap: "wrap" }}>
-                <span className="lp-new">New</span>
-                <div>
-                  <strong>Riders can now sign up.</strong>
-                  <p>Create a rider account — an admin approves it before you can ride.</p>
-                </div>
-              </div>
+            <span className="lp-new">New</span>
+            <Reveal>
+              <strong>Riders can now sign up.</strong>
+              <p>Create a rider account — an admin approves it before you can ride.</p>
             </Reveal>
             <a className="lp-btn lp-btn-red lp-btn-sm" href="/register?role=rider">
               Become a rider <ArrowRight size={16} aria-hidden="true" />
