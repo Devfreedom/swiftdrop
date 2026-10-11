@@ -20,7 +20,7 @@
 .btn:active, .btn-secondary:active { transform: none; box-shadow: none; }
 .btn-primary {
   background: var(--brand); border-color: transparent; color: var(--text-on-brand);
-  box-shadow: 0 8px 18px -8px rgba(91, 78, 240, 0.7);
+  box-shadow: 0 8px 18px -8px rgba(211, 47, 47, 0.7);
 }
 .btn-primary:hover { background: var(--brand-hover); }
 .btn-primary:active { background: var(--brand-active); }
@@ -39,7 +39,7 @@
 }
 .btn.is-loading { pointer-events: none; }
 /* Legacy aliases */
-.btn.primary { background: var(--brand); border-color: transparent; color: var(--text-on-brand); box-shadow: 0 8px 18px -8px rgba(91, 78, 240, 0.7); }
+.btn.primary { background: var(--brand); border-color: transparent; color: var(--text-on-brand); box-shadow: 0 8px 18px -8px rgba(211, 47, 47, 0.7); }
 .btn.primary:hover { background: var(--brand-hover); }
 .btn.danger { background: var(--danger-solid); border-color: transparent; color: var(--text-on-brand); }
 .btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
