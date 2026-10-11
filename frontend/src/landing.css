@@ -142,6 +142,12 @@
 
 /* Phone mockup */
 .lp-phone-wrap { display: flex; justify-content: center; animation: float-y 7s ease-in-out infinite; }
+/* Entrance + float combined: .hero-in's base (opacity 0) needs hero-up to
+   actually run, but the later .lp-phone-wrap rule overrode its animation.
+   List hero-up first (opacity fill) so float-y (later = wins transform) runs under it. */
+.lp-phone-wrap.hero-in {
+  animation: hero-up 500ms var(--ease) forwards, float-y 7s ease-in-out infinite;
+}
 @keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 .lp-phone {
   width: min(340px, 100%); background: #141414; border: 1px solid #2E2E2E;
