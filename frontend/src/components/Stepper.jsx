@@ -1,4 +1,4 @@
-// Delivery progress timeline: purple line, check circles, numbered future steps.
+// Delivery progress timeline: brand line, check circles, numbered future steps.
 // CANCELLED hides the line and shows a red banner instead.
 import { Check } from "lucide-react";
 

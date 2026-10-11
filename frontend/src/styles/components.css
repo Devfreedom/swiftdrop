@@ -99,8 +99,7 @@ input:disabled, select:disabled, textarea:disabled {
 .b-red { background: var(--danger-soft); color: var(--danger); }
 .b-amber { background: var(--warning-soft); color: var(--warning); }
 .b-blue { background: #DBEAFE; color: #1D4ED8; }
-.b-purple { background: #EDE9FE; color: #6D28D9; }
-.b-indigo { background: #E0E7FF; color: #4338CA; }
+.b-brand { background: var(--brand-soft); color: var(--brand-active); }
 .b-cyan { background: var(--info-soft); color: var(--info); }
 .b-gray { background: var(--gray-100); color: var(--gray-700); }
 
@@ -181,7 +180,7 @@ input:disabled, select:disabled, textarea:disabled {
   border: 2.5px solid rgba(255, 255, 255, 0.4); border-top-color: #fff;
   animation: spin 0.7s linear infinite;
 }
-.spinner.dark { border-color: rgba(91, 78, 240, 0.25); border-top-color: var(--brand); }
+.spinner.dark { border-color: rgba(211, 47, 47, 0.25); border-top-color: var(--brand); }
 .spinner.lg { width: 34px; height: 34px; border-width: 4px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .center-load { display: grid; place-items: center; gap: 10px; padding: 40px 0; color: var(--muted); }

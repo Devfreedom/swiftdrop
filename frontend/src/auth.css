@@ -5,9 +5,9 @@
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 64px 16px 36px;
   background:
-    radial-gradient(800px 500px at 88% 90%, rgba(91, 78, 240, 0.22), transparent 65%),
+    radial-gradient(800px 500px at 88% 90%, rgba(211, 47, 47, 0.22), transparent 65%),
     radial-gradient(700px 460px at 82% 94%, rgba(45, 212, 191, 0.12), transparent 65%),
-    linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%);
+    linear-gradient(135deg, #2A0E0E 0%, #0F172A 100%);
   position: relative; overflow: hidden;
 }
 /* Soft out-of-focus blobs (CSS only, no images). */
@@ -74,12 +74,12 @@
   cursor: pointer;
 }
 .seg-btn[aria-pressed="true"] { background: #fff; color: var(--brand); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); }
-/* Purple primary button. */
+/* Brand primary button. */
 .btn-auth {
   width: 100%; height: 52px; border: none; border-radius: 13px;
   background: var(--brand); color: #fff; font-weight: 800; font-size: 16px; font-family: inherit;
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  cursor: pointer; box-shadow: 0 12px 24px -10px rgba(91, 78, 240, 0.35);
+  cursor: pointer; box-shadow: 0 12px 24px -10px rgba(211, 47, 47, 0.35);
 }
 .btn-auth:hover { background: var(--brand-hover); }
 .btn-auth:disabled { opacity: 0.8; cursor: wait; }
