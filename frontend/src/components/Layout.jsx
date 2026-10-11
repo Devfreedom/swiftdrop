@@ -6,7 +6,7 @@ import {
   CreditCard, History, LayoutGrid, LifeBuoy, LogOut, Menu,
   Package, PackageSearch, Plus, Settings, Truck, User, Users, X,
 } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth, roleHome } from "../context/AuthContext";
 import { BRAND, SUPPORT_EMAIL } from "../brand";
 import Button from "../ui/Button";
 import Notifications from "./Notifications";
@@ -47,9 +47,9 @@ function initials(name) {
   return (name || "?").split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 }
 
-function Logo() {
+function Logo({ to = "/", label }) {
   return (
-    <Link to="/" className="brand">
+    <Link to={to} className="brand" aria-label={label || `${BRAND} home`}>
       <span className="brand-ico"><Truck size={20} aria-hidden="true" /></span>
       <span className="brand-name">{BRAND}</span>
     </Link>
@@ -69,6 +69,9 @@ export default function Layout({ children }) {
       <div className="auth-screen">
         <Link to="/" className="auth-brand">
           <span className="authx-logo"><Truck size={20} /></span> {BRAND}
+        </Link>
+        <Link to="/" className="auth-back">
+          <span aria-hidden="true">←</span> Back to home
         </Link>
         <main>{children}</main>
       </div>
@@ -120,7 +123,7 @@ export default function Layout({ children }) {
   return (
     <div className="shell">
       <aside className="sidebar" aria-label="Sidebar">
-        <Logo />
+        <Logo to={roleHome(user.role)} label={`${BRAND} dashboard`} />
         {menu}
       </aside>
       {drawer && (
@@ -128,7 +131,7 @@ export default function Layout({ children }) {
           <div className="drawer-backdrop" onClick={() => setDrawer(false)} aria-hidden="true" />
           <aside className="sidebar drawer" aria-label="Menu">
             <div className="drawer-head">
-              <Logo />
+              <Logo to={roleHome(user.role)} label={`${BRAND} dashboard`} />
               <button className="icon-btn" onClick={() => setDrawer(false)} aria-label="Close menu">
                 <X size={20} aria-hidden="true" />
               </button>
