@@ -42,11 +42,14 @@ function IndexRoute() {
 const guard = (el, roles) => <ProtectedRoute roles={roles}>{el}</ProtectedRoute>;
 
 function NotFound() {
+  const { user } = useAuth();
+  const home = user ? roleHome(user.role) : "/";
+  const label = user ? "Back to dashboard" : "Back to home";
   return (
     <div className="card narrow not-found">
       <h2>Page not found</h2>
       <p className="muted">This page moved or never existed.</p>
-      <Button to="/" variant="primary">Back home</Button>
+      <Button to={home} variant="primary">{label}</Button>
     </div>
   );
 }

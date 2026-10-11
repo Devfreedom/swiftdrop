@@ -23,6 +23,17 @@
   color: #fff; font-weight: 800; font-size: 18px;
 }
 .auth-brand .authx-logo { width: 36px; height: 36px; margin: 0; border-radius: 10px; }
+/* "Back to home" link on the dark gradient: top-left, white, keyboard-visible. */
+.auth-back {
+  position: absolute; top: 66px; left: 26px; z-index: 1;
+  display: inline-flex; align-items: center; gap: 6px;
+  color: #fff; font-size: 14px; font-weight: 600; text-decoration: none;
+  padding: 8px 4px; border-radius: 8px;
+  max-width: calc(100vw - 52px);
+}
+.auth-back:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.auth-back:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.auth-back:visited { color: #fff; }
 .authx-card {
   width: 400px; max-width: 100%;
   background: var(--surface); border-radius: var(--radius-xl); padding: 30px 28px;
@@ -35,6 +46,9 @@
   display: grid; place-items: center; color: #5EEAD4;
   box-shadow: 0 12px 24px -10px rgba(10, 18, 32, 0.6);
 }
+a.authx-logo { text-decoration: none; }
+a.authx-logo:hover { color: #5EEAD4; }
+a.authx-logo:focus-visible { outline: 3px solid var(--brand-ring); outline-offset: 3px; }
 .authx-title { font-size: var(--text-32); line-height: var(--lh-32); font-weight: 800; color: var(--ink); margin: 16px 0 4px; letter-spacing: -0.02em; }
 .authx-sub { color: var(--muted); font-size: 14px; margin: 0; }
 .authx-form { display: grid; gap: 16px; margin-top: 20px; text-align: left; }
@@ -96,6 +110,8 @@
 }
 /* Small phones (360px): nearly full-width card. */
 @media (max-width: 440px) {
-  .auth-screen { padding: 56px 12px 24px; }
+  .auth-screen { padding: 96px 12px 24px; }
+  .auth-brand { top: 16px; left: 16px; }
+  .auth-back { top: 60px; left: 16px; }
   .authx-card { width: 100%; padding: 24px 20px; border-radius: var(--radius-xl); }
 }
