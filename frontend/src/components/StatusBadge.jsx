@@ -4,7 +4,7 @@ import Badge from "../ui/Badge";
 
 const STYLES = {
   PENDING: ["amber", Clock], CONFIRMED: ["blue", Check],
-  ASSIGNED: ["indigo", UserCheck], PICKED_UP: ["indigo", Check],
+  ASSIGNED: ["brand", UserCheck], PICKED_UP: ["brand", Check],
   IN_TRANSIT: ["cyan", Truck], DELIVERED: ["green", Check],
   CANCELLED: ["red", Ban], SUCCESSFUL: ["green", Check],
   FAILED: ["red", Ban], REFUNDED: ["amber", CircleDollarSign],
@@ -12,7 +12,7 @@ const STYLES = {
   OFFLINE: ["gray", WifiOff], ACTIVE: ["green", Check],
   INACTIVE: ["gray", Clock], SUSPENDED: ["red", UserX],
   CASH: ["gray", CircleDollarSign], CARD: ["blue", CircleDollarSign],
-  TRANSFER: ["purple", CircleDollarSign],
+  TRANSFER: ["brand", CircleDollarSign],
 };
 
 export default function StatusBadge({ value }) {
