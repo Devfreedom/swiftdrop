@@ -91,6 +91,7 @@
 }
 .lp-nav.scrolled .lp-nav-inner { height: 62px; }
 .lp-brand { display: flex; align-items: center; gap: 10px; font-weight: var(--weight-extrabold); font-size: 18px; }
+.lp-brand:focus-visible { outline: 3px solid var(--brand-ring); outline-offset: 3px; border-radius: 8px; }
 .lp-brand .brand-name { color: var(--brand); }
 .lp-footer .brand-name { color: #fff; }
 .lp-links { display: flex; gap: 26px; margin-left: 12px; }

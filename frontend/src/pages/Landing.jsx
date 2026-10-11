@@ -80,6 +80,19 @@ const FAQS = [
 
 const YEAR = new Date().getFullYear();
 
+/* Logo click: already on the public home page ("/"), smooth-scroll to top
+   instead of reloading. From any other path, fall through to "/" navigation. */
+function scrollToTop(e) {
+  if (typeof window === "undefined") return;
+  if (window.location.pathname === "/") {
+    e.preventDefault();
+    const reduced =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+  }
+}
+
 /* Fade-up reveal wrapper (once). Disabled automatically for reduced motion. */
 function Reveal({ className = "", delay = 0, children, id }) {
   const ref = useRef(null);
@@ -238,7 +251,7 @@ export default function Landing() {
       {/* 1. Sticky navbar */}
       <header className={`lp-nav${scrolled ? " scrolled" : ""}`}>
         <div className="lp-nav-inner">
-          <a href="#top" className="lp-brand" aria-label={`${BRAND} home`}>
+          <a href="#top" onClick={scrollToTop} className="lp-brand" aria-label={`${BRAND} home`}>
             <span className="brand-ico"><Truck size={20} aria-hidden="true" /></span>
             <span className="brand-name">{BRAND}</span>
           </a>
@@ -541,7 +554,7 @@ export default function Landing() {
       <footer className="lp-footer" id="contact">
         <div className="lp-foot-grid">
           <div className="lp-foot-brand">
-            <a href="#top" className="lp-brand" aria-label={`${BRAND} home`}>
+            <a href="/" onClick={scrollToTop} className="lp-brand" aria-label={`${BRAND} home`}>
               <span className="brand-ico"><Truck size={20} aria-hidden="true" /></span>
               <span className="brand-name">{BRAND}</span>
             </a>
