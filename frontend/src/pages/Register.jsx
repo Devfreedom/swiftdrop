@@ -15,7 +15,9 @@ export default function Register() {
   const { register, logout } = useAuth();
   const toast = useToast();
   const nav = useNavigate();
-  const [role, setRole] = useState("CUSTOMER");
+  // Landing CTAs link here with ?role=rider to preselect the Rider tab.
+  const [params] = useSearchParams();
+  const [role, setRole] = useState(params.get("role") === "rider" ? "RIDER" : "CUSTOMER");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");

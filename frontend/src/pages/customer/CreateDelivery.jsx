@@ -22,10 +22,20 @@ const REQUIRED = [
 export default function CreateDelivery() {
   const nav = useNavigate();
   const toast = useToast();
-  const [form, setForm] = useState({
-    pickupAddress: "", pickupContact: "", pickupPhone: "", pickupLandmark: "",
-    deliveryAddress: "", deliveryContact: "", deliveryPhone: "", deliveryLandmark: "",
-    packageDescription: "", packageWeightKg: "",
+  // Landing hero/CTA stores a typed pickup address here; consume it once.
+  const [form, setForm] = useState(() => {
+    let pickupAddress = "";
+    try {
+      pickupAddress = sessionStorage.getItem("sd-pickup") || "";
+      sessionStorage.removeItem("sd-pickup");
+    } catch {
+      /* storage unavailable: start blank */
+    }
+    return {
+      pickupAddress, pickupContact: "", pickupPhone: "", pickupLandmark: "",
+      deliveryAddress: "", deliveryContact: "", deliveryPhone: "", deliveryLandmark: "",
+      packageDescription: "", packageWeightKg: "",
+    };
   });
   const [errs, setErrs] = useState({});
   const [err, setErr] = useState("");
