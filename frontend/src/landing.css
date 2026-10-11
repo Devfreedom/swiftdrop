@@ -100,6 +100,28 @@
 .lp-nav-cta { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 .lp-login { font-size: var(--text-14); font-weight: var(--weight-bold); color: var(--ink); padding: 10px 14px; }
 .lp-login:hover { color: var(--brand-active); }
+/* Logged-in navbar identity: initials avatar + first name. */
+.lp-userchip { display: inline-flex; align-items: center; gap: 8px; margin-right: 4px; }
+.lp-avatar {
+  width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 12px; font-weight: 800; color: #fff; background: var(--brand); flex-shrink: 0;
+}
+.lp-username { font-size: var(--text-14); font-weight: var(--weight-bold); color: var(--ink); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Neutral skeleton while auth resolves — no flash of the wrong navbar. */
+.lp-nav-skel { display: inline-flex; align-items: center; gap: 8px; }
+.lp-nav-skel-pill {
+  display: inline-block; width: 120px; height: 36px; border-radius: 999px;
+  background: linear-gradient(90deg, #E8E2D4 25%, #F3EEE1 50%, #E8E2D4 75%);
+  background-size: 200% 100%; animation: lp-skel 1.2s ease-in-out infinite;
+}
+.lp-nav-skel-pill.short { width: 84px; }
+.lp-hero-skel {
+  display: block; width: 100%; max-width: 520px; height: 56px; margin: 0 auto;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.14) 25%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0.14) 75%);
+  background-size: 200% 100%; animation: lp-skel 1.2s ease-in-out infinite;
+}
+@keyframes lp-skel { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 .lp-burger { display: none; margin-left: auto; }
 .lp-mobile { display: none; }
 

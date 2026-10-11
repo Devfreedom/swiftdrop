@@ -691,8 +691,14 @@ export default function Landing() {
           <nav aria-label="Account">
             <h3>Account</h3>
             <ul>
-              <li><a href="/login">Login</a></li>
-              <li><a href="/register">Sign up</a></li>
+              {user ? (
+                <li><Link to={dashboardTo}>Dashboard</Link></li>
+              ) : (
+                <>
+                  <li><a href="/login">Login</a></li>
+                  <li><a href="/register">Sign up</a></li>
+                </>
+              )}
             </ul>
           </nav>
         </div>
