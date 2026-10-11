@@ -1,11 +1,12 @@
 // Verifies every text/background pair in the token set meets WCAG AA (4.5:1).
 // Run: node scripts/check-contrast.mjs
 const pairs = [
-  ["btn primary", "#FFFFFF", "#5B4EF0"],
-  ["btn primary hover", "#FFFFFF", "#4B3FD6"],
-  ["btn primary active", "#FFFFFF", "#4338CA"],
-  ["brand text on white", "#5B4EF0", "#FFFFFF"],
-  ["link on white", "#4B3FD6", "#FFFFFF"],
+  ["btn primary", "#FFFFFF", "#D32F2F"],
+  ["btn primary hover", "#FFFFFF", "#B71C1C"],
+  ["btn primary active", "#FFFFFF", "#9A1717"],
+  ["brand text on white", "#B71C1C", "#FFFFFF"],
+  ["link on white", "#B71C1C", "#FFFFFF"],
+  ["badge brand", "#9A1717", "#FDECEC"],
   ["badge green", "#15803D", "#DCFCE7"],
   ["badge green on white", "#15803D", "#FFFFFF"],
   ["badge red", "#991B1B", "#FEE2E2"],
