@@ -27,10 +27,11 @@ const pairs = [
   ["toast info", "#FFFFFF", "#B71C1C"],
   ["field error", "#991B1B", "#FFFFFF"],
   ["strength fair", "#B45309", "#FFFFFF"],
-  ["seg selected", "#B71C1C", "#FFFFFF"],
+  ["seg selected", "#D32F2F", "#FFFFFF"],
   ["seg idle", "#4B5563", "#F3F4F6"],
   ["eye btn", "#6B7280", "#FFFFFF"],
-  ["tab selected", "#B71C1C", "#FFFFFF"],
+  ["tab selected", "#D32F2F", "#FFFFFF"],
+  ["active nav", "#9A1717", "#FDECEC"],
   ["accent on dark", "#FF4D2B", "#1A0A0A"],
   ["white on red band", "#FFFFFF", "#C1272D"],
 ];
