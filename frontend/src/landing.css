@@ -167,14 +167,14 @@
   animation: route-draw 700ms var(--ease) both;
 }
 @keyframes route-draw { from { stroke-dashoffset: 120; } to { stroke-dashoffset: 0; } }
-.lp-phone .timeline { margin: 10px -6px 2px; }
+.lp-phone .timeline { margin: 10px -8px 2px; }
 /* Phone-size stepper: smaller dots + compact labels so all six stages fit
    the ~300px screen without colliding. Labels share one min-height so rows
    stay aligned when "Picked up" / "In transit" wrap. */
 .lp-phone .tl-dot { width: 22px; height: 22px; font-size: 10px; margin-bottom: 5px; }
 .lp-phone .tl-bar { top: 11px; }
 .lp-phone .tl-label {
-  font-size: 9px; letter-spacing: 0.02em; line-height: 1.5; min-height: 3em;
+  font-size: 9px; letter-spacing: 0; line-height: 1.5; min-height: 3em;
 }
 .lp-chip {
   position: absolute; display: inline-flex; align-items: center; gap: 6px;
