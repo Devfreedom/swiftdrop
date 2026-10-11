@@ -92,9 +92,7 @@
 .lp-nav.scrolled .lp-nav-inner { height: 62px; }
 .lp-brand { display: flex; align-items: center; gap: 10px; font-weight: var(--weight-extrabold); font-size: 18px; }
 .lp-brand .brand-name { color: var(--brand); }
-/* Logo tile: dark navy, ~6deg tilt, cyan truck — same as the app. */
-.brand-ico { transform: rotate(6deg); }
-.brand-ico svg { color: #5EEAD4; }
+.lp-footer .brand-name { color: #fff; }
 .lp-links { display: flex; gap: 26px; margin-left: 12px; }
 .lp-links a { color: var(--body); font-size: var(--text-14); font-weight: var(--weight-semibold); }
 .lp-links a:hover { color: var(--brand-active); }

@@ -1,6 +1,6 @@
 // Register: CUSTOMER or RIDER via toggle. Riders need admin approval.
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowRight, Bike, Car, Mail, Package, Phone, Truck, User } from "lucide-react";
 import { useAuth, roleHome } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
