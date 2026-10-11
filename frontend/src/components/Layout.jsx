@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
-  CreditCard, History, Home, LayoutGrid, LifeBuoy, LogOut, Menu,
+  CreditCard, History, Home, LayoutGrid, LogOut, Menu,
   Package, PackageSearch, Plus, Settings, Truck, User, Users, X,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
