@@ -78,8 +78,6 @@ const FAQS = [
   },
 ];
 
-const PHONE_STAGES = ["PICKED_UP", "IN_TRANSIT", "DELIVERED"];
-const PHONE_CHIPS = ["Picked up", "In transit", "Delivered"];
 const YEAR = new Date().getFullYear();
 
 /* Fade-up reveal wrapper (once). Disabled automatically for reduced motion. */
@@ -193,7 +191,6 @@ export default function Landing() {
   const [drawer, setDrawer] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [stats, setStats] = useState(null);
-  const [stage, setStage] = useState(0);
   const [faqOpen, setFaqOpen] = useState(0);
   const [stepsRef, stepsIn] = useEnter(0.3);
   const [statsRef, statsIn] = useEnter(0.3);
@@ -231,13 +228,6 @@ export default function Landing() {
     return () => {
       live = false;
     };
-  }, []);
-
-  /* Phone mockup: cycle Picked up → In transit → Delivered in sync. */
-  useEffect(() => {
-    if (REDUCED) return;
-    const t = setInterval(() => setStage((s) => (s + 1) % PHONE_STAGES.length), 2400);
-    return () => clearInterval(t);
   }, []);
 
   const total = stats?.totalDeliveries || 0;
@@ -306,45 +296,6 @@ export default function Landing() {
                 <li><CreditCard size={16} aria-hidden="true" /> Pay by cash, card or transfer</li>
                 <li><ShieldCheck size={16} aria-hidden="true" /> Verified riders</li>
               </ul>
-            </div>
-            <div className="lp-phone-wrap hero-in" style={{ animationDelay: "200ms" }}>
-              <div
-                className="lp-phone"
-                role="img"
-                aria-label="Illustrative example of a SwiftDrop delivery route: pickup pin, dotted route, rider position and destination."
-              >
-                <div aria-hidden="true">
-                  <div className="lp-phone-screen">
-                    <svg className="lp-phone-route" viewBox="0 0 300 190" width="100%" height="230" role="presentation">
-                      <circle cx="52" cy="150" r="9" fill="#D32F2F" />
-                      <circle cx="52" cy="150" r="3.5" fill="#fff" />
-                      <path
-                        className="route-line"
-                        d="M52 150 C 90 150, 90 60, 150 60 S 220 40, 248 40"
-                        fill="none" stroke="#D32F2F" strokeWidth="3" strokeLinecap="round"
-                      />
-                      <circle cx="248" cy="40" r="9" fill="#15803D" />
-                      <circle cx="248" cy="40" r="3.5" fill="#fff" />
-                      {!REDUCED && (
-                        <circle r="7" fill="#111">
-                          <animateMotion
-                            dur="7.2s"
-                            repeatCount="indefinite"
-                            path="M52 150 C 90 150, 90 60, 150 60 S 220 40, 248 40"
-                          />
-                        </circle>
-                      )}
-                      {REDUCED && <circle cx="150" cy="60" r="7" fill="#111" />}
-                    </svg>
-                  </div>
-                    {PHONE_CHIPS.map((chip, i) => (
-                      <span key={chip} className={`lp-chip lp-chip-${i + 1}${i === stage ? " on" : ""}`}>
-                        <span className="dot" /> {chip}
-                      </span>
-                    ))}
-                    <span className="lp-home" />
-                  </div>
-              </div>
             </div>
           </div>
         </section>
