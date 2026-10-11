@@ -25,3 +25,6 @@ dist-ssr
 
 .env
 !.env.example
+
+# Visual QA screenshots (see step 7 QA loop)
+/screenshots
