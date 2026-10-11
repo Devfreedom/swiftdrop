@@ -61,14 +61,22 @@ function Logo({ to = "/", label }) {
 }
 
 export default function Layout({ children }) {
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const nav = useNavigate();
   const loc = useLocation();
   const [drawer, setDrawer] = useState(false);
   const out = () => { logout(); nav("/login"); };
+  const isAuthPage = loc.pathname === "/login" || loc.pathname === "/register";
 
-  // Auth pages get the dark gradient screen with no chrome.
-  if (!user && (loc.pathname === "/login" || loc.pathname === "/register")) {
+  // "/" is the public landing for everyone: full-bleed, owns its own navbar.
+  if (loc.pathname === "/") return <main>{children}</main>;
+
+  // While the session resolves, never flash the guest header inside the app.
+  if (loading && !isAuthPage) return <main><CenterLoad /></main>;
+
+  // Auth pages get the dark gradient screen with no chrome (always, so the
+  // logged-in shell never wraps the login/register redirect).
+  if (isAuthPage) {
     return (
       <div className="auth-screen">
         <Link to="/" className="auth-brand">
@@ -127,7 +135,7 @@ export default function Layout({ children }) {
   return (
     <div className="shell">
       <aside className="sidebar" aria-label="Sidebar">
-        <Logo to={roleHome(user.role)} label={`${BRAND} dashboard`} />
+        <Logo to="/" label={`${BRAND} home`} />
         {menu}
       </aside>
       {drawer && (
@@ -135,7 +143,7 @@ export default function Layout({ children }) {
           <div className="drawer-backdrop" onClick={() => setDrawer(false)} aria-hidden="true" />
           <aside className="sidebar drawer" aria-label="Menu">
             <div className="drawer-head">
-              <Logo to={roleHome(user.role)} label={`${BRAND} dashboard`} />
+              <Logo to="/" label={`${BRAND} home`} />
               <button className="icon-btn" onClick={() => setDrawer(false)} aria-label="Close menu">
                 <X size={20} aria-hidden="true" />
               </button>
