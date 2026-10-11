@@ -1,7 +1,7 @@
 // Router: public landing at "/", guest-only login/register, role-guarded sections.
 // Pages are code-split with React.lazy; shell pieces stay in the main chunk.
 import { Suspense, lazy } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth, roleHome } from "./context/AuthContext";
 import { ToastProvider } from "./components/Toast";
 import Button from "./ui/Button";
@@ -60,7 +60,7 @@ function NotFound() {
       <Button to={home} variant="primary">{label}</Button>
       {user && (
         <p className="muted" style={{ marginTop: 12 }}>
-          <a href="/">Home</a>
+          <Link to="/">Home</Link>
         </p>
       )}
     </div>
