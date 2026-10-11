@@ -15,9 +15,26 @@ const STYLES = {
   TRANSFER: ["brand", CircleDollarSign],
 };
 
+/* Human display labels: backend stores SCREAMING_SNAKE statuses, but the
+   pill must never show raw underscores (e.g. "PICKED_UP"). Values are
+   untouched — this is display only. Unknown values are prettified. */
+const LABELS = {
+  PENDING: "Pending", CONFIRMED: "Confirmed", ASSIGNED: "Assigned",
+  PICKED_UP: "Picked up", IN_TRANSIT: "In transit", DELIVERED: "Delivered",
+  CANCELLED: "Cancelled", SUCCESSFUL: "Successful", FAILED: "Failed",
+  REFUNDED: "Refunded", AVAILABLE: "Available", BUSY: "Busy",
+  OFFLINE: "Offline", ACTIVE: "Active", INACTIVE: "Inactive",
+  SUSPENDED: "Suspended", CASH: "Cash", CARD: "Card", TRANSFER: "Transfer",
+};
+
+function prettify(value) {
+  const s = String(value ?? "").replace(/_/g, " ").toLowerCase();
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 export default function StatusBadge({ value }) {
   const [tone, Icon] = STYLES[value] || ["gray", Clock];
   return (
-    <Badge tone={tone} icon={Icon}>{value}</Badge>
+    <Badge tone={tone} icon={Icon}>{LABELS[value] || prettify(value)}</Badge>
   );
 }

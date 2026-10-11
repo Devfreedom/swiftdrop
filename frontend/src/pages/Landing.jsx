@@ -345,12 +345,13 @@ export default function Landing() {
                     </div>
                     <Stepper status={PHONE_STAGES[stage]} />
                   </div>
-                  {PHONE_CHIPS.map((chip, i) => (
-                    <span key={chip} className={`lp-chip lp-chip-${i + 1}${i === stage ? " on" : ""}`}>
-                      <span className="dot" /> {chip}
-                    </span>
-                  ))}
-                </div>
+                    {PHONE_CHIPS.map((chip, i) => (
+                      <span key={chip} className={`lp-chip lp-chip-${i + 1}${i === stage ? " on" : ""}`}>
+                        <span className="dot" /> {chip}
+                      </span>
+                    ))}
+                    <span className="lp-home" />
+                  </div>
               </div>
             </div>
           </div>

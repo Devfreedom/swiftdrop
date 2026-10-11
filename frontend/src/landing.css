@@ -150,9 +150,14 @@
 }
 @keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 .lp-phone {
-  width: min(340px, 100%); background: #141414; border: 1px solid #2E2E2E;
-  border-radius: 36px; padding: 14px; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+  width: min(360px, 100%); background: #141414; border: 1px solid #2E2E2E;
+  border-radius: 36px; padding: 14px 14px 46px; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8);
   position: relative;
+}
+/* Home indicator bar centred in the deeper bottom chin. */
+.lp-home {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 5px; border-radius: 99px; background: #3A3A3A;
 }
 .lp-phone-screen { background: #fff; border-radius: 26px; padding: 20px 18px; color: var(--ink); }
 .lp-phone-screen .lp-tag { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -162,17 +167,28 @@
   animation: route-draw 700ms var(--ease) both;
 }
 @keyframes route-draw { from { stroke-dashoffset: 120; } to { stroke-dashoffset: 0; } }
-.lp-phone .timeline { margin: 12px 0 4px; }
+.lp-phone .timeline { margin: 10px -6px 2px; }
+/* Phone-size stepper: smaller dots + compact labels so all six stages fit
+   the ~300px screen without colliding. Labels share one min-height so rows
+   stay aligned when "Picked up" / "In transit" wrap. */
+.lp-phone .tl-dot { width: 22px; height: 22px; font-size: 10px; margin-bottom: 5px; }
+.lp-phone .tl-bar { top: 11px; }
+.lp-phone .tl-label {
+  font-size: 9px; letter-spacing: 0.02em; line-height: 1.5; min-height: 3em;
+}
 .lp-chip {
   position: absolute; display: inline-flex; align-items: center; gap: 6px;
   background: #fff; color: var(--ink); border-radius: var(--radius-full);
   font-size: var(--text-12); font-weight: var(--weight-bold); padding: 8px 14px;
   box-shadow: var(--shadow-md); border: 1px solid var(--line);
+  white-space: nowrap; z-index: 2;
 }
 .lp-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); }
-.lp-chip-1 { top: 12%; left: -56px; animation: float-y 5s ease-in-out infinite; }
-.lp-chip-2 { top: 44%; right: -48px; animation: float-y 6s ease-in-out 0.8s infinite; }
-.lp-chip-3 { bottom: 10%; left: -40px; animation: float-y 5.5s ease-in-out 1.6s infinite; }
+/* Pinned to the phone frame corners (half on the bezel): they can never
+   cover screen content, at any viewport. Float only moves them outward. */
+.lp-chip-1 { top: -17px; left: 28px; animation: float-y 5s ease-in-out infinite; }
+.lp-chip-2 { top: -17px; right: 28px; animation: float-y 6s ease-in-out 0.8s infinite; }
+.lp-chip-3 { bottom: -12px; left: 28px; animation: float-y 5.5s ease-in-out 1.6s infinite; }
 .lp-chip:not(.on) { opacity: 0.55; }
 .lp-chip.on { border-color: var(--brand); }
 
@@ -354,9 +370,6 @@
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
   .lp-hero-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-  .lp-chip-1 { left: -16px; }
-  .lp-chip-2 { right: -10px; }
-  .lp-chip-3 { left: -8px; }
 }
 @media (max-width: 860px) {
   .lp-links, .lp-nav-cta { display: none; }
@@ -389,7 +402,4 @@
   .lp-cta-band { padding: 48px 24px; }
   .lp-riderband .lp-btn { margin-left: 0; width: 100%; justify-content: center; }
   .lp-foot-grid { grid-template-columns: 1fr; gap: 32px; }
-  .lp-chip-1 { left: 0; }
-  .lp-chip-2 { right: 0; }
-  .lp-chip-3 { left: 4px; }
 }
