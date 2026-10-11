@@ -6,7 +6,7 @@ import {
   CreditCard, History, Home, LayoutGrid, LifeBuoy, LogOut, Menu,
   Package, PackageSearch, Plus, Settings, Truck, User, Users, X,
 } from "lucide-react";
-import { useAuth, roleHome } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { BRAND, SUPPORT_EMAIL } from "../brand";
 import Button from "../ui/Button";
 import Notifications from "./Notifications";
