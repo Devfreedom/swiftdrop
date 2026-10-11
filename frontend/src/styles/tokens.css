@@ -40,7 +40,7 @@
 
   /* ---- Shadows ---- */
   --shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.06);
-  --shadow-md: 0 1px 2px rgba(17, 24, 39, 0.05), 0 10px 28px -14px rgba(91, 78, 240, 0.25);
+  --shadow-md: 0 1px 2px rgba(17, 24, 39, 0.05), 0 10px 28px -14px rgba(211, 47, 47, 0.25);
   --shadow-lg: 0 24px 60px -20px rgba(17, 24, 39, 0.3);
   /* Legacy alias */
   --shadow: var(--shadow-md);
@@ -60,13 +60,13 @@
   --dur-med: 200ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
 
-  /* ---- Brand purple (+ hover / active / soft / ring) ---- */
-  --brand: #5B4EF0;
-  --brand-hover: #4B3FD6;
-  --brand-active: #4338CA;
-  --brand-soft: #EEF0FF;
-  --brand-ring: rgba(91, 78, 240, 0.45);
-  --brand-ring-soft: rgba(91, 78, 240, 0.16);
+  /* ---- Brand red (+ hover / active / soft / ring) ---- */
+  --brand: #D32F2F;
+  --brand-hover: #B71C1C;
+  --brand-active: #9A1717;
+  --brand-soft: #FDECEC;
+  --brand-ring: rgba(211, 47, 47, 0.35);
+  --brand-ring-soft: rgba(211, 47, 47, 0.16);
   /* Legacy alias */
   --brand-strong: var(--brand-hover);
 
