@@ -43,7 +43,7 @@ export default function Login() {
   }
   return (
     <div className="authx-card">
-      <div className="authx-logo"><Truck size={26} /></div>
+      <Link to="/" className="authx-logo" aria-label={`${BRAND} home`}><Truck size={26} /></Link>
       <h2 className="authx-title">Welcome back</h2>
       <p className="authx-sub">Sign in to continue.</p>
       {err && <p className="error text-left mt-4">{err}</p>}
