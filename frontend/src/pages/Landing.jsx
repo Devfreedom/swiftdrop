@@ -293,10 +293,24 @@ export default function Landing() {
             ))}
           </nav>
           <div className="lp-nav-cta">
-            <a className="lp-login" href="/login">Login</a>
-            <a className="lp-btn lp-btn-red lp-btn-sm" href="/register">
-              Sign up <ArrowRight size={16} aria-hidden="true" />
-            </a>
+            {loading ? (
+              <NavAuthSkeleton />
+            ) : user ? (
+              <>
+                <span className="lp-userchip" aria-label={`Signed in as ${user.name}`}>
+                  <span className="lp-avatar" aria-hidden="true">{initialsOf(user.name)}</span>
+                  <span className="lp-username">{firstNameOf(user.name)}</span>
+                </span>
+                <DashboardButton to={dashboardTo} />
+              </>
+            ) : (
+              <>
+                <a className="lp-login" href="/login">Login</a>
+                <a className="lp-btn lp-btn-red lp-btn-sm" href="/register">
+                  Sign up <ArrowRight size={16} aria-hidden="true" />
+                </a>
+              </>
+            )}
           </div>
           <button
             className="icon-btn lp-burger"
