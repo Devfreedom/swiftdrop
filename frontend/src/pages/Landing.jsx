@@ -391,9 +391,15 @@ export default function Landing() {
               <strong>Riders can now sign up.</strong>
               <p>Create a rider account — an admin approves it before you can ride.</p>
             </Reveal>
-            <a className="lp-btn lp-btn-red lp-btn-sm" href="/register?role=rider">
-              Become a rider <ArrowRight size={16} aria-hidden="true" />
-            </a>
+            {loading ? (
+              <span className="lp-nav-skel" aria-hidden="true"><span className="lp-nav-skel-pill" /></span>
+            ) : user ? (
+              <DashboardButton to={dashboardTo} />
+            ) : (
+              <a className="lp-btn lp-btn-red lp-btn-sm" href="/register?role=rider">
+                Become a rider <ArrowRight size={16} aria-hidden="true" />
+              </a>
+            )}
           </div>
         </section>
 
@@ -417,9 +423,17 @@ export default function Landing() {
                     </span>
                     <h3>{title}</h3>
                     <p>{text}</p>
-                    <a className="lp-send" href="/register" aria-label={`Send ${title.toLowerCase()} — create an account`}>
-                      Send it <ArrowRight size={15} aria-hidden="true" />
-                    </a>
+                    {loading ? (
+                      <span className="lp-send" aria-hidden="true">Send it</span>
+                    ) : user ? (
+                      <Link className="lp-send" to={dashboardTo} aria-label={`Send ${title.toLowerCase()} — go to dashboard`}>
+                        Go to dashboard <ArrowRight size={15} aria-hidden="true" />
+                      </Link>
+                    ) : (
+                      <a className="lp-send" href="/register" aria-label={`Send ${title.toLowerCase()} — create an account`}>
+                        Send it <ArrowRight size={15} aria-hidden="true" />
+                      </a>
+                    )}
                   </article>
                 </Reveal>
               ))}
