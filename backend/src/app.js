@@ -13,6 +13,7 @@ app.use(express.json());
 // health check: proves the server and (via db check in server.js) the DB are up
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 
+app.use("/api", require("./routes/public")); // /api/stats (public, no auth)
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api", require("./routes/users")); // /api/me
 app.use("/api/deliveries", require("./routes/deliveries"));

@@ -40,6 +40,15 @@ Riders can sign up from the Register page (Customer/Rider toggle).
 New rider accounts start INACTIVE — an admin approves them
 (Admin → Riders → Approve) before they can log in.
 
+## Public landing stats
+
+`GET /api/stats` needs no authentication and returns aggregate counts only
+(no personal data), cached in memory for 60 seconds: `totalDeliveries`,
+`completedDeliveries`, `inProgressDeliveries` (ASSIGNED + PICKED_UP +
+IN_TRANSIT), `availableRiders` (ACTIVE + AVAILABLE), `activeRiders` and
+`customers`. The public landing page reads it; if it fails, the stats bar
+is hidden instead of showing placeholder numbers.
+
 ## Deploy
 
 Backend (Render/Railway/Fly-style host):
