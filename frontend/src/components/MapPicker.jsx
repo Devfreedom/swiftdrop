@@ -112,9 +112,9 @@ export default function MapPicker({ id, label, value, onChange, showLocate }) {
 
   return (
     <div className="map-picker">
-      <span className="lbl" id={`${id}-label`}>{label} (optional)</span>
+      <span className="field-label" id={`${id}-label`}>{label} (optional)</span>
       <div className="map-search">
-        <label className="sr-only" htmlFor={`${id}-search`}>Search for {label}</label>
+        <label className="sd-sr" htmlFor={`${id}-search`}>Search for {label}</label>
         <input
           id={`${id}-search`}
           value={query}
