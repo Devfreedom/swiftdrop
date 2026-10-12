@@ -316,7 +316,7 @@
 .lp-road-bike-b { bottom: 12px; animation-name: lp-drive-r; animation-duration: 20s; animation-delay: -7s; }
 .lp-road-bike-b .lp-road-svg { width: 64px; }
 .lp-road-svg { width: 88px; height: auto; display: block; }
-.lp-scoot-img.flip { transform: scaleX(-1); }
+.lp-road-svg.flip, .lp-cta-svg.flip { transform: scaleX(-1); }
 .lp-beam {
   position: absolute; top: 46%; left: 80%; width: 52px; height: 18px;
   background: linear-gradient(90deg, rgba(255, 241, 200, 0.6), rgba(255, 241, 200, 0));
@@ -525,14 +525,6 @@
 }
 .lp-cta-form input:focus { outline: none; }
 .lp-cta-form:focus-within { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55); }
-.lp-scoot { position: absolute; bottom: 26px; left: 0; color: rgba(255, 255, 255, 0.85); opacity: 0; }
-.lp-cta-band.in .lp-scoot { animation: scoot-across 3.2s var(--ease) 300ms both; }
-@keyframes scoot-across {
-  0% { transform: translateX(-15vw); opacity: 0; }
-  12% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { transform: translateX(115vw); opacity: 0; }
-}
 .lp-cta-deco { position: absolute; right: -40px; top: -40px; color: rgba(255, 255, 255, 0.12); }
 
 /* ---------- 12. Contact ---------- */
@@ -576,10 +568,16 @@
     0%, 100% { transform: perspective(1200px) rotateY(-5deg) translateY(-6px); }
     50% { transform: perspective(1200px) rotateY(-3deg) translateY(6px); }
   }
-  .lp-road { height: 80px; }
-  .lp-road-svg { width: 44px; }
-  .lp-road-bike-b .lp-road-svg { width: 36px; }
-  .lp-beam { width: 28px; height: 10px; }
+  .lp-road { height: 96px; }
+  .lp-road-bike-a { bottom: 24px; }
+  .lp-road-bike-b { bottom: 10px; }
+  .lp-road-svg { width: 56px; }
+  .lp-road-bike-b .lp-road-svg { width: 44px; }
+  .lp-beam { width: 36px; height: 13px; }
+  .lp-cta-lane { height: 88px; }
+  .lp-cta-svg { width: 60px; }
+  .lp-cta-bike-b .lp-cta-svg { width: 48px; }
+  .lp-cat-imgwrap { height: 170px; }
 }
 @media (max-width: 860px) {
   .lp-links, .lp-nav-cta { display: none; }
@@ -623,12 +621,12 @@
 
 /* ---------- Reduced motion: everything illustrative stays visible, static ---------- */
 @media (prefers-reduced-motion: reduce) {
-  /* CTA scooter: visible in place, never travelling. */
-  .lp-scoot {
-    animation: none; opacity: 0.9; transform: none;
-    left: auto; right: 32px; bottom: 24px;
-  }
-  .lp-cta-band.in .lp-scoot { animation: none; opacity: 0.9; }
+  /* CTA lane: scooters parked in place, beams steady, no flicker. */
+  .lp-cta-bike { animation: none; }
+  .lp-cta-bike-a { transform: translateX(18%); }
+  .lp-cta-bike-b { transform: translateX(62%); }
+  .lp-beam { animation: none; opacity: 0.7; }
+  .lp-beam-faint { opacity: 0.45; }
   /* Hero loop + chips: static frame, no drift, no pulse, no fade. */
   .lp-phone-loop { animation: none; }
   .lp-fchip { animation: none; }

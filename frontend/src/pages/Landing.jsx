@@ -434,22 +434,6 @@ function HeroScene({ user, loading, dashboardTo, isCustomer }) {
   const [userPlay, setUserPlay] = useState(true);
   const [shift, setShift] = useState(0);
 
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0.15,
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const onVis = () => setTabOn(document.visibilityState === "visible");
-    document.addEventListener("visibilitychange", onVis);
-    return () => document.removeEventListener("visibilitychange", onVis);
-  }, []);
-
   const baseRunning = userPlay && inView && tabOn && !REDUCED;
 
   /* Orbit swap: rotate each column's cards through their slots every few
