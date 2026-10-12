@@ -453,4 +453,24 @@
   .lp-cta-band { padding: 48px 24px; }
   .lp-riderband .lp-btn { margin-left: 0; width: 100%; justify-content: center; }
   .lp-foot-grid { grid-template-columns: 1fr; gap: 32px; }
+  /* Keep floating chips inside the 360px viewport. */
+  .lp-fchip-a { left: 6px; }
+  .lp-fchip-b { right: 6px; }
+  .lp-phone-wrap { padding-bottom: 22px; }
+}
+
+/* ---------- Reduced motion: everything illustrative stays visible, static ---------- */
+@media (prefers-reduced-motion: reduce) {
+  /* CTA scooter: visible in place, never travelling. */
+  .lp-scoot {
+    animation: none; opacity: 0.9; transform: none;
+    left: auto; right: 32px; bottom: 24px;
+  }
+  .lp-cta-band.in .lp-scoot { animation: none; opacity: 0.9; }
+  /* Hero loop + chips: static frame, no drift, no pulse, no fade. */
+  .lp-phone-loop { animation: none; }
+  .lp-fchip { animation: none; }
+  .lp-phone-stages li.now .lp-stage-dot { animation: none; }
+  .lp-track-fill, .lp-rider-dot { transition: none; }
+  .lp-nav.scrolled .lp-nav-inner { transition: none; }
 }
