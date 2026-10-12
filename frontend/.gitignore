@@ -22,10 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+CREDITS.md
 
 .env
 !.env.example
 
 # Visual QA screenshots (see step 7 QA loop)
 /screenshots
-CREDITS.md

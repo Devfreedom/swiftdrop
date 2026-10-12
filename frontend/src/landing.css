@@ -270,7 +270,7 @@
   0%, 100% { box-shadow: 0 0 0 0 var(--brand-ring, rgba(211, 47, 47, 0.35)); }
   50% { box-shadow: 0 0 0 7px transparent; }
 }
-.lp-phone-stages li.now .lp-stage-dot {
+/* Floating chips drift gently at different speeds. */
 .lp-fchip {
   position: absolute; display: inline-flex; align-items: center; gap: 6px;
   background: #fff; color: var(--ink); font-size: 12px; font-weight: 800;
