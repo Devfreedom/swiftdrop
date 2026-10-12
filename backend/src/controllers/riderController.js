@@ -1,6 +1,6 @@
 // Rider job flow: toggle availability, see open jobs, accept one,
 // then move it one step at a time to DELIVERED.
-const { Delivery, User, sequelize } = require("../../models");
+const { Delivery, RiderLocation, User, sequelize } = require("../../models");
 const { fail } = require("../utils/errors");
 const { ACTIVE_RIDER_STATUSES } = require("../utils/transitions");
 
@@ -108,6 +108,8 @@ async function updateStatus(req, res) {
       delivery.deliveredAt = new Date();
       req.user.availability = "AVAILABLE"; // job done, free again
       await req.user.save({ transaction: t });
+      // live point dies with the delivery: no tracking after drop-off
+      await RiderLocation.destroy({ where: { deliveryId: delivery.id }, transaction: t });
     }
     await delivery.save({ transaction: t });
   });

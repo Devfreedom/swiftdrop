@@ -1,6 +1,6 @@
 // Admin: platform totals, user management, all deliveries, payments + refunds.
 const bcrypt = require("bcryptjs");
-const { User, Delivery, Payment, sequelize } = require("../../models");
+const { User, Delivery, Payment, RiderLocation, sequelize } = require("../../models");
 const { fail } = require("../utils/errors");
 
 const CANCELLABLE = ["PENDING", "CONFIRMED", "ASSIGNED"];
@@ -133,6 +133,8 @@ async function cancelDelivery(req, res) {
     delivery.cancelReason = req.body.reason || "Cancelled by admin";
     delivery.cancelledAt = new Date();
     await delivery.save({ transaction: t });
+    // no live point survives a cancelled delivery
+    await RiderLocation.destroy({ where: { deliveryId: delivery.id }, transaction: t });
 
     if (delivery.riderId) {
       const rider = await User.findByPk(delivery.riderId, { transaction: t });

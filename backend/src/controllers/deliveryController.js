@@ -1,6 +1,6 @@
 // Customer deliveries: create, list own, read own, cancel own (pre-pickup),
 // pay (simulated), and list payments for own deliveries.
-const { Delivery, Payment, User, sequelize } = require("../../models");
+const { Delivery, Payment, RiderLocation, User, sequelize } = require("../../models");
 const { fail } = require("../utils/errors");
 const { calculateDeliveryFee, resolveWeightKg } = require("../utils/pricing");
 
@@ -64,6 +64,8 @@ async function cancelMine(req, res) {
     delivery.cancelReason = req.body.reason || "Cancelled by customer";
     delivery.cancelledAt = new Date();
     await delivery.save({ transaction: t });
+    // no live point survives a cancelled delivery
+    await RiderLocation.destroy({ where: { deliveryId: delivery.id }, transaction: t });
 
     if (delivery.riderId) {
       const rider = await User.findByPk(delivery.riderId, { transaction: t });
