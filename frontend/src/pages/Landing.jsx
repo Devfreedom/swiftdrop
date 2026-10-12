@@ -213,6 +213,7 @@ function NavAuthSkeleton() {
 }
 
 function AddressForm({ id, buttonLabel, variant, to = "/register" }) {
+  const nav = useNavigate();
   const [addr, setAddr] = useState("");
   return (
     <form
