@@ -343,7 +343,7 @@ function HeroLoop() {
         </div>
       </div>
       <span className="lp-fchip lp-fchip-a" aria-hidden="true">
-        <Check size={13} aria-hidden="true" /> Picked up
+        <Check size={13} aria-hidden="true" /> {HERO_STAGES[stageIdx]}
       </span>
       <span className="lp-fchip lp-fchip-b" aria-hidden="true">₦2,500 · Cash</span>
       {!REDUCED && (
