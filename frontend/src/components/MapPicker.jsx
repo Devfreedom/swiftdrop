@@ -6,7 +6,10 @@ import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from "react-lea
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-const DEFAULT_CENTER = [5.6037, -0.187]; // Accra fallback until a pin is set
+// Default view: the browser's location when permission is already granted,
+// otherwise Jos, Plateau State, Nigeria at city zoom. No Accra default.
+const JOS_CENTER = [9.8965, 8.8583];
+const JOS_ZOOM = 12;
 
 const PICK_ICON = L.divIcon({
   className: "sd-pin sd-pin-pick",
@@ -53,7 +56,34 @@ export default function MapPicker({ id, label, value, onChange, showLocate }) {
   const [searchErr, setSearchErr] = useState("");
   const [locating, setLocating] = useState(false);
   const [locateErr, setLocateErr] = useState("");
+  const [autoCenter, setAutoCenter] = useState(null);
   const timer = useRef(null);
+
+  // Center on the browser's location, but only when permission is already
+  // granted (never prompts on page load). Otherwise Jos stays the default.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        if (!("geolocation" in navigator)) return;
+        if (!navigator.permissions?.query) return;
+        const st = await navigator.permissions.query({ name: "geolocation" });
+        if (cancelled || st.state !== "granted") return;
+        navigator.geolocation.getCurrentPosition(
+          (p) => {
+            if (!cancelled) setAutoCenter([p.coords.latitude, p.coords.longitude]);
+          },
+          () => {},
+          { timeout: 8000, maximumAge: 60000 }
+        );
+      } catch {
+        /* stay on the Jos default */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Debounced Nominatim search (at least 1s after the last keystroke).
   useEffect(() => {
@@ -108,7 +138,7 @@ export default function MapPicker({ id, label, value, onChange, showLocate }) {
   }
 
   const pos = validCoords(value) ? value : null;
-  const center = pos ? [pos.lat, pos.lng] : DEFAULT_CENTER;
+  const center = pos ? [pos.lat, pos.lng] : autoCenter || JOS_CENTER;
 
   return (
     <div className="map-picker">
@@ -152,7 +182,7 @@ export default function MapPicker({ id, label, value, onChange, showLocate }) {
       <div className="sd-map" style={{ height: 220 }}>
         <MapContainer
           center={center}
-          zoom={pos ? 14 : 11}
+          zoom={pos ? 14 : autoCenter ? 13 : JOS_ZOOM}
           scrollWheelZoom={false}
           style={{ height: "100%", width: "100%" }}
           aria-label={`${label} picker map. Activate, then use arrow keys on the pin or tap to place it.`}
