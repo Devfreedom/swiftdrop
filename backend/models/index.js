@@ -16,4 +16,9 @@ Delivery.belongsTo(User, { as: "rider", foreignKey: "riderId" });
 Delivery.hasMany(Payment, { as: "payments", foreignKey: "deliveryId" });
 Payment.belongsTo(Delivery, { as: "delivery", foreignKey: "deliveryId" });
 
-module.exports = { sequelize, User, Delivery, Payment };
+// at most one live rider point per delivery (upserted, deleted on completion)
+Delivery.hasOne(RiderLocation, { as: "riderLocation", foreignKey: "deliveryId" });
+RiderLocation.belongsTo(Delivery, { as: "delivery", foreignKey: "deliveryId" });
+RiderLocation.belongsTo(User, { as: "rider", foreignKey: "riderId" });
+
+module.exports = { sequelize, User, Delivery, Payment, RiderLocation };
