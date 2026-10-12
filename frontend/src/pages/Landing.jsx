@@ -246,7 +246,6 @@ function PowerBikeImg({ flip = false, className = "lp-bike-img", eager = false }
    linear easing and start together — stagger is encoded in keyframes,
    never in separate timers/delays. Visibility (own IntersectionObserver +
    Page Visibility API) only toggles animation-play-state, never resets. */
-const RS_CYCLE_S = 9;
 const BIKE_DIRECTIONS = ["right", "left"];
 
 /* Reusable inline-SVG delivery motorcycle, drawn facing right. Matte-black
