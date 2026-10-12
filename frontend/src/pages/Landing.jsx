@@ -237,7 +237,108 @@ function PowerBikeImg({ flip = false, className = "lp-bike-img", eager = false }
   );
 }
 
-/* Live "section on screen" flag (updates as visibility changes). */
+/* Hero road strip: single 9s synchronized timeline for both bikes.
+   CYCLE_MS = 9000, BIKE_A_ENTER_MS = 2000, BIKE_B_ENTER_MS = 2500,
+   CROSS_MS = 3200. Keyframe percentages derive from these:
+   A: 2000/9000 = 22.22% -> 5200/9000 = 57.78%;
+   B: 2500/9000 = 27.78% -> 5700/9000 = 63.33%.
+   0-2s and 5.7-9s are empty road. Both animations share duration (9s),
+   linear easing and start together — stagger is encoded in keyframes,
+   never in separate timers/delays. Visibility (own IntersectionObserver +
+   Page Visibility API) only toggles animation-play-state, never resets. */
+const RS_CYCLE_S = 9;
+const BIKE_DIRECTIONS = ["right", "left"];
+
+/* Reusable inline-SVG delivery motorcycle, drawn facing right. Matte-black
+   body (#0A0A0A) with a lighter edge highlight, hunched rider, delivery box
+   with a restrained red accent, dark wheels with red rims, red tail light,
+   white headlight core with warm (#FFF8DC) glow. Rendered twice below. */
+function Bike() {
+  return (
+    <svg className="lp-rs-svg" viewBox="0 0 120 64" aria-hidden="true" focusable="false">
+      {/* warm headlight halo */}
+      <circle cx="105" cy="34" r="9" fill="#FFF8DC" opacity="0.28" />
+      {/* wheels: dark tyres + red rims */}
+      <circle cx="28" cy="48" r="13" fill="#111111" stroke="#0A0A0A" strokeWidth="2" />
+      <circle cx="28" cy="48" r="6" fill="none" stroke="#D32F2F" strokeWidth="2" />
+      <circle cx="28" cy="48" r="1.6" fill="#D32F2F" />
+      <circle cx="92" cy="48" r="13" fill="#111111" stroke="#0A0A0A" strokeWidth="2" />
+      <circle cx="92" cy="48" r="6" fill="none" stroke="#D32F2F" strokeWidth="2" />
+      <circle cx="92" cy="48" r="1.6" fill="#D32F2F" />
+      {/* delivery box behind rider */}
+      <rect x="6" y="22" width="20" height="16" rx="2" fill="#0A0A0A" stroke="#3A3A3A" strokeWidth="1" />
+      <rect x="6" y="26" width="20" height="3" fill="#D32F2F" opacity="0.85" />
+      {/* frame / matte-black body with edge highlight */}
+      <path
+        d="M28 48 L46 34 L70 36 L92 48 M46 34 L42 26 L58 24 L70 36 M70 36 L78 26"
+        fill="none" stroke="#0A0A0A" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"
+      />
+      <path
+        d="M28 48 L46 34 L70 36 L92 48"
+        fill="none" stroke="#3A3A3A" strokeWidth="1" opacity="0.9"
+      />
+      {/* fuel tank / seat block */}
+      <path d="M44 36 L60 30 L72 34 L66 40 L46 40 Z" fill="#0A0A0A" stroke="#3A3A3A" strokeWidth="1" />
+      {/* hunched rider silhouette */}
+      <circle cx="60" cy="14" r="6" fill="#0A0A0A" stroke="#3A3A3A" strokeWidth="0.8" />
+      <path
+        d="M56 20 C50 26 48 32 50 38 L58 38 C57 32 60 28 66 26 L78 28 L80 32 L64 32 C60 34 58 36 58 38"
+        fill="none" stroke="#0A0A0A" strokeWidth="6" strokeLinecap="round"
+      />
+      <path
+        d="M56 20 C50 26 48 32 50 38"
+        fill="none" stroke="#3A3A3A" strokeWidth="1" opacity="0.8"
+      />
+      {/* front fork + handlebar */}
+      <path d="M80 32 L92 48 M78 28 L88 30" stroke="#0A0A0A" strokeWidth="4" strokeLinecap="round" />
+      {/* red tail light */}
+      <circle cx="9" cy="34" r="2.4" fill="#D32F2F" />
+      {/* white headlight core */}
+      <circle cx="105" cy="34" r="3.2" fill="#FFFFFF" />
+    </svg>
+  );
+}
+
+/* Decorative road strip at the bottom of the dark hero. Own visibility gate
+   (IntersectionObserver + tab visibility) — fully independent of the phone
+   mockup's pause/play control. Outer .lp-rs-move-* spans carry the 9s
+   translateX timeline; inner .lp-rs-face spans carry the scaleX(-1) mirror so
+   the two transforms never overwrite each other. The beam + road-light pool
+   live inside the face wrapper, so mirroring also reverses the light. */
+function RoadStrip() {
+  const ref = useRef(null);
+  const [onScreen, setOnScreen] = useState(true);
+  const tabOn = useTabOn();
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver !== "function") return;
+    const io = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting), {
+      threshold: 0,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const running = onScreen && tabOn;
+  return (
+    <div ref={ref} className={`lp-roadstrip${running ? "" : " lp-rs-paused"}`} aria-hidden="true">
+      <span className="lp-rs-streak lp-rs-streak-a" />
+      <span className="lp-rs-streak lp-rs-streak-b" />
+      <span className="lp-rs-ground" />
+      {BIKE_DIRECTIONS.map((dir, i) => (
+        <span
+          key={i}
+          className={`lp-rs-move lp-rs-move-${i === 0 ? "a" : "b"} lp-rs-dir-${dir}`}
+        >
+          <span className={`lp-rs-face${dir === "left" ? " is-left" : ""}`}>
+            <Bike />
+            <span className="lp-rs-beam" />
+            <span className="lp-rs-pool" />
+          </span>
+        </span>
+      ))}
+    </div>
+  );
+}
 function useLive(threshold = 0.2) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
@@ -410,9 +511,10 @@ function HeroLoop({ baseRunning, userPlay, setUserPlay }) {
 }
 
 /* Hero scene: owns the shared playback state (pause control, on-screen,
-   tab visibility) for everything in the hero — status loop, orbit cards,
-   device float/glow, road bikes and vignette all pause together. Copy and
-   trust points below are unchanged. */
+   tab visibility) for the status loop, orbit cards, device float/glow and
+   vignette. The road strip below owns its own visibility gate and is never
+   paused by the phone mockup's pause/play control. Copy and trust points
+   below are unchanged. */
 function HeroScene({ user, loading, dashboardTo, isCustomer }) {
   const [sectionRef, inView] = useLive(0.15);
   const tabOn = useTabOn();
@@ -482,18 +584,7 @@ function HeroScene({ user, loading, dashboardTo, isCustomer }) {
           <HeroLoop baseRunning={baseRunning} userPlay={userPlay} setUserPlay={setUserPlay} />
         </div>
       </div>
-      <div className="lp-road" aria-hidden="true">
-        <span className="lp-road-line" />
-        <span className="lp-road-line lp-road-dash" />
-        <span className="lp-road-bike lp-road-bike-a">
-          <PowerBikeImg eager className="lp-road-svg" />
-          <span className="lp-beam" />
-        </span>
-        <span className="lp-road-bike lp-road-bike-b">
-          <PowerBikeImg eager className="lp-road-svg" flip />
-          <span className="lp-beam lp-beam-l" />
-        </span>
-      </div>
+      <RoadStrip />
     </section>
   );
 }
