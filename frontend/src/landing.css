@@ -300,10 +300,13 @@
 .lp-hero.lp-paused .lp-device,
 .lp-hero.lp-paused .lp-device::after,
 .lp-hero.lp-paused::before,
-.lp-hero.lp-paused .lp-road-bike { animation-play-state: paused; }
-/* Road along the hero bottom edge: subtle lines + two bikes with headlight
-   beams driving left to right (14s / 20s). Both ends render off-screen and
-   the hero clips overflow, so re-entry has no visible jump. */
+.lp-hero.lp-paused .lp-road-bike,
+.lp-hero.lp-paused .lp-road-svg { animation-play-state: paused; }
+/* Road along the hero bottom edge: subtle lines + two power-bikes with
+   headlight beams driving left to right (14s / 20s). Both ends render
+   off-screen and the hero clips overflow, so re-entry has no visible jump.
+   Each bike also rides: a fast engine shudder + suspension bounce and a
+   slight forward lean so it reads as driving, not sliding. */
 .lp-road { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; z-index: 1; pointer-events: none; overflow: hidden; }
 .lp-road-line { position: absolute; left: 0; right: 0; bottom: 36px; border-top: 2px solid rgba(255, 255, 255, 0.1); }
 .lp-road-dash { bottom: 20px; border-top: 2px dashed rgba(255, 255, 255, 0.08); }
@@ -311,8 +314,23 @@
 .lp-road-bike-a { bottom: 30px; }
 .lp-road-bike-b { bottom: 12px; animation-name: lp-drive-r; animation-duration: 20s; animation-delay: -7s; }
 .lp-road-bike-b .lp-road-svg { width: 64px; }
-.lp-road-svg { width: 88px; height: auto; display: block; }
+.lp-road-svg { width: 88px; height: auto; display: block; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45)); animation: pb-ride 0.45s ease-in-out infinite; }
 .lp-road-svg.flip, .lp-cta-svg.flip { transform: scaleX(-1); }
+.lp-road-svg.flip { animation-name: pb-ride-flip; }
+.lp-cta-svg { animation: pb-ride 0.45s ease-in-out infinite; }
+.lp-cta-bike-b .lp-cta-svg { animation-delay: -0.22s; }
+.lp-cta-svg.flip { animation-name: pb-ride-flip; }
+/* Engine shudder + suspension bounce + forward lean (transform only). The
+   flipped variant bakes the mirror into the keyframes so the bounce isn't
+   overridden by the scaleX class. */
+@keyframes pb-ride {
+  0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+  50% { transform: translateY(-2px) rotate(0.5deg); }
+}
+@keyframes pb-ride-flip {
+  0%, 100% { transform: scaleX(-1) translateY(0) rotate(-0.5deg); }
+  50% { transform: scaleX(-1) translateY(-2px) rotate(0.5deg); }
+}
 .lp-beam {
   position: absolute; top: 46%; left: 80%; width: 52px; height: 18px;
   background: linear-gradient(90deg, rgba(255, 241, 200, 0.6), rgba(255, 241, 200, 0));
@@ -334,7 +352,7 @@
   from { transform: translate3d(calc(100vw + 160px), 0, 0); }
   to { transform: translate3d(-160px, 0, 0); }
 }
-/* CTA lane: same two scooters on a short path along the band bottom. The
+/* CTA lane: same two power-bikes on a short path along the band bottom. The
    full-width spans translate in lane-relative % so re-entry stays clean at
    any band width; the inner rider shrink-wraps the image for the beam. */
 .lp-cta-lane { position: absolute; left: 0; right: 0; bottom: 0; height: 104px; pointer-events: none; overflow: hidden; }
@@ -353,6 +371,7 @@
   to { transform: translateX(-16%); }
 }
 .lp-cta-band.lp-paused .lp-cta-bike,
+.lp-cta-band.lp-paused .lp-cta-svg,
 .lp-cta-band.lp-paused .lp-beam { animation-play-state: paused; }
 
 /* ---------- 3. Rider banner (cream) ---------- */
@@ -617,10 +636,11 @@
 
 /* ---------- Reduced motion: everything illustrative stays visible, static ---------- */
 @media (prefers-reduced-motion: reduce) {
-  /* CTA lane: scooters parked in place, beams steady, no flicker. */
+  /* CTA lane: power-bikes parked in place, beams steady, no flicker. */
   .lp-cta-bike { animation: none; }
   .lp-cta-bike-a { transform: translateX(18%); }
   .lp-cta-bike-b { transform: translateX(62%); }
+  .lp-cta-svg { animation: none; }
   .lp-beam { animation: none; opacity: 0.7; }
   .lp-beam-faint { opacity: 0.45; }
   /* Hero loop + chips: static frame, no drift, no pulse, no fade. */
@@ -636,6 +656,7 @@
   .lp-road-bike { animation: none; }
   .lp-road-bike-a { left: 12%; }
   .lp-road-bike-b { left: 66%; }
+  .lp-road-svg { animation: none; }
   .lp-phone-stages li.now .lp-stage-dot { animation: none; }
   .lp-track-fill, .lp-rider-dot { transition: none; }
   .lp-nav.scrolled .lp-nav-inner { transition: none; }

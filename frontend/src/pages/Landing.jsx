@@ -216,18 +216,19 @@ function NavAuthSkeleton() {
   );
 }
 
-/* Shared scooter image (self-hosted transparent WebP, credited in
-   public/images/CREDITS.md): the hero road and the CTA band both render this
-   component — one source. Decorative, so alt stays empty. `flip` mirrors it
-   (scaleX) for the scooter travelling the other way. */
-function ScooterImg({ flip = false, className = "lp-scoot-img", eager = false }) {
+/* Shared power-bike image (self-hosted transparent WebP cut out from a
+   Pixabay photo, credited in public/images/CREDITS.md): the hero road and
+   the CTA band both render this component — one source. Decorative, so alt
+   stays empty. `flip` mirrors it (scaleX) for the bike travelling the
+   other way. */
+function PowerBikeImg({ flip = false, className = "lp-bike-img", eager = false }) {
   return (
     <img
-      src="/images/scooter-right.webp"
+      src="/images/powerbike-right.webp"
       alt=""
       aria-hidden="true"
       width={600}
-      height={600}
+      height={638}
       loading={eager ? "eager" : "lazy"}
       decoding="async"
       draggable={false}
@@ -485,11 +486,11 @@ function HeroScene({ user, loading, dashboardTo, isCustomer }) {
         <span className="lp-road-line" />
         <span className="lp-road-line lp-road-dash" />
         <span className="lp-road-bike lp-road-bike-a">
-          <ScooterImg eager className="lp-road-svg" />
+          <PowerBikeImg eager className="lp-road-svg" />
           <span className="lp-beam" />
         </span>
         <span className="lp-road-bike lp-road-bike-b">
-          <ScooterImg eager className="lp-road-svg" flip />
+          <PowerBikeImg eager className="lp-road-svg" flip />
           <span className="lp-beam lp-beam-l" />
         </span>
       </div>
@@ -947,13 +948,13 @@ export default function Landing() {
               <div className="lp-cta-lane" ref={ctaLaneRef} aria-hidden="true">
                 <span className="lp-cta-bike lp-cta-bike-a">
                   <span className="lp-cta-rider">
-                    <ScooterImg className="lp-cta-svg" />
+                    <PowerBikeImg className="lp-cta-svg" />
                     <span className="lp-beam lp-beam-faint" />
                   </span>
                 </span>
                 <span className="lp-cta-bike lp-cta-bike-b">
                   <span className="lp-cta-rider">
-                    <ScooterImg className="lp-cta-svg" flip />
+                    <PowerBikeImg className="lp-cta-svg" flip />
                     <span className="lp-beam lp-beam-l lp-beam-faint" />
                   </span>
                 </span>
