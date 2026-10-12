@@ -516,7 +516,7 @@ export default function Landing() {
                 no lost parcels, no guesswork about who does what.
               </p>
             </Reveal>
-            <div className="lp-every-grid">
+            <div className={`lp-every-grid${stats ? "" : " single"}`}>
               <div className="lp-dark-cards">
                 {EVERYONE.map(({ icon: Icon, title, text }, i) => (
                   <Reveal key={title} delay={(i % 2) * 90}>
@@ -528,12 +528,12 @@ export default function Landing() {
                   </Reveal>
                 ))}
               </div>
+              {stats && (
               <div ref={pulseRef} className={`lp-pulse${pulseIn ? " in" : ""}`} aria-label="Live dispatch numbers">
                 <div className="lp-pulse-head">
                   <span className="lp-pulse-dot" aria-hidden="true" />
                   <strong>Dispatch pulse</strong>
                 </div>
-                {stats ? (
                   <>
                     <div className="lp-pulse-row">
                       <div className="lp-pulse-top"><span>In progress</span><b>{stats.inProgressDeliveries}</b></div>
@@ -548,10 +548,8 @@ export default function Landing() {
                       <div className="lp-pulse-bar"><i style={{ "--w": share(stats.completedDeliveries) }} /></div>
                     </div>
                   </>
-                ) : (
-                  <p className="lp-pulse-note">Live numbers are unavailable right now — please check back soon.</p>
-                )}
               </div>
+              )}
             </div>
           </div>
         </section>
@@ -606,7 +604,7 @@ export default function Landing() {
                   <div className="lp-mock-tag"><span className="badge b-brand">Example</span></div>
                   <h3>Active delivery · DEL-1042</h3>
                   <p className="route">Ring Road Central → Cantonments, Accra</p>
-                  <p className="fee">₦18.50 · rider Efua · cash on delivery</p>
+                  <p className="fee">₦2,500 · rider Efua · cash on delivery</p>
                   <div style={{ margin: "10px 0 2px" }}><StatusBadge value="IN_TRANSIT" /></div>
                   <Stepper status="IN_TRANSIT" />
                 </div>
