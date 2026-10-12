@@ -384,6 +384,34 @@
    (animation-play-state), never resets it; removing the class resumes. */
 .lp-roadstrip.lp-rs-paused .lp-rs-move,
 .lp-roadstrip.lp-rs-paused .lp-rs-beam { animation-play-state: paused; }
+/* CTA scooter beams + engine shudder (CTA lane only — untouched by the
+   hero road-strip rebuild). The flipped variant bakes the mirror into the
+   keyframes so the bounce isn't overridden by the scaleX class. */
+.lp-cta-svg.flip { transform: scaleX(-1); }
+.lp-cta-svg { animation: pb-ride 0.45s ease-in-out infinite; }
+.lp-cta-bike-b .lp-cta-svg { animation-delay: -0.22s; }
+.lp-cta-svg.flip { animation-name: pb-ride-flip; }
+@keyframes pb-ride {
+  0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+  50% { transform: translateY(-2px) rotate(0.5deg); }
+}
+@keyframes pb-ride-flip {
+  0%, 100% { transform: scaleX(-1) translateY(0) rotate(-0.5deg); }
+  50% { transform: scaleX(-1) translateY(-2px) rotate(0.5deg); }
+}
+.lp-beam {
+  position: absolute; top: 46%; left: 80%; width: 52px; height: 18px;
+  background: linear-gradient(90deg, rgba(255, 241, 200, 0.6), rgba(255, 241, 200, 0));
+  clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 70%);
+  mix-blend-mode: screen;
+  animation: lp-beam 2.4s ease-in-out infinite;
+}
+.lp-beam-l { left: auto; right: 80%; transform: scaleX(-1); }
+.lp-beam-faint { opacity: 0.5; }
+@keyframes lp-beam {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.85; }
+}
 /* CTA lane: same two power-bikes on a short path along the band bottom. The
    full-width spans translate in lane-relative % so re-entry stays clean at
    any band width; the inner rider shrink-wraps the image for the beam. */
@@ -615,11 +643,14 @@
     0%, 100% { transform: perspective(1200px) rotateY(-5deg) translateY(-6px); }
     50% { transform: perspective(1200px) rotateY(-3deg) translateY(6px); }
   }
-  .lp-road { height: 96px; }
-  .lp-road-bike-a { bottom: 24px; }
-  .lp-road-bike-b { bottom: 10px; }
-  .lp-road-svg { width: 56px; }
-  .lp-road-bike-b .lp-road-svg { width: 44px; }
+  .lp-roadstrip { height: 120px; }
+  .lp-rs-move { bottom: 26px; }
+  .lp-rs-ground { bottom: 24px; }
+  .lp-rs-streak-a { bottom: 52px; }
+  .lp-rs-streak-b { bottom: 34px; }
+  .lp-rs-svg { width: 60px; }
+  .lp-rs-beam { width: 80px; height: 34px; }
+  .lp-rs-pool { width: 62px; height: 10px; top: 38px; }
   .lp-beam { width: 36px; height: 13px; }
   .lp-cta-lane { height: 88px; }
   .lp-cta-svg { width: 60px; }
@@ -685,10 +716,15 @@
   .lp-orbit-bob { animation: none; }
   .lp-device, .lp-device::after { animation: none; }
   .lp-device::after { opacity: 0.3; }
-  .lp-road-bike { animation: none; }
-  .lp-road-bike-a { left: 12%; }
-  .lp-road-bike-b { left: 66%; }
-  .lp-road-svg { animation: none; }
+  /* Road strip: both bikes parked and fully static at ~1/3 and ~2/3,
+     beams + road-light pools steady, opposite facing kept, ground line
+     shared. !important beats the global reduced-motion kill-switch so the
+     parked composition (not an empty end-frame) is what stays visible. */
+  .lp-rs-move { animation: none !important; transform: none !important; }
+  .lp-rs-move-a { left: 30%; }
+  .lp-rs-move-b { left: 62%; }
+  .lp-rs-face.is-left { transform: scaleX(-1) !important; }
+  .lp-rs-beam { animation: none !important; opacity: 0.3; }
   .lp-phone-stages li.now .lp-stage-dot { animation: none; }
   .lp-track-fill, .lp-rider-dot { transition: none; }
   .lp-nav.scrolled .lp-nav-inner { transition: none; }
