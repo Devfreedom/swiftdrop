@@ -127,15 +127,28 @@
 
 /* ---------- 2. Hero (dark) ---------- */
 .lp-hero {
+  position: relative;
   background:
     radial-gradient(900px 520px at 8% 30%, rgba(211, 47, 47, 0.28), transparent 60%),
     linear-gradient(120deg, var(--lp-hero-a), var(--lp-hero-b) 70%);
   color: #fff; overflow: hidden;
 }
-.lp-hero-grid {
-  max-width: 1160px; margin: 0 auto; padding: 96px 24px 110px;
-  display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center;
+/* Slow-drifting red vignette (transform-only, very subtle, ~20s). */
+.lp-hero::before {
+  content: ""; position: absolute; inset: -60px; z-index: 0; pointer-events: none;
+  background: radial-gradient(600px 380px at 20% 30%, rgba(211, 47, 47, 0.2), transparent 65%);
+  animation: lp-vig 20s ease-in-out infinite alternate;
 }
+@keyframes lp-vig {
+  from { transform: translate3d(-30px, -14px, 0); }
+  to { transform: translate3d(30px, 16px, 0); }
+}
+.lp-hero-grid {
+  max-width: 1160px; margin: 0 auto; padding: 96px 24px 130px;
+  display: grid; grid-template-columns: 1fr 1.05fr; gap: 56px; align-items: center;
+  position: relative; z-index: 2;
+}
+.lp-hero-visual { position: relative; min-width: 0; }
 .lp-hero-copy { min-width: 0; }
 .lp-hero-label {
   display: inline-block; font-size: var(--text-12); font-weight: var(--weight-bold);
@@ -166,12 +179,56 @@
 
 /* ---------- 2b. Hero phone mockup (illustrative Example loop) ---------- */
 .lp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.lp-phone-wrap { position: relative; width: 100%; max-width: 380px; margin: 0 auto; padding: 48px 0 54px; }
+.lp-phone-wrap { position: relative; width: 100%; max-width: 320px; margin: 0 auto; padding: 48px 0 54px; }
 .lp-phone-loop { animation: lp-loop-fade 500ms var(--ease); }
 @keyframes lp-loop-fade { from { opacity: 0.25; } to { opacity: 1; } }
+/* Phone-style frame: thin bezel, slight tilt, slow float (~5s). The glow is a
+   halo layer whose opacity pulses (~2.5s) — transform/opacity only. */
+.lp-device {
+  position: relative; border-radius: 34px; padding: 10px;
+  background: linear-gradient(160deg, #333338, #101013);
+  box-shadow: 0 32px 64px -24px rgba(0, 0, 0, 0.6);
+  transform: perspective(1200px) rotateY(-6deg);
+  animation: lp-float 5s ease-in-out infinite;
+}
+.lp-device::after {
+  content: ""; position: absolute; inset: -2px; border-radius: 36px;
+  box-shadow: 0 0 46px 8px rgba(211, 47, 47, 0.38);
+  opacity: 0.35; pointer-events: none;
+  animation: lp-halo 2.5s ease-in-out infinite;
+}
+@keyframes lp-float {
+  0%, 100% { transform: perspective(1200px) rotateY(-8deg) translateY(-8px); }
+  50% { transform: perspective(1200px) rotateY(-4deg) translateY(8px); }
+}
+@keyframes lp-halo {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.75; }
+}
+/* Orbiting category cards: decorative white minis in the side gutters.
+   Outer span swaps slots (transform 600ms); inner span bobs (3–4s). */
+.lp-orbit { position: absolute; inset: 0; pointer-events: none; }
+.lp-orbit-col { position: absolute; top: 50%; transform: translateY(-50%); display: grid; gap: 12px; }
+.lp-orbit-left { left: 0; }
+.lp-orbit-right { right: 0; }
+.lp-orbit-card {
+  display: block; width: 108px; height: 104px; background: #fff;
+  border-radius: 14px; box-shadow: var(--shadow-md);
+  transition: transform 600ms var(--ease), opacity 600ms var(--ease);
+}
+.lp-orbit-bob {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; height: 100%;
+  animation: lp-bob 3.5s ease-in-out infinite;
+}
+@keyframes lp-bob {
+  0%, 100% { transform: translateY(-8px); }
+  50% { transform: translateY(8px); }
+}
+.lp-orbit .lp-tile { margin: 0; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; }
+.lp-orbit-card b { font-size: 12px; font-weight: 800; color: var(--ink); text-align: center; line-height: 1.25; padding: 0 6px; }
 .lp-phone {
   background: #fff; color: var(--ink); border-radius: 24px;
-  box-shadow: 0 32px 64px -24px rgba(0, 0, 0, 0.6);
   padding: 22px 22px 18px; position: relative; overflow: hidden;
 }
 .lp-phone-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
@@ -240,6 +297,35 @@
 }
 .lp-loop-toggle:hover { color: var(--brand-active); }
 .lp-loop-toggle:focus-visible { outline: 3px solid var(--brand-ring); outline-offset: 3px; }
+/* Shared pause: the pause control / off-screen / hidden tab freeze the NEW
+   hero animations (orbit, device, vignette, bikes). The pre-existing status
+   loop keeps its own behavior. */
+.lp-hero.lp-paused .lp-orbit-bob,
+.lp-hero.lp-paused .lp-device,
+.lp-hero.lp-paused .lp-device::after,
+.lp-hero.lp-paused .lp-hero::before,
+.lp-hero.lp-paused::before,
+.lp-hero.lp-paused .lp-road-bike { animation-play-state: paused; }
+/* Road along the hero bottom edge: subtle lines + two bikes with headlight
+   beams driving left to right (14s / 20s). Both ends render off-screen and
+   the hero clips overflow, so re-entry has no visible jump. */
+.lp-road { position: absolute; left: 0; right: 0; bottom: 0; height: 96px; z-index: 1; pointer-events: none; overflow: hidden; }
+.lp-road-line { position: absolute; left: 0; right: 0; bottom: 36px; border-top: 2px solid rgba(255, 255, 255, 0.1); }
+.lp-road-dash { bottom: 20px; border-top: 2px dashed rgba(255, 255, 255, 0.08); }
+.lp-road-bike { position: absolute; left: 0; top: auto; color: #fff; opacity: 0.85; animation: lp-drive 14s linear infinite; }
+.lp-road-bike-a { bottom: 40px; }
+.lp-road-bike-b { bottom: 12px; opacity: 0.6; animation-duration: 20s; animation-delay: -9s; }
+.lp-road-bike-b .lp-road-svg { width: 46px; height: auto; }
+.lp-road-svg { width: 58px; height: auto; display: block; }
+.lp-beam {
+  position: absolute; top: 52%; left: 86%; width: 38px; height: 12px;
+  background: linear-gradient(90deg, rgba(255, 241, 200, 0.55), rgba(255, 241, 200, 0));
+  clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 70%);
+}
+@keyframes lp-drive {
+  from { transform: translate3d(-140px, 0, 0); }
+  to { transform: translate3d(calc(100vw + 140px), 0, 0); }
+}
 
 /* ---------- 3. Rider banner (cream) ---------- */
 .lp-band-cream { background: var(--lp-cream-2); border-top: 1px solid var(--lp-card-line); border-bottom: 1px solid var(--lp-card-line); }
