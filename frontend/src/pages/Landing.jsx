@@ -31,12 +31,12 @@ const NAV_LINKS = [
 ];
 
 const CATEGORIES = [
-  { icon: FileText, tile: "#DBEAFE", ink: "#1D4ED8", title: "Documents", text: "Contracts, certificates and letters, sealed and tracked." },
-  { icon: ShoppingBasket, tile: "#DCFCE7", ink: "#15803D", title: "Groceries", text: "Market runs and restocks, from shop shelf to kitchen." },
-  { icon: Gift, tile: "#FCE7F3", ink: "#9D174D", title: "Gifts", text: "Birthdays and surprises, delivered with care." },
-  { icon: Smartphone, tile: "#FEF3C7", ink: "#92400E", title: "Electronics", text: "Phones, laptops and accessories, handled gently." },
-  { icon: Shirt, tile: "#CCFBF1", ink: "#0E7490", title: "Fashion", text: "Clothes, shoes and fabrics, packed to arrive neat." },
-  { icon: Box, tile: "#FDECEC", ink: "#9A1717", title: "Fragile items", text: "Glassware and breakables, cushioned every mile." },
+  { icon: FileText, tile: "#DBEAFE", ink: "#1D4ED8", title: "Documents", text: "Contracts, certificates and letters, sealed and tracked.", img: "/images/documents-parcel.webp", h: 533, alt: "Sealed cardboard parcel box ready for delivery" },
+  { icon: ShoppingBasket, tile: "#DCFCE7", ink: "#15803D", title: "Groceries", text: "Market runs and restocks, from shop shelf to kitchen.", img: "/images/groceries-bag.webp", h: 533, alt: "Brown paper grocery bag filled with fresh vegetables" },
+  { icon: Gift, tile: "#FCE7F3", ink: "#9D174D", title: "Gifts", text: "Birthdays and surprises, delivered with care.", img: "/images/gifts-boxes.webp", h: 596, alt: "Colourfully wrapped gift boxes with ribbons" },
+  { icon: Smartphone, tile: "#FEF3C7", ink: "#92400E", title: "Electronics", text: "Phones, laptops and accessories, handled gently.", img: "/images/electronics-headphones.webp", h: 1422, alt: "Black over-ear headphones product shot" },
+  { icon: Shirt, tile: "#CCFBF1", ink: "#0E7490", title: "Fashion", text: "Clothes, shoes and fabrics, packed to arrive neat.", img: "/images/fashion-folded.webp", h: 1200, alt: "Neatly folded stack of colourful clothes" },
+  { icon: Box, tile: "#FDECEC", ink: "#9A1717", title: "Fragile items", text: "Glassware and breakables, cushioned every mile.", img: "/images/fragile-vases.webp", h: 534, alt: "Handmade ceramic vases on a wooden table" },
 ];
 
 const STEPS = [
