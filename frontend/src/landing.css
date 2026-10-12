@@ -303,7 +303,6 @@
 .lp-hero.lp-paused .lp-orbit-bob,
 .lp-hero.lp-paused .lp-device,
 .lp-hero.lp-paused .lp-device::after,
-.lp-hero.lp-paused .lp-hero::before,
 .lp-hero.lp-paused::before,
 .lp-hero.lp-paused .lp-road-bike { animation-play-state: paused; }
 /* Road along the hero bottom edge: subtle lines + two bikes with headlight
@@ -510,6 +509,28 @@
 }
 
 /* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  /* Narrower gutters: slimmer orbit cards pushed into the grid gap/margin. */
+  .lp-orbit-card { width: 84px; }
+  .lp-orbit-card b { font-size: 11px; }
+  .lp-orbit .lp-tile { width: 28px; height: 28px; }
+  .lp-orbit-left { left: -16px; }
+  .lp-orbit-right { right: -16px; }
+}
+@media (max-width: 768px) {
+  /* Orbit cards hide; phone scales down; bikes shrink; all fit 360px. */
+  .lp-orbit { display: none; }
+  .lp-phone-wrap { max-width: 300px; }
+  .lp-device { transform: perspective(1200px) rotateY(-4deg); animation-name: lp-float-sm; }
+  @keyframes lp-float-sm {
+    0%, 100% { transform: perspective(1200px) rotateY(-5deg) translateY(-6px); }
+    50% { transform: perspective(1200px) rotateY(-3deg) translateY(6px); }
+  }
+  .lp-road { height: 80px; }
+  .lp-road-svg { width: 44px; }
+  .lp-road-bike-b .lp-road-svg { width: 36px; }
+  .lp-beam { width: 28px; height: 10px; }
+}
 @media (max-width: 860px) {
   .lp-links, .lp-nav-cta { display: none; }
   .lp-burger { display: inline-grid; }
@@ -560,6 +581,16 @@
   /* Hero loop + chips: static frame, no drift, no pulse, no fade. */
   .lp-phone-loop { animation: none; }
   .lp-fchip { animation: none; }
+  /* Hero scene: static composition — orbit cards fixed, device still with no
+     glow pulse, bikes visible but stationary. No continuous motion anywhere. */
+  .lp-hero::before { animation: none; }
+  .lp-orbit-card { transform: none !important; transition: none; }
+  .lp-orbit-bob { animation: none; }
+  .lp-device, .lp-device::after { animation: none; }
+  .lp-device::after { opacity: 0.3; }
+  .lp-road-bike { animation: none; }
+  .lp-road-bike-a { left: 12%; }
+  .lp-road-bike-b { left: 66%; }
   .lp-phone-stages li.now .lp-stage-dot { animation: none; }
   .lp-track-fill, .lp-rider-dot { transition: none; }
   .lp-nav.scrolled .lp-nav-inner { transition: none; }
