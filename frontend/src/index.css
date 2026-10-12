@@ -146,8 +146,6 @@
   border: 2px solid #fff; box-shadow: var(--shadow-sm);
 }
 .sd-pin-pickup span { background: var(--brand); }
-/* Plain text glyph inside a rotated pin stays readable enough at 13px. */
-.sd-pin-pick span, .sd-pin-drop span { line-height: 1; }
 .sd-pin-drop span { background: var(--info, #0E7490); }
 .sd-pin-pick span { background: var(--brand); }
 .sd-rider { background: transparent; border: none; }
