@@ -27,12 +27,6 @@ function haversineKm(a, b) {
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
-const num = (v) => (v === null || v === undefined || v === "" ? null : Number(v));
-const asPos = (lat, lng) =>
-  lat !== null && lng !== null && Number.isFinite(lat) && Number.isFinite(lng)
-    ? { lat, lng }
-    : null;
-
 function agoText(recordedAt, now) {
   const s = Math.max(0, Math.floor((now - new Date(recordedAt).getTime()) / 1000));
   if (s < 5) return "Updated just now";
