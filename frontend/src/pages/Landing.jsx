@@ -212,6 +212,145 @@ function NavAuthSkeleton() {
   );
 }
 
+/* Hero phone mockup: illustrative delivery-status loop labeled "Example".
+   One timer drives everything — progress line, active stage + pulse, status
+   chip and rider dot all derive from the same tick, so they can't drift. */
+const HERO_STAGES = ["Pending", "Confirmed", "Assigned", "Picked up", "In transit", "Delivered"];
+const HERO_STATUS = ["PENDING", "CONFIRMED", "ASSIGNED", "PICKED_UP", "IN_TRANSIT", "DELIVERED"];
+const HERO_STAGE_MS = 1400;
+const HERO_HOLD_MS = 1800;
+const HERO_TICK_MS = 100;
+const HERO_TOTAL_MS = HERO_STAGES.length * HERO_STAGE_MS + HERO_HOLD_MS;
+
+function HeroLoop() {
+  const wrapRef = useRef(null);
+  const tRef = useRef(0);
+  const [t, setT] = useState(0);
+  const [loop, setLoop] = useState(0);
+  const [userPlay, setUserPlay] = useState(true);
+  const [inView, setInView] = useState(false);
+  const [tabOn, setTabOn] = useState(
+    typeof document === "undefined" ? true : document.visibilityState === "visible"
+  );
+  const [hoverHold, setHoverHold] = useState(false);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0.2,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onVis = () => setTabOn(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+
+  const running = userPlay && inView && tabOn && !hoverHold && !REDUCED;
+
+  useEffect(() => {
+    if (!running) return;
+    const id = setInterval(() => {
+      tRef.current += HERO_TICK_MS;
+      if (tRef.current >= HERO_TOTAL_MS) {
+        tRef.current = 0;
+        setLoop((l) => l + 1); // short fade reset each cycle
+      }
+      setT(tRef.current);
+    }, HERO_TICK_MS);
+    return () => clearInterval(id);
+  }, [running]);
+
+  // Static In-transit frame for reduced motion (no timer, no pulse, no drift).
+  const stageIdx = REDUCED ? 4 : Math.min(Math.floor(t / HERO_STAGE_MS), 5);
+  const sub = REDUCED
+    ? 0.6
+    : stageIdx === 4
+      ? Math.min(Math.max((t - 4 * HERO_STAGE_MS) / HERO_STAGE_MS, 0), 1)
+      : 0;
+  const progress = REDUCED
+    ? 60
+    : stageIdx < 4 ? (stageIdx / 5) * 100 : stageIdx === 4 ? ((4 + sub) / 5) * 100 : 100;
+  const dotPct = REDUCED ? 60 : stageIdx < 4 ? 0 : stageIdx === 4 ? sub * 100 : 100;
+
+  return (
+    <div
+      className="lp-phone-wrap"
+      ref={wrapRef}
+      onMouseEnter={() => setHoverHold(true)}
+      onMouseLeave={() => setHoverHold(false)}
+      onFocus={() => setHoverHold(true)}
+      onBlur={() => setHoverHold(false)}
+    >
+      <p className="lp-sr">
+        Example animation: a delivery moves through Pending, Confirmed, Assigned,
+        Picked up, In transit, then Delivered.
+      </p>
+      <div className="lp-phone-loop" key={REDUCED ? "static" : loop}>
+        <div className="lp-phone" aria-hidden="true">
+          <div className="lp-phone-head">
+            <span className="badge b-brand">Example</span>
+            <strong>DEL-1042</strong>
+          </div>
+          <div className="lp-route">
+            <span className="lp-pin">
+              <MapPin size={18} aria-hidden="true" />
+              <small>Pickup</small>
+            </span>
+            <span className="lp-track">
+              <span className="lp-track-line" />
+              <span className="lp-track-fill" style={{ width: `${progress}%` }} />
+              <span className="lp-rider-dot" style={{ left: `${dotPct}%` }} />
+            </span>
+            <span className="lp-pin lp-pin-drop">
+              <MapPin size={18} aria-hidden="true" />
+              <small>Drop-off</small>
+            </span>
+          </div>
+          <div className="lp-phone-chip">
+            <StatusBadge value={HERO_STATUS[stageIdx]} />
+          </div>
+          <ul className="lp-phone-stages">
+            {HERO_STAGES.map((s, i) => (
+              <li key={s} className={i < stageIdx ? "done" : i === stageIdx ? "now" : ""}>
+                <span className="lp-stage-dot" aria-hidden="true">
+                  {i < stageIdx ? <Check size={12} aria-hidden="true" /> : i + 1}
+                </span>
+                {s}
+              </li>
+            ))}
+          </ul>
+          <svg className="lp-phone-scoot" width="72" height="40" viewBox="0 0 72 40" aria-hidden="true">
+            <circle cx="14" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
+            <circle cx="58" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
+            <path d="M14 30 L30 30 L38 12 L52 12 M38 12 L34 30 M52 12 L58 30" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            <rect x="24" y="6" width="14" height="10" rx="2" fill="currentColor" />
+          </svg>
+        </div>
+      </div>
+      <span className="lp-fchip lp-fchip-a" aria-hidden="true">
+        <Check size={13} aria-hidden="true" /> Picked up
+      </span>
+      <span className="lp-fchip lp-fchip-b" aria-hidden="true">₦2,500 · Cash</span>
+      {!REDUCED && (
+        <button
+          type="button"
+          className="lp-loop-toggle"
+          aria-pressed={running}
+          aria-label={userPlay ? "Pause delivery animation" : "Play delivery animation"}
+          onClick={() => setUserPlay((v) => !v)}
+        >
+          {userPlay ? <Pause size={14} aria-hidden="true" /> : <Play size={14} aria-hidden="true" />}
+        </button>
+      )}
+    </div>
+  );
+}
+
 function AddressForm({ id, buttonLabel, variant, to = "/register" }) {
   const nav = useNavigate();
   const [addr, setAddr] = useState("");
@@ -380,7 +519,7 @@ export default function Landing() {
         {/* 2. Hero */}
         <section className="lp-hero" aria-labelledby="lp-hero-h">
           <div className="lp-hero-grid">
-            <div>
+            <div className="lp-hero-copy">
               <span className="lp-hero-label hero-in" style={{ animationDelay: "0ms" }}>Delivery, simplified</span>
               <h1 id="lp-hero-h" className="hero-in" style={{ animationDelay: "80ms" }}>
                 Send anything. <em className={REDUCED ? undefined : "sweep"}>Delivered fast.</em>
@@ -407,6 +546,9 @@ export default function Landing() {
                 <li><CreditCard size={16} aria-hidden="true" /> Pay by cash, card or transfer</li>
                 <li><ShieldCheck size={16} aria-hidden="true" /> Verified riders</li>
               </ul>
+            </div>
+            <div className="hero-in" style={{ animationDelay: "400ms" }}>
+              <HeroLoop />
             </div>
           </div>
         </section>
