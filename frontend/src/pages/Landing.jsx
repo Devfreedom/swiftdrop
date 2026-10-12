@@ -650,41 +650,7 @@ export default function Landing() {
 
       <main id="top">
         {/* 2. Hero */}
-        <section className="lp-hero" aria-labelledby="lp-hero-h">
-          <div className="lp-hero-grid">
-            <div className="lp-hero-copy">
-              <span className="lp-hero-label hero-in" style={{ animationDelay: "0ms" }}>Delivery, simplified</span>
-              <h1 id="lp-hero-h" className="hero-in" style={{ animationDelay: "80ms" }}>
-                Send anything. <em className={REDUCED ? undefined : "sweep"}>Delivered fast.</em>
-              </h1>
-              <p className="lp-hero-sub hero-in" style={{ animationDelay: "160ms" }}>
-                Request a delivery in under a minute, get matched with an admin-approved
-                rider, and track every stage to the doorstep.
-              </p>
-              <div className="hero-in" style={{ animationDelay: "240ms" }}>
-                {loading ? (
-                  <span className="lp-hero-skel" aria-hidden="true" />
-                ) : user ? (
-                  isCustomer ? (
-                    <AddressForm id="hero" buttonLabel="Go to dashboard" variant="lp-btn-red" to="/customer/create" />
-                  ) : (
-                    <DashboardButton to={dashboardTo} className="lp-btn lp-btn-red" />
-                  )
-                ) : (
-                  <AddressForm id="hero" buttonLabel="Get started" variant="lp-btn-red" />
-                )}
-              </div>
-              <ul className="lp-facts hero-in" style={{ animationDelay: "320ms" }}>
-                <li><MapPin size={16} aria-hidden="true" /> Track every stage</li>
-                <li><CreditCard size={16} aria-hidden="true" /> Pay by cash, card or transfer</li>
-                <li><ShieldCheck size={16} aria-hidden="true" /> Admin-approved riders</li>
-              </ul>
-            </div>
-            <div className="hero-in" style={{ animationDelay: "400ms" }}>
-              <HeroLoop />
-            </div>
-          </div>
-        </section>
+        <HeroScene user={user} loading={loading} dashboardTo={dashboardTo} isCustomer={isCustomer} />
 
         {/* 3. Rider banner */}
         <section className="lp-band-cream" aria-label="Rider signups">
@@ -946,12 +912,7 @@ export default function Landing() {
               ) : (
                 <AddressForm id="cta" buttonLabel="Create account" variant="lp-btn-black" />
               )}
-              <svg className="lp-scoot" width="72" height="40" viewBox="0 0 72 40" aria-hidden="true">
-                <circle cx="14" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
-                <circle cx="58" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
-                <path d="M14 30 L30 30 L38 12 L52 12 M38 12 L34 30 M52 12 L58 30" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                <rect x="24" y="6" width="14" height="10" rx="2" fill="currentColor" />
-              </svg>
+              <BikeSvg className="lp-scoot" />
             </div>
           </div>
         </section>
