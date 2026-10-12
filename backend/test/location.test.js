@@ -63,7 +63,7 @@ before(async () => {
   deliveryId = created.body.delivery.id;
 
   const confirmed = await request(app)
-    .post(`/api/admin/deliveries/${deliveryId}/confirm`)
+    .patch(`/api/admin/deliveries/${deliveryId}/confirm`)
     .set("Authorization", `Bearer ${sign(admin)}`);
   assert.equal(confirmed.status, 200);
 
