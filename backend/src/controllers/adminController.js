@@ -130,7 +130,7 @@ async function cancelDelivery(req, res) {
 
   await sequelize.transaction(async (t) => {
     delivery.status = "CANCELLED";
-    delivery.cancelReason = req.body.reason || "Cancelled by admin";
+    delivery.cancelReason = req.body?.reason || "Cancelled by admin";
     delivery.cancelledAt = new Date();
     await delivery.save({ transaction: t });
     // no live point survives a cancelled delivery

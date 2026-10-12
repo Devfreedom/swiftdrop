@@ -61,7 +61,7 @@ async function cancelMine(req, res) {
 
   await sequelize.transaction(async (t) => {
     delivery.status = "CANCELLED";
-    delivery.cancelReason = req.body.reason || "Cancelled by customer";
+    delivery.cancelReason = req.body?.reason || "Cancelled by customer";
     delivery.cancelledAt = new Date();
     await delivery.save({ transaction: t });
     // no live point survives a cancelled delivery
