@@ -108,6 +108,3 @@ export default function LiveDeliveryMap({ deliveryId, pickup, dropoff, active })
     </div>
   );
 }
-
-// Helpers exported for the dashboard card (same math, no duplication).
-export { asPos, num };

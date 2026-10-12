@@ -9,10 +9,10 @@ import PageHeader from "../../ui/PageHeader";
 import StatusBadge from "../../components/StatusBadge";
 import StatCard from "../../components/StatCard";
 import Stepper from "../../components/Stepper";
-import LiveDeliveryMap, { asPos, num } from "../../components/LiveDeliveryMap";
+import LiveDeliveryMap from "../../components/LiveDeliveryMap";
 import DataTable from "../../components/DataTable";
 import { CenterLoad, EmptyState } from "../../components/Feedback";
-import { formatDate, formatNaira, timeAgo, trackingId } from "../../constants";
+import { formatDate, formatNaira, timeAgo, trackingId, asPos, num } from "../../constants";
 
 const FINAL = ["DELIVERED", "CANCELLED"];
 

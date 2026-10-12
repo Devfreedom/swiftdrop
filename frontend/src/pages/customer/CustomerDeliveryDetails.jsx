@@ -5,11 +5,11 @@ import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import Stepper from "../../components/Stepper";
-import LiveDeliveryMap, { asPos, num } from "../../components/LiveDeliveryMap";
+import LiveDeliveryMap from "../../components/LiveDeliveryMap";
 import ConfirmModal from "../../components/ConfirmModal";
 import Button from "../../ui/Button";
 import { SelectInput } from "../../ui/fields";
-import { formatNaira, trackingId } from "../../constants";
+import { formatNaira, trackingId, asPos, num } from "../../constants";
 import { CenterLoad, ErrorState } from "../../components/Feedback";
 
 export default function CustomerDeliveryDetails() {
