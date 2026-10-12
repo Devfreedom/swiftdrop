@@ -180,7 +180,7 @@
 .lp-pin { display: grid; gap: 2px; justify-items: center; color: var(--brand); flex-shrink: 0; width: 48px; }
 .lp-pin small { font-size: 11px; font-weight: var(--weight-bold); color: var(--muted); }
 .lp-pin-drop { color: var(--info, #0E7490); }
-.lp-track { position: relative; flex: 1; height: 22px; margin-top: 2px; }
+.lp-track { position: relative; flex: 1; height: 22px; margin-top: 2px; overflow: visible; }
 .lp-track-line {
   position: absolute; left: 0; right: 0; top: 10px;
   border-top: 2px dashed var(--gray-300, #D4CFC2);
@@ -195,8 +195,7 @@
   box-shadow: 0 0 0 4px var(--brand-soft, rgba(211, 47, 47, 0.15)), 0 2px 8px rgba(0,0,0,0.3);
   transform: translate(-50%, -50%); transition: left 120ms linear;
 }
-.lp-phone-chip { display: flex; margin-bottom: 12px; }
-.lp-phone-stages { list-style: none; margin: 0 0 6px; padding: 0; display: grid; gap: 6px; }
+.lp-phone-stages { list-style: none; margin: 12px 0 6px; padding: 0; display: grid; gap: 6px; }
 .lp-phone-stages li { display: flex; align-items: center; gap: 10px; font-size: var(--text-14); color: var(--muted); font-weight: var(--weight-medium); }
 .lp-phone-stages li.done { color: var(--body); }
 .lp-phone-stages li.now { color: var(--ink); font-weight: var(--weight-bold); }
@@ -214,7 +213,10 @@
   0%, 100% { box-shadow: 0 0 0 0 var(--brand-ring, rgba(211, 47, 47, 0.35)); }
   50% { box-shadow: 0 0 0 7px transparent; }
 }
-.lp-phone-scoot { display: block; margin: 10px auto 0; color: var(--brand); opacity: 0.9; }
+/* Scooter gets its own zone: 16px padding keeps it >=16px from the zone
+   edge, and the card's own 22px padding keeps the zone >=16px from the card. */
+.lp-scoot-zone { margin-top: 12px; padding: 16px; background: var(--gray-50, #F3F4F6); border-radius: 12px; }
+.lp-phone-scoot { display: block; margin: 0 auto; color: var(--brand); opacity: 0.9; }
 /* Floating chips drift gently at different speeds. */
 .lp-fchip {
   position: absolute; display: inline-flex; align-items: center; gap: 6px;
