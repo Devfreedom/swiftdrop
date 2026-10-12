@@ -680,10 +680,33 @@ export default function Landing() {
             </div>
           </div>
         </section>
+        {/* 12. Contact */}
+        <section className="lp-sec" id="contact" style={{ paddingTop: 20 }} aria-labelledby="lp-contact-h">
+          <div className="lp-inner">
+            <Reveal>
+              <p className="lp-label">Contact</p>
+              <h2 className="lp-h" id="lp-contact-h">Talk to <em>support.</em></h2>
+              <p className="lp-sub">
+                Questions about a delivery, a payment or your account? Send us a
+                message and we will get back to you as soon as we can.
+              </p>
+              <div className="lp-contact-row">
+                <a className="lp-btn lp-btn-red" href={`mailto:${SUPPORT_EMAIL}`}>
+                  Contact Support <ArrowRight size={18} aria-hidden="true" />
+                </a>
+                {SUPPORT_PHONE ? (
+                  <a className="lp-tel" href={`tel:${SUPPORT_PHONE.replace(/\s/g, "")}`}>
+                    <Phone size={16} aria-hidden="true" /> {SUPPORT_PHONE}
+                  </a>
+                ) : null}
+              </div>
+            </Reveal>
+          </div>
+        </section>
       </main>
 
-      {/* 12. Footer */}
-      <footer className="lp-footer" id="contact">
+      {/* 13. Footer */}
+      <footer className="lp-footer">
         <div className="lp-foot-grid">
           <div className="lp-foot-brand">
             <a href="/" onClick={scrollToTop} className="lp-brand" aria-label={`${BRAND} home`}>

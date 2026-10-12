@@ -233,6 +233,8 @@
   color: #fff;
 }
 .lp-every-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; margin-top: 48px; align-items: start; }
+/* Stats unavailable: dispatch panel hides, cards take the full row (no gap). */
+.lp-every-grid.single { grid-template-columns: 1fr; }
 .lp-dark-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .lp-dark-card {
   background: var(--lp-card-dark); border: 1px solid var(--lp-line-dark); border-radius: var(--radius-md);
