@@ -216,6 +216,46 @@ function NavAuthSkeleton() {
   );
 }
 
+/* Single shared bike illustration (original inline SVG): the hero phone zone,
+   the CTA band and the hero road bikes all render this component, so there is
+   exactly one source for the paths. */
+function BikeSvg({ className = "" }) {
+  return (
+    <svg className={className} width="72" height="40" viewBox="0 0 72 40" aria-hidden="true">
+      <circle cx="14" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
+      <circle cx="58" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
+      <path d="M14 30 L30 30 L38 12 L52 12 M38 12 L34 30 M52 12 L58 30" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="24" y="6" width="14" height="10" rx="2" fill="currentColor" />
+    </svg>
+  );
+}
+
+/* Orbiting category cards reuse the six CATEGORIES entries (same titles, same
+   pastel tiles/icons as the "Send almost anything" section). Three per side;
+   each column rotates its cards through its three slots (transform only). */
+const ORBIT_LEFT = [0, 1, 2];
+const ORBIT_RIGHT = [3, 4, 5];
+const ORBIT_STEP = 116; // card height (104) + column gap (12): must match CSS
+const ORBIT_SWAP_MS = 4500;
+
+function OrbitCard({ cat, slot, home, index }) {
+  const dy = (slot - home) * ORBIT_STEP;
+  const { icon: Icon, tile, ink, title } = cat;
+  return (
+    <span className="lp-orbit-card" style={{ transform: `translateY(${dy}px)` }}>
+      <span
+        className="lp-orbit-bob"
+        style={{ animationDuration: `${3 + (index % 3) * 0.5}s`, animationDelay: `${index * 350}ms` }}
+      >
+        <span className="lp-tile lp-orbit-tile" style={{ background: tile, color: ink }}>
+          <Icon size={20} aria-hidden="true" />
+        </span>
+        <b>{title}</b>
+      </span>
+    </span>
+  );
+}
+
 /* Hero phone mockup: illustrative delivery-status loop labeled "Example".
    One timer drives everything — progress line, active stage + pulse, status
    chip and rider dot all derive from the same tick, so they can't drift. */
@@ -225,35 +265,15 @@ const HERO_HOLD_MS = 1800;
 const HERO_TICK_MS = 100;
 const HERO_TOTAL_MS = HERO_STAGES.length * HERO_STAGE_MS + HERO_HOLD_MS;
 
-function HeroLoop() {
+function HeroLoop({ baseRunning, userPlay, setUserPlay }) {
   const wrapRef = useRef(null);
   const tRef = useRef(0);
   const [t, setT] = useState(0);
   const [loop, setLoop] = useState(0);
-  const [userPlay, setUserPlay] = useState(true);
-  const [inView, setInView] = useState(false);
-  const [tabOn, setTabOn] = useState(
-    typeof document === "undefined" ? true : document.visibilityState === "visible"
-  );
   const [hoverHold, setHoverHold] = useState(false);
+  const [shift, setShift] = useState(0);
 
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0.2,
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const onVis = () => setTabOn(document.visibilityState === "visible");
-    document.addEventListener("visibilitychange", onVis);
-    return () => document.removeEventListener("visibilitychange", onVis);
-  }, []);
-
-  const running = userPlay && inView && tabOn && !hoverHold && !REDUCED;
+  const running = baseRunning && !hoverHold && !REDUCED;
 
   useEffect(() => {
     if (!running) return;
@@ -265,6 +285,14 @@ function HeroLoop() {
       }
       setT(tRef.current);
     }, HERO_TICK_MS);
+    return () => clearInterval(id);
+  }, [running]);
+
+  /* Orbit swap: rotate each column's cards through their slots every few
+     seconds (same play gate as the status loop, transform-only motion). */
+  useEffect(() => {
+    if (!running || REDUCED) return;
+    const id = setInterval(() => setShift((s) => (s + 1) % 3), ORBIT_SWAP_MS);
     return () => clearInterval(id);
   }, [running]);
 
