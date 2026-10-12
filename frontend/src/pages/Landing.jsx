@@ -216,9 +216,57 @@ function NavAuthSkeleton() {
   );
 }
 
-/* Single shared bike illustration (original inline SVG): the hero phone zone,
-   the CTA band and the hero road bikes all render this component, so there is
-   exactly one source for the paths. */
+/* Shared scooter image (self-hosted transparent WebP, credited in
+   public/images/CREDITS.md): the hero road and the CTA band both render this
+   component — one source. Decorative, so alt stays empty. `flip` mirrors it
+   (scaleX) for the scooter travelling the other way. */
+function ScooterImg({ flip = false, className = "lp-scoot-img", eager = false }) {
+  return (
+    <img
+      src="/images/scooter-right.webp"
+      alt=""
+      aria-hidden="true"
+      width={600}
+      height={600}
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      draggable={false}
+      className={flip ? `${className} flip` : className}
+    />
+  );
+}
+
+/* Live "section on screen" flag (updates as visibility changes). */
+function useLive(threshold = 0.2) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [threshold]);
+  return [ref, inView];
+}
+
+/* Live "browser tab active" flag. */
+function useTabOn() {
+  const [tabOn, setTabOn] = useState(
+    typeof document === "undefined" ? true : document.visibilityState === "visible"
+  );
+  useEffect(() => {
+    const onVis = () => setTabOn(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+  return tabOn;
+}
+
+/* Single shared bike illustration (original inline SVG): the hero phone zone
+   keeps rendering this component. */
 function BikeSvg({ className = "" }) {
   return (
     <svg className={className} width="72" height="40" viewBox="0 0 72 40" aria-hidden="true">
@@ -381,12 +429,9 @@ function HeroLoop({ baseRunning, userPlay, setUserPlay }) {
    device float/glow, road bikes and vignette all pause together. Copy and
    trust points below are unchanged. */
 function HeroScene({ user, loading, dashboardTo, isCustomer }) {
-  const sectionRef = useRef(null);
+  const [sectionRef, inView] = useLive(0.15);
+  const tabOn = useTabOn();
   const [userPlay, setUserPlay] = useState(true);
-  const [inView, setInView] = useState(false);
-  const [tabOn, setTabOn] = useState(
-    typeof document === "undefined" ? true : document.visibilityState === "visible"
-  );
   const [shift, setShift] = useState(0);
 
   useEffect(() => {
