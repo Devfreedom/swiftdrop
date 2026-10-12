@@ -6,6 +6,7 @@ import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import Button from "../../ui/Button";
 import PageHeader from "../../ui/PageHeader";
+import MapPicker from "../../components/MapPicker";
 import { TextInput, TextareaInput } from "../../ui/fields";
 import {
   BASE_FEE, PER_KG_FEE, estimateDeliveryFee, formatNaira,
@@ -37,6 +38,9 @@ export default function CreateDelivery() {
       packageDescription: "", packageWeightKg: "",
     };
   });
+  // Optional map pins (tap/drag/search). Delivery works fine without them.
+  const [pickupCoords, setPickupCoords] = useState(null);
+  const [dropoffCoords, setDropoffCoords] = useState(null);
   const [errs, setErrs] = useState({});
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
@@ -58,6 +62,14 @@ export default function CreateDelivery() {
       body.packageWeightKg = body.packageWeightKg === "" ? undefined : Number(body.packageWeightKg);
       if (body.pickupLandmark === "") body.pickupLandmark = undefined;
       if (body.deliveryLandmark === "") body.deliveryLandmark = undefined;
+      if (pickupCoords) {
+        body.pickupLat = pickupCoords.lat;
+        body.pickupLng = pickupCoords.lng;
+      }
+      if (dropoffCoords) {
+        body.dropoffLat = dropoffCoords.lat;
+        body.dropoffLng = dropoffCoords.lng;
+      }
       const d = await api("/deliveries", { method: "POST", body });
       toast.success(`Delivery ${trackingId(d.delivery.id)} created.`);
       nav(`/customer/deliveries/${d.delivery.id}`);
