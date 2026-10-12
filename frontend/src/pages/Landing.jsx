@@ -75,6 +75,10 @@ const FAQS = [
     a: "Pending, Confirmed, Assigned, Picked up, In transit, Delivered — and Cancelled if a delivery is stopped before pickup. You always see the current stage on a timeline.",
   },
   {
+    q: "Can I track my rider?",
+    a: "While a delivery is active and your rider is sharing their location, you can see their position on the delivery map with live tracking. Location sharing stops automatically when the delivery is delivered or cancelled.",
+  },
+  {
     q: "Is my data secure?",
     a: "Passwords are stored hashed, sign-in uses tokens, and every page is guarded by role — customers, riders and admins each only see what belongs to them.",
   },
