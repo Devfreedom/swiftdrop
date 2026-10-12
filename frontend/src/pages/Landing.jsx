@@ -328,6 +328,21 @@ function HeroLoop({ baseRunning, userPlay, setUserPlay }) {
         Example animation: a delivery moves through Pending, Confirmed, Assigned,
         Picked up, In transit, then Delivered.
       </p>
+      <div className="lp-orbit" aria-hidden="true">
+        <div className="lp-orbit-col lp-orbit-left">
+          {ORBIT_LEFT.map((ci, k) => (
+            <OrbitCard key={CATEGORIES[ci].title} cat={CATEGORIES[ci]}
+              home={k} slot={(k + shift) % 3} index={ci} />
+          ))}
+        </div>
+        <div className="lp-orbit-col lp-orbit-right">
+          {ORBIT_RIGHT.map((ci, k) => (
+            <OrbitCard key={CATEGORIES[ci].title} cat={CATEGORIES[ci]}
+              home={k} slot={(k + shift) % 3} index={ci} />
+          ))}
+        </div>
+      </div>
+      <div className="lp-device">
       <div className="lp-phone-loop" key={REDUCED ? "static" : loop}>
         <div className="lp-phone" aria-hidden="true">
           <div className="lp-phone-head">
