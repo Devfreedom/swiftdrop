@@ -322,9 +322,6 @@ function HeroLoop() {
               <small>Drop-off</small>
             </span>
           </div>
-          <div className="lp-phone-chip">
-            <StatusBadge value={HERO_STATUS[stageIdx]} />
-          </div>
           <ul className="lp-phone-stages">
             {HERO_STAGES.map((s, i) => (
               <li key={s} className={i < stageIdx ? "done" : i === stageIdx ? "now" : ""}>
@@ -335,12 +332,14 @@ function HeroLoop() {
               </li>
             ))}
           </ul>
-          <svg className="lp-phone-scoot" width="72" height="40" viewBox="0 0 72 40" aria-hidden="true">
-            <circle cx="14" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
-            <circle cx="58" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
-            <path d="M14 30 L30 30 L38 12 L52 12 M38 12 L34 30 M52 12 L58 30" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            <rect x="24" y="6" width="14" height="10" rx="2" fill="currentColor" />
-          </svg>
+          <div className="lp-scoot-zone">
+            <svg className="lp-phone-scoot" width="72" height="40" viewBox="0 0 72 40" aria-hidden="true">
+              <circle cx="14" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
+              <circle cx="58" cy="30" r="7" fill="none" stroke="currentColor" strokeWidth="3" />
+              <path d="M14 30 L30 30 L38 12 L52 12 M38 12 L34 30 M52 12 L58 30" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+              <rect x="24" y="6" width="14" height="10" rx="2" fill="currentColor" />
+            </svg>
+          </div>
         </div>
       </div>
       <span className="lp-fchip lp-fchip-a" aria-hidden="true">
