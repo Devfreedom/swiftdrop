@@ -399,9 +399,6 @@ function HeroLoop({ baseRunning, userPlay, setUserPlay }) {
               </li>
             ))}
           </ul>
-          <div className="lp-scoot-zone">
-            <BikeSvg className="lp-phone-scoot" />
-          </div>
         </div>
       </div>
       </div>
