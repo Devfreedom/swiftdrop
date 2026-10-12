@@ -30,6 +30,10 @@ function validate(rules) {
         const tooSmall = typeof value === "string" ? value.length < rule.min : value < rule.min;
         if (tooSmall) details.push(`${field} must be at least ${rule.min}`);
       }
+      if (rule.max !== undefined) {
+        const tooBig = typeof value === "string" ? value.length > rule.max : value > rule.max;
+        if (tooBig) details.push(`${field} must be at most ${rule.max}`);
+      }
       if (rule.enum && !rule.enum.includes(value)) {
         details.push(`${field} must be one of: ${rule.enum.join(", ")}`);
       }
