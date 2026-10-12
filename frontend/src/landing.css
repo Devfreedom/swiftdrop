@@ -224,20 +224,22 @@
   border-radius: 999px; padding: 8px 14px; box-shadow: var(--shadow-md);
   animation: lp-chip-drift 5s ease-in-out infinite;
 }
-.lp-fchip-a { top: 18%; left: -34px; }
-.lp-fchip-b { bottom: 22%; right: -28px; animation-duration: 7s; animation-delay: 800ms; }
+/* Floating chips live in the empty margins above/below the card — never over
+   the route pins or progress line — and opposite corners so they can't meet. */
+.lp-fchip-a { top: 0; left: 0; }
+.lp-fchip-b { bottom: 0; right: 0; animation-duration: 7s; animation-delay: 800ms; }
 @keyframes lp-chip-drift {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
 .lp-loop-toggle {
-  position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
+  position: absolute; top: 0; right: 0; bottom: auto; left: auto; transform: none;
   width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line);
   background: #fff; color: var(--ink); cursor: pointer;
   display: grid; place-items: center; box-shadow: var(--shadow-sm);
 }
 .lp-loop-toggle:hover { color: var(--brand-active); }
-.lp-loop-toggle:focus-visible { outline: 3px solid var(--brand-ring); outline-offset: 2px; }
+.lp-loop-toggle:focus-visible { outline: 3px solid var(--brand-ring); outline-offset: 3px; }
 
 /* ---------- 3. Rider banner (cream) ---------- */
 .lp-band-cream { background: var(--lp-cream-2); border-top: 1px solid var(--lp-card-line); border-bottom: 1px solid var(--lp-card-line); }
@@ -455,10 +457,10 @@
   .lp-cta-band { padding: 48px 24px; }
   .lp-riderband .lp-btn { margin-left: 0; width: 100%; justify-content: center; }
   .lp-foot-grid { grid-template-columns: 1fr; gap: 32px; }
-  /* Keep floating chips inside the 360px viewport. */
+  /* Floating chips stay in the top/bottom margins on small screens too. */
   .lp-fchip-a { left: 6px; }
   .lp-fchip-b { right: 6px; }
-  .lp-phone-wrap { padding-bottom: 22px; }
+  .lp-phone-wrap { padding: 44px 0 50px; }
 }
 
 /* ---------- Reduced motion: everything illustrative stays visible, static ---------- */
