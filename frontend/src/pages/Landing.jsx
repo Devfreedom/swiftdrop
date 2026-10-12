@@ -56,7 +56,7 @@ const EVERYONE = [
 const FAQS = [
   {
     q: "How does SwiftDrop work?",
-    a: "Create an account and request a delivery with pickup and drop-off details. Record your payment in the app, an admin confirms the request and assigns a verified rider, and you track each stage — pending, confirmed, assigned, picked up, in transit, delivered — to the doorstep.",
+    a: "Create an account and request a delivery with pickup and drop-off details. Record your payment in the app, an admin confirms the request and assigns an admin-approved rider, and you track each stage — pending, confirmed, assigned, picked up, in transit, delivered — to the doorstep.",
   },
   {
     q: "What payment methods are supported?",
@@ -220,7 +220,6 @@ function NavAuthSkeleton() {
    One timer drives everything — progress line, active stage + pulse, status
    chip and rider dot all derive from the same tick, so they can't drift. */
 const HERO_STAGES = ["Pending", "Confirmed", "Assigned", "Picked up", "In transit", "Delivered"];
-const HERO_STATUS = ["PENDING", "CONFIRMED", "ASSIGNED", "PICKED_UP", "IN_TRANSIT", "DELIVERED"];
 const HERO_STAGE_MS = 1400;
 const HERO_HOLD_MS = 1800;
 const HERO_TICK_MS = 100;
