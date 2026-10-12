@@ -308,23 +308,56 @@
 /* Road along the hero bottom edge: subtle lines + two bikes with headlight
    beams driving left to right (14s / 20s). Both ends render off-screen and
    the hero clips overflow, so re-entry has no visible jump. */
-.lp-road { position: absolute; left: 0; right: 0; bottom: 0; height: 96px; z-index: 1; pointer-events: none; overflow: hidden; }
+.lp-road { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; z-index: 1; pointer-events: none; overflow: hidden; }
 .lp-road-line { position: absolute; left: 0; right: 0; bottom: 36px; border-top: 2px solid rgba(255, 255, 255, 0.1); }
 .lp-road-dash { bottom: 20px; border-top: 2px dashed rgba(255, 255, 255, 0.08); }
-.lp-road-bike { position: absolute; left: 0; top: auto; color: #fff; opacity: 0.85; animation: lp-drive 14s linear infinite; }
-.lp-road-bike-a { bottom: 40px; }
-.lp-road-bike-b { bottom: 12px; opacity: 0.6; animation-duration: 20s; animation-delay: -9s; }
-.lp-road-bike-b .lp-road-svg { width: 46px; height: auto; }
-.lp-road-svg { width: 58px; height: auto; display: block; }
+.lp-road-bike { position: absolute; left: 0; top: auto; animation: lp-drive 14s linear infinite; }
+.lp-road-bike-a { bottom: 30px; }
+.lp-road-bike-b { bottom: 12px; animation-name: lp-drive-r; animation-duration: 20s; animation-delay: -7s; }
+.lp-road-bike-b .lp-road-svg { width: 64px; }
+.lp-road-svg { width: 88px; height: auto; display: block; }
+.lp-scoot-img.flip { transform: scaleX(-1); }
 .lp-beam {
-  position: absolute; top: 52%; left: 86%; width: 38px; height: 12px;
-  background: linear-gradient(90deg, rgba(255, 241, 200, 0.55), rgba(255, 241, 200, 0));
+  position: absolute; top: 46%; left: 80%; width: 52px; height: 18px;
+  background: linear-gradient(90deg, rgba(255, 241, 200, 0.6), rgba(255, 241, 200, 0));
   clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 70%);
+  mix-blend-mode: screen;
+  animation: lp-beam 2.4s ease-in-out infinite;
+}
+.lp-beam-l { left: auto; right: 80%; transform: scaleX(-1); }
+.lp-beam-faint { opacity: 0.5; }
+@keyframes lp-beam {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.85; }
 }
 @keyframes lp-drive {
-  from { transform: translate3d(-140px, 0, 0); }
-  to { transform: translate3d(calc(100vw + 140px), 0, 0); }
+  from { transform: translate3d(-160px, 0, 0); }
+  to { transform: translate3d(calc(100vw + 160px), 0, 0); }
 }
+@keyframes lp-drive-r {
+  from { transform: translate3d(calc(100vw + 160px), 0, 0); }
+  to { transform: translate3d(-160px, 0, 0); }
+}
+/* CTA lane: same two scooters on a short path along the band bottom. The
+   full-width spans translate in lane-relative % so re-entry stays clean at
+   any band width; the inner rider shrink-wraps the image for the beam. */
+.lp-cta-lane { position: absolute; left: 0; right: 0; bottom: 0; height: 104px; pointer-events: none; overflow: hidden; }
+.lp-cta-bike { position: absolute; left: 0; bottom: 10px; width: 100%; }
+.lp-cta-bike-a { animation: lp-cta-a 14s linear infinite; }
+.lp-cta-bike-b { bottom: 4px; animation: lp-cta-b 20s linear infinite; animation-delay: -11s; }
+.lp-cta-rider { position: relative; display: inline-block; }
+.lp-cta-svg { width: 76px; height: auto; display: block; }
+.lp-cta-bike-b .lp-cta-svg { width: 58px; }
+@keyframes lp-cta-a {
+  from { transform: translateX(-16%); }
+  to { transform: translateX(116%); }
+}
+@keyframes lp-cta-b {
+  from { transform: translateX(116%); }
+  to { transform: translateX(-16%); }
+}
+.lp-cta-band.lp-paused .lp-cta-bike,
+.lp-cta-band.lp-paused .lp-beam { animation-play-state: paused; }
 
 /* ---------- 3. Rider banner (cream) ---------- */
 .lp-band-cream { background: var(--lp-cream-2); border-top: 1px solid var(--lp-card-line); border-bottom: 1px solid var(--lp-card-line); }
@@ -341,7 +374,8 @@
 .lp-cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 44px; }
 .lp-cat {
   background: #fff; border: 1px solid var(--lp-card-line); border-radius: var(--radius-lg);
-  padding: 30px 28px; box-shadow: var(--shadow-sm);
+  padding: 0 0 26px; box-shadow: var(--shadow-sm); overflow: hidden;
+  display: flex; flex-direction: column;
   transition: transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease);
 }
 .lp-cat:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
@@ -350,12 +384,28 @@
   width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center;
   margin-bottom: 18px; transition: transform var(--dur-med) var(--ease);
 }
-.lp-cat h3 { font-size: var(--text-20); margin: 0 0 8px; color: var(--ink); }
-.lp-cat p { font-size: var(--text-14); color: var(--body); line-height: 1.6; margin: 0 0 14px; }
-.lp-send { font-size: var(--text-14); font-weight: var(--weight-bold); color: var(--brand-active); display: inline-flex; align-items: center; gap: 6px; }
+.lp-cat h3 { font-size: var(--text-20); margin: 0 28px 8px; color: var(--ink); font-family: var(--lp-serif); }
+.lp-cat p { font-size: var(--text-14); color: var(--body); line-height: 1.6; margin: 0 28px 14px; }
+.lp-send { font-size: var(--text-14); font-weight: var(--weight-bold); color: var(--brand-active); display: inline-flex; align-items: center; gap: 6px; margin: 14px 28px 0 auto; }
 .lp-send:hover { color: var(--brand); }
 .lp-send svg { transition: transform var(--dur-fast) var(--ease); }
 .lp-send:hover svg { transform: translateX(4px); }
+/* Card photo area: 190px pastel image band, soft unifying overlay, number chip. */
+.lp-cat-imgwrap { position: relative; height: 190px; margin: 0 0 22px; overflow: hidden; }
+.lp-cat-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lp-cat-imgwrap .lp-tile { position: absolute; inset: 0; margin: auto; }
+.lp-cat-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 55%),
+    linear-gradient(135deg, var(--cat-tint, rgba(255, 255, 255, 0.2)), transparent 70%);
+}
+.lp-cat-num {
+  position: absolute; top: 12px; left: 12px; background: #fff; color: var(--ink);
+  font-size: 12px; font-weight: 800; border-radius: 999px; padding: 5px 11px;
+  box-shadow: var(--shadow-sm);
+}
+.lp-cat-div { height: 2px; margin: 2px 28px 0; border-radius: 2px; background: linear-gradient(90deg, var(--brand), transparent); }
 
 /* ---------- 5. Stats bar ---------- */
 .lp-stats { background: #0B0B0B; border-radius: 24px; padding: 56px 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }

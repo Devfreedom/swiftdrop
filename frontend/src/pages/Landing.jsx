@@ -517,12 +517,12 @@ function HeroScene({ user, loading, dashboardTo, isCustomer }) {
         <span className="lp-road-line" />
         <span className="lp-road-line lp-road-dash" />
         <span className="lp-road-bike lp-road-bike-a">
-          <BikeSvg className="lp-road-svg" />
+          <ScooterImg eager className="lp-road-svg" />
           <span className="lp-beam" />
         </span>
         <span className="lp-road-bike lp-road-bike-b">
-          <BikeSvg className="lp-road-svg" />
-          <span className="lp-beam" />
+          <ScooterImg eager className="lp-road-svg" flip />
+          <span className="lp-beam lp-beam-l" />
         </span>
       </div>
     </section>
@@ -574,6 +574,8 @@ export default function Landing() {
   const [statsRef, statsIn] = useEnter(0.3);
   const [pulseRef, pulseIn] = useEnter(0.3);
   const [ctaRef, ctaIn] = useEnter(0.3);
+  const [ctaLaneRef, ctaLaneIn] = useLive(0.2);
+  const tabOn = useTabOn();
 
   useEffect(() => {
     document.title = `${BRAND} — Send anything. Delivered fast.`;
@@ -729,14 +731,31 @@ export default function Landing() {
               </p>
             </Reveal>
             <div className="lp-cat-grid">
-              {CATEGORIES.map(({ icon: Icon, tile, ink, title, text }, i) => (
+              {CATEGORIES.map(({ icon: Icon, tile, ink, title, text, img, h, alt }, i) => (
                 <Reveal key={title} delay={(i % 3) * 90}>
                   <article className="lp-cat">
-                    <span className="lp-tile" style={{ background: tile, color: ink }}>
-                      <Icon size={24} aria-hidden="true" />
-                    </span>
+                    <div className="lp-cat-imgwrap" style={{ background: `linear-gradient(135deg, ${tile}, #ffffff 130%)` }}>
+                      {img ? (
+                        <img
+                          src={img}
+                          alt={alt}
+                          width={800}
+                          height={h}
+                          loading="lazy"
+                          decoding="async"
+                          className="lp-cat-img"
+                        />
+                      ) : (
+                        <span className="lp-tile" style={{ background: tile, color: ink }}>
+                          <Icon size={24} aria-hidden="true" />
+                        </span>
+                      )}
+                      <span className="lp-cat-shade" style={{ "--cat-tint": `${tile}59` }} aria-hidden="true" />
+                      <span className="lp-cat-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                    </div>
                     <h3>{title}</h3>
                     <p>{text}</p>
+                    <span className="lp-cat-div" aria-hidden="true" />
                     {loading ? (
                       <span className="lp-send" aria-hidden="true">Send it</span>
                     ) : user ? (
@@ -939,7 +958,7 @@ export default function Landing() {
         {/* 11. Final CTA */}
         <section className="lp-sec" style={{ paddingTop: 20 }} aria-labelledby="lp-cta-h">
           <div className="lp-inner">
-            <div ref={ctaRef} className={`lp-cta-band${ctaIn ? " in" : ""}`}>
+            <div ref={ctaRef} className={`lp-cta-band${ctaIn ? " in" : ""}${ctaLaneIn && tabOn ? "" : " lp-paused"}`}>
               <svg className="lp-cta-deco" width="220" height="220" viewBox="0 0 220 220" aria-hidden="true">
                 <circle cx="110" cy="110" r="100" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="6 10" />
                 <circle cx="110" cy="110" r="66" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -957,7 +976,20 @@ export default function Landing() {
               ) : (
                 <AddressForm id="cta" buttonLabel="Create account" variant="lp-btn-black" />
               )}
-              <BikeSvg className="lp-scoot" />
+              <div className="lp-cta-lane" ref={ctaLaneRef} aria-hidden="true">
+                <span className="lp-cta-bike lp-cta-bike-a">
+                  <span className="lp-cta-rider">
+                    <ScooterImg className="lp-cta-svg" />
+                    <span className="lp-beam lp-beam-faint" />
+                  </span>
+                </span>
+                <span className="lp-cta-bike lp-cta-bike-b">
+                  <span className="lp-cta-rider">
+                    <ScooterImg className="lp-cta-svg" flip />
+                    <span className="lp-beam lp-beam-l lp-beam-faint" />
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
         </section>
