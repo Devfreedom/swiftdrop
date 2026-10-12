@@ -11,7 +11,7 @@ import {
   Smartphone, Truck, UserCheck, Wallet, X, Plus,
 } from "lucide-react";
 import { BRAND, SUPPORT_EMAIL, SUPPORT_PHONE } from "../brand";
-import { api } from "../api/client";
+import { API_BASE } from "../api/client";
 import { roleHome, useAuth } from "../context/AuthContext";
 import Stepper from "../components/Stepper";
 import StatusBadge from "../components/StatusBadge";
@@ -42,7 +42,7 @@ const CATEGORIES = [
 const STEPS = [
   { title: "Request a delivery", text: "Tell us what to move and where. Pickup and drop-off take under a minute." },
   { title: "A rider is assigned", text: "An admin confirms your request and matches it with an available rider." },
-  { title: "Picked up and in transit", text: "The rider collects your parcel and you follow it live to the door." },
+  { title: "Picked up and in transit", text: "The rider collects your parcel and you follow every status update to the door." },
   { title: "Delivered and paid", text: "Handed over at the doorstep, with the payment recorded in the app." },
 ];
 
@@ -64,7 +64,7 @@ const FAQS = [
   },
   {
     q: "Can I cancel a delivery?",
-    a: "Yes, as long as the rider has not picked it up yet. Open the delivery and choose Cancel. Once it is in transit it can no longer be cancelled — contact support and we will help.",
+    a: "Yes, as long as the rider has not picked it up yet. Open the delivery and choose Cancel. Once it has been picked up it can no longer be cancelled; contact support and we'll help.",
   },
   {
     q: "How do I become a rider?",
@@ -146,6 +146,22 @@ function useEnter(threshold = 0.25) {
     return () => io.disconnect();
   }, [threshold]);
   return [ref, inView];
+}
+
+/* Stats validation: the public page never shows errors — any shape or
+   network problem hides the stats bar and dispatch panel completely. */
+const STATS_FIELDS = [
+  "totalDeliveries", "completedDeliveries", "inProgressDeliveries",
+  "availableRiders", "activeRiders", "customers",
+];
+const STATS_TIMEOUT_MS = 5000;
+
+function validStats(d) {
+  return (
+    !!d &&
+    typeof d === "object" &&
+    STATS_FIELDS.every((k) => typeof d[k] === "number" && Number.isFinite(d[k]))
+  );
 }
 
 function CountUp({ value, start }) {
@@ -260,18 +276,30 @@ export default function Landing() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Real platform numbers for the stats bar and dispatch panel. */
+  /* Real platform numbers for the stats bar and dispatch panel.
+     Same VITE_API_URL base and route prefix as every other call
+     (full URL: `${API_BASE}/stats`). Silent on ANY failure — panels hide,
+     no error text, no console output, no unhandled rejections. */
   useEffect(() => {
     let live = true;
-    api("/stats")
-      .then((d) => {
-        if (live) setStats(d);
-      })
-      .catch(() => {
-        if (live) setStats(null); // bar hides; never show fake numbers
-      });
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), STATS_TIMEOUT_MS);
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE}/stats`, { signal: ctrl.signal });
+        if (!res.ok) return; // non-2xx: hide
+        const data = await res.json(); // throws on invalid JSON: hide
+        if (live && validStats(data)) setStats(data);
+      } catch {
+        /* network failure, timeout, bad JSON: panels stay hidden */
+      } finally {
+        clearTimeout(timer);
+      }
+    })();
     return () => {
       live = false;
+      clearTimeout(timer);
+      ctrl.abort();
     };
   }, []);
 

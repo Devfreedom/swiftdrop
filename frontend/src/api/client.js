@@ -1,6 +1,10 @@
 // API base comes from VITE_API_URL only. No hardcoded localhost here.
 const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
+// Shared base for callers that need raw fetch (e.g. the public landing stats
+// call with its own AbortController timeout). Same base, no second URL.
+export const API_BASE = BASE;
+
 const TOKEN_KEY = "delivery_token";
 
 export function getToken() {
