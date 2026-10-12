@@ -271,7 +271,6 @@ function HeroLoop({ baseRunning, userPlay, setUserPlay }) {
   const [t, setT] = useState(0);
   const [loop, setLoop] = useState(0);
   const [hoverHold, setHoverHold] = useState(false);
-  const [shift, setShift] = useState(0);
 
   const running = baseRunning && !hoverHold && !REDUCED;
 
@@ -285,14 +284,6 @@ function HeroLoop({ baseRunning, userPlay, setUserPlay }) {
       }
       setT(tRef.current);
     }, HERO_TICK_MS);
-    return () => clearInterval(id);
-  }, [running]);
-
-  /* Orbit swap: rotate each column's cards through their slots every few
-     seconds (same play gate as the status loop, transform-only motion). */
-  useEffect(() => {
-    if (!running || REDUCED) return;
-    const id = setInterval(() => setShift((s) => (s + 1) % 3), ORBIT_SWAP_MS);
     return () => clearInterval(id);
   }, [running]);
 
@@ -328,20 +319,6 @@ function HeroLoop({ baseRunning, userPlay, setUserPlay }) {
         Example animation: a delivery moves through Pending, Confirmed, Assigned,
         Picked up, In transit, then Delivered.
       </p>
-      <div className="lp-orbit" aria-hidden="true">
-        <div className="lp-orbit-col lp-orbit-left">
-          {ORBIT_LEFT.map((ci, k) => (
-            <OrbitCard key={CATEGORIES[ci].title} cat={CATEGORIES[ci]}
-              home={k} slot={(k + shift) % 3} index={ci} />
-          ))}
-        </div>
-        <div className="lp-orbit-col lp-orbit-right">
-          {ORBIT_RIGHT.map((ci, k) => (
-            <OrbitCard key={CATEGORIES[ci].title} cat={CATEGORIES[ci]}
-              home={k} slot={(k + shift) % 3} index={ci} />
-          ))}
-        </div>
-      </div>
       <div className="lp-device">
       <div className="lp-phone-loop" key={REDUCED ? "static" : loop}>
         <div className="lp-phone" aria-hidden="true">
@@ -410,6 +387,7 @@ function HeroScene({ user, loading, dashboardTo, isCustomer }) {
   const [tabOn, setTabOn] = useState(
     typeof document === "undefined" ? true : document.visibilityState === "visible"
   );
+  const [shift, setShift] = useState(0);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -428,6 +406,14 @@ function HeroScene({ user, loading, dashboardTo, isCustomer }) {
   }, []);
 
   const baseRunning = userPlay && inView && tabOn && !REDUCED;
+
+  /* Orbit swap: rotate each column's cards through their slots every few
+     seconds (same shared play gate, transform-only motion). */
+  useEffect(() => {
+    if (!baseRunning || REDUCED) return;
+    const id = setInterval(() => setShift((s) => (s + 1) % 3), ORBIT_SWAP_MS);
+    return () => clearInterval(id);
+  }, [baseRunning]);
 
   return (
     <section
@@ -465,6 +451,20 @@ function HeroScene({ user, loading, dashboardTo, isCustomer }) {
           </ul>
         </div>
         <div className="lp-hero-visual hero-in" style={{ animationDelay: "400ms" }}>
+          <div className="lp-orbit" aria-hidden="true">
+            <div className="lp-orbit-col lp-orbit-left">
+              {ORBIT_LEFT.map((ci, k) => (
+                <OrbitCard key={CATEGORIES[ci].title} cat={CATEGORIES[ci]}
+                  home={k} slot={(k + shift) % 3} index={ci} />
+              ))}
+            </div>
+            <div className="lp-orbit-col lp-orbit-right">
+              {ORBIT_RIGHT.map((ci, k) => (
+                <OrbitCard key={CATEGORIES[ci].title} cat={CATEGORIES[ci]}
+                  home={k} slot={(k + shift) % 3} index={ci} />
+              ))}
+            </div>
+          </div>
           <HeroLoop baseRunning={baseRunning} userPlay={userPlay} setUserPlay={setUserPlay} />
         </div>
       </div>

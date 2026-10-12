@@ -537,7 +537,8 @@
   .lp-mobile { display: grid; gap: 4px; padding: 8px 24px 20px; }
   .lp-mobile a { padding: 12px 4px; color: var(--ink); font-weight: var(--weight-semibold); border-top: 1px solid var(--line); }
   .lp-mobile-cta { display: flex; gap: 10px; padding-top: 12px; }
-  .lp-hero-grid { grid-template-columns: 1fr; padding: 64px 24px 80px; text-align: center; justify-items: center; gap: 48px; }
+  .lp-hero-grid { grid-template-columns: 1fr; padding: 64px 24px 100px; text-align: center; justify-items: center; gap: 48px; }
+  .lp-hero-visual { justify-self: stretch; }
   .lp-hero-sub { margin: 0 auto 30px; }
   .lp-hero-form { margin: 0 auto; }
   .lp-facts { justify-content: center; }
