@@ -3,6 +3,7 @@ const sequelize = require("../src/config/database");
 const User = require("./User");
 const Delivery = require("./Delivery");
 const Payment = require("./Payment");
+const RiderLocation = require("./RiderLocation");
 
 // a customer places many deliveries; a rider is assigned many deliveries
 // (camelCase names here: underscored:true maps them to snake_case columns)
