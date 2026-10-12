@@ -280,6 +280,13 @@ function HeroLoop() {
     ? 60
     : stageIdx < 4 ? (stageIdx / 5) * 100 : stageIdx === 4 ? ((4 + sub) / 5) * 100 : 100;
   const dotPct = REDUCED ? 60 : stageIdx < 4 ? 0 : stageIdx === 4 ? sub * 100 : 100;
+  /* Rider dot must sit exactly on the pickup pin (first four stages) and the
+     drop-off pin (Delivered); it only travels during In transit. The track
+     spans only the gap between the pins, so offset the dot by the pin-centre
+     distance (half fixed pin width + flex gap): -32px at 0%, +32px at 100%. */
+  const PIN_OFFSET = 32;
+  const dotDelta = -PIN_OFFSET + dotPct * ((2 * PIN_OFFSET) / 100);
+  const dotLeft = `calc(${dotPct}% ${dotDelta >= 0 ? "+" : "-"} ${Math.abs(dotDelta).toFixed(2)}px)`;
 
   return (
     <div
@@ -308,7 +315,7 @@ function HeroLoop() {
             <span className="lp-track">
               <span className="lp-track-line" />
               <span className="lp-track-fill" style={{ width: `${progress}%` }} />
-              <span className="lp-rider-dot" style={{ left: `${dotPct}%` }} />
+              <span className="lp-rider-dot" style={{ left: dotLeft }} />
             </span>
             <span className="lp-pin lp-pin-drop">
               <MapPin size={18} aria-hidden="true" />
