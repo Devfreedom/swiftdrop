@@ -33,6 +33,14 @@ export const trackingId = (id) => `DEL-${String(id).padStart(4, "0")}`;
 export const formatNaira = (n) =>
   "₦" + Number(n).toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+// Coordinates arrive from Postgres DECIMALs as strings (or null when unset).
+// num() normalizes to a number or null; asPos() builds a {lat,lng} pin or null.
+export const num = (v) => (v === null || v === undefined || v === "" ? null : Number(v));
+export const asPos = (lat, lng) =>
+  lat !== null && lng !== null && Number.isFinite(lat) && Number.isFinite(lng)
+    ? { lat, lng }
+    : null;
+
 // Dates like "Oct 9, 2026".
 export const formatDate = (d) =>
   new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
