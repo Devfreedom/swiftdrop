@@ -5,6 +5,7 @@ import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import Stepper from "../../components/Stepper";
+import LiveDeliveryMap, { asPos, num } from "../../components/LiveDeliveryMap";
 import ConfirmModal from "../../components/ConfirmModal";
 import Button from "../../ui/Button";
 import { SelectInput } from "../../ui/fields";
@@ -62,10 +63,14 @@ export default function CustomerDeliveryDetails() {
   const paid = (d.payments || []).some((p) => p.status === "SUCCESSFUL");
   const pending = !paid && (d.payments || []).some((p) => p.status === "PENDING");
   const cancellable = ["PENDING", "CONFIRMED", "ASSIGNED"].includes(d.status);
+  const trackable = !["DELIVERED", "CANCELLED"].includes(d.status);
+  const pickup = asPos(num(d.pickupLat), num(d.pickupLng));
+  const dropoff = asPos(num(d.dropoffLat), num(d.dropoffLng));
   return (
     <div className="card">
       <h2>Delivery {trackingId(d.id)} <StatusBadge value={d.status} /></h2>
       <Stepper status={d.status} />
+      <LiveDeliveryMap deliveryId={d.id} pickup={pickup} dropoff={dropoff} active={trackable} />
       {err && <p className="error">{err}</p>}
       <p><b>Pickup:</b> {d.pickupAddress} ({d.pickupContact}, {d.pickupPhone})</p>
       {d.pickupLandmark && <p><b>Pickup landmark:</b> {d.pickupLandmark}</p>}

@@ -101,6 +101,8 @@ export default function CreateDelivery() {
             name="pickupLandmark" autoComplete="off"
             placeholder="e.g. Opposite the mall main gate" />
         </div>
+        <MapPicker id="pickup" label="Pickup pin" value={pickupCoords}
+          onChange={setPickupCoords} showLocate />
 
         <h3 className="eyebrow">Drop-off</h3>
         <div className="form grid2">
@@ -118,6 +120,8 @@ export default function CreateDelivery() {
             name="deliveryLandmark" autoComplete="off"
             placeholder="e.g. Blue house after the junction" />
         </div>
+        <MapPicker id="dropoff" label="Drop-off pin" value={dropoffCoords}
+          onChange={setDropoffCoords} />
 
         <h3 className="eyebrow">Package</h3>
         <div className="form grid2">

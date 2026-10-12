@@ -9,6 +9,7 @@ import PageHeader from "../../ui/PageHeader";
 import StatusBadge from "../../components/StatusBadge";
 import StatCard from "../../components/StatCard";
 import Stepper from "../../components/Stepper";
+import LiveDeliveryMap, { asPos, num } from "../../components/LiveDeliveryMap";
 import DataTable from "../../components/DataTable";
 import { CenterLoad, EmptyState } from "../../components/Feedback";
 import { formatDate, formatNaira, timeAgo, trackingId } from "../../constants";
@@ -115,6 +116,12 @@ function ActiveCard({ delivery: d }) {
         </div>
       </div>
       <Stepper status={d.status} />
+      <LiveDeliveryMap
+        deliveryId={d.id}
+        pickup={asPos(num(d.pickupLat), num(d.pickupLng))}
+        dropoff={asPos(num(d.dropoffLat), num(d.dropoffLng))}
+        active={!FINAL.includes(d.status)}
+      />
       <div className="active-links">
         <a className="view-link" href={mapUrl} target="_blank" rel="noreferrer">
           View on Map <ChevronRight size={14} aria-hidden="true" />

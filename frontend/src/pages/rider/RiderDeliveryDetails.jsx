@@ -5,6 +5,7 @@ import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import Stepper from "../../components/Stepper";
+import ShareLocation from "../../components/ShareLocation";
 import { formatNaira, trackingId } from "../../constants";
 import Button from "../../ui/Button";
 import { CenterLoad, ErrorState } from "../../components/Feedback";
@@ -58,6 +59,7 @@ export default function RiderDeliveryDetails() {
       <p><b>Drop-off:</b> {d.deliveryAddress} ({d.deliveryContact}, {d.deliveryPhone})</p>
       {d.deliveryLandmark && <p><b>Drop-off landmark:</b> {d.deliveryLandmark}</p>}
       <p><b>Parcel:</b> {d.packageDescription} · {formatNaira(d.deliveryFee)}</p>
+      {NEXT[d.status] && <ShareLocation deliveryId={id} status={d.status} />}
       {NEXT[d.status] && (
         <Button variant="primary" onClick={advance} loading={moving}>
           {moving ? "Updating…" : `Mark ${NEXT[d.status].replace("_", " ")}`}

@@ -5,6 +5,7 @@ import { api } from "../../api/client";
 import { useToast } from "../../components/Toast";
 import StatusBadge from "../../components/StatusBadge";
 import Stepper from "../../components/Stepper";
+import LiveDeliveryMap, { asPos, num } from "../../components/LiveDeliveryMap";
 import ConfirmModal from "../../components/ConfirmModal";
 import { formatNaira, trackingId } from "../../constants";
 import Button from "../../ui/Button";
@@ -57,6 +58,12 @@ export default function AdminDeliveryDetails() {
     <div className="card">
       <h2>Delivery {trackingId(d.id)} <StatusBadge value={d.status} /></h2>
       <Stepper status={d.status} />
+      <LiveDeliveryMap
+        deliveryId={d.id}
+        pickup={asPos(num(d.pickupLat), num(d.pickupLng))}
+        dropoff={asPos(num(d.dropoffLat), num(d.dropoffLng))}
+        active={!["DELIVERED", "CANCELLED"].includes(d.status)}
+      />
       {err && <p className="error">{err}</p>}
       <p><b>Customer:</b> {d.customer?.name} ({d.customer?.email})</p>
       <p><b>Rider:</b> {d.rider ? `${d.rider.name}` : "unassigned"}</p>
