@@ -270,11 +270,7 @@
   0%, 100% { box-shadow: 0 0 0 0 var(--brand-ring, rgba(211, 47, 47, 0.35)); }
   50% { box-shadow: 0 0 0 7px transparent; }
 }
-/* Scooter gets its own zone: 16px padding keeps it >=16px from the zone
-   edge, and the card's own 22px padding keeps the zone >=16px from the card. */
-.lp-scoot-zone { margin-top: 12px; padding: 16px; background: var(--gray-50, #F3F4F6); border-radius: 12px; }
-.lp-phone-scoot { display: block; margin: 0 auto; color: var(--brand); opacity: 0.9; }
-/* Floating chips drift gently at different speeds. */
+.lp-phone-stages li.now .lp-stage-dot {
 .lp-fchip {
   position: absolute; display: inline-flex; align-items: center; gap: 6px;
   background: #fff; color: var(--ink); font-size: 12px; font-weight: 800;
