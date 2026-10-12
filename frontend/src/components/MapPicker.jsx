@@ -182,12 +182,12 @@ export default function MapPicker({ id, label, value, onChange, showLocate }) {
       </div>
       <div className="inline map-picker-actions">
         {showLocate && (
-          <button type="button" className="btn-ghost" onClick={useMyLocation} disabled={locating}>
+          <button type="button" className="btn btn-ghost" onClick={useMyLocation} disabled={locating}>
             {locating ? "Locating…" : "Use my current location"}
           </button>
         )}
         {pos && (
-          <button type="button" className="btn-ghost" onClick={() => onChange(null)}>
+          <button type="button" className="btn btn-ghost" onClick={() => onChange(null)}>
             Clear pin
           </button>
         )}
