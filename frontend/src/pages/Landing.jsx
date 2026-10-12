@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight, Box, Check, CreditCard, FileText, Gift, Lock,
-  Mail, MapPin, Menu, Phone, ShieldCheck, Shirt, ShoppingBasket,
+  Mail, MapPin, Menu, Pause, Phone, Play, ShieldCheck, Shirt, ShoppingBasket,
   Smartphone, Truck, UserCheck, Wallet, X, Plus,
 } from "lucide-react";
 import { BRAND, SUPPORT_EMAIL, SUPPORT_PHONE } from "../brand";
@@ -213,7 +213,6 @@ function NavAuthSkeleton() {
 }
 
 function AddressForm({ id, buttonLabel, variant, to = "/register" }) {
-  const nav = useNavigate();
   const [addr, setAddr] = useState("");
   return (
     <form
