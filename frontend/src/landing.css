@@ -166,7 +166,7 @@
 
 /* ---------- 2b. Hero phone mockup (illustrative Example loop) ---------- */
 .lp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.lp-phone-wrap { position: relative; width: 100%; max-width: 380px; margin: 0 auto; }
+.lp-phone-wrap { position: relative; width: 100%; max-width: 380px; margin: 0 auto; padding: 48px 0 54px; }
 .lp-phone-loop { animation: lp-loop-fade 500ms var(--ease); }
 @keyframes lp-loop-fade { from { opacity: 0.25; } to { opacity: 1; } }
 .lp-phone {
@@ -177,7 +177,7 @@
 .lp-phone-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .lp-phone-head strong { font-size: var(--text-16); color: var(--ink); }
 .lp-route { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 14px; }
-.lp-pin { display: grid; gap: 2px; justify-items: center; color: var(--brand); flex-shrink: 0; }
+.lp-pin { display: grid; gap: 2px; justify-items: center; color: var(--brand); flex-shrink: 0; width: 48px; }
 .lp-pin small { font-size: 11px; font-weight: var(--weight-bold); color: var(--muted); }
 .lp-pin-drop { color: var(--info, #0E7490); }
 .lp-track { position: relative; flex: 1; height: 22px; margin-top: 2px; }

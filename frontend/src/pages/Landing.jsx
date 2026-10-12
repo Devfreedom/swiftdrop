@@ -412,7 +412,7 @@ export default function Landing() {
     if (meta) {
       meta.setAttribute(
         "content",
-        `${BRAND} — request a delivery, get matched with a verified rider, and track every stage to the doorstep. Cash, card or transfer.`
+        `${BRAND} — request a delivery, get matched with an admin-approved rider, and track every stage to the doorstep. Cash, card or transfer.`
       );
     }
   }, []);
@@ -534,7 +534,7 @@ export default function Landing() {
                 Send anything. <em className={REDUCED ? undefined : "sweep"}>Delivered fast.</em>
               </h1>
               <p className="lp-hero-sub hero-in" style={{ animationDelay: "160ms" }}>
-                Request a delivery in under a minute, get matched with a verified
+                Request a delivery in under a minute, get matched with an admin-approved
                 rider, and track every stage to the doorstep.
               </p>
               <div className="hero-in" style={{ animationDelay: "240ms" }}>
@@ -553,7 +553,7 @@ export default function Landing() {
               <ul className="lp-facts hero-in" style={{ animationDelay: "320ms" }}>
                 <li><MapPin size={16} aria-hidden="true" /> Track every stage</li>
                 <li><CreditCard size={16} aria-hidden="true" /> Pay by cash, card or transfer</li>
-                <li><ShieldCheck size={16} aria-hidden="true" /> Verified riders</li>
+                <li><ShieldCheck size={16} aria-hidden="true" /> Admin-approved riders</li>
               </ul>
             </div>
             <div className="hero-in" style={{ animationDelay: "400ms" }}>
