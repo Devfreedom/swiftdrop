@@ -126,3 +126,71 @@
   .page-title { font-size: var(--text-14); }
   .header-user strong { font-size: var(--text-14); }
 }
+
+/* ---- Live delivery maps (Leaflet) ---- */
+.sd-map {
+  border: 1px solid var(--line); border-radius: var(--radius-md);
+  overflow: hidden; margin: 12px 0; background: var(--surface-soft);
+}
+.sd-map .leaflet-container { font-family: inherit; z-index: 0; }
+.sd-map-empty {
+  border: 1px dashed var(--line); border-radius: var(--radius-md);
+  padding: var(--space-4); margin: 12px 0; text-align: center;
+  color: var(--muted); font-size: var(--text-14);
+}
+.sd-pin { background: transparent; border: none; }
+.sd-pin span {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; color: #fff;
+  font-size: 13px; font-weight: 800; line-height: 1;
+  border: 2px solid #fff; box-shadow: var(--shadow-sm);
+}
+.sd-pin-pickup span { background: var(--brand); }
+/* Plain text glyph inside a rotated pin stays readable enough at 13px. */
+.sd-pin-pick span, .sd-pin-drop span { line-height: 1; }
+.sd-pin-drop span { background: var(--info, #0E7490); }
+.sd-pin-pick span { background: var(--brand); }
+.sd-rider { background: transparent; border: none; }
+.sd-rider-dot {
+  width: 18px; height: 18px; border-radius: 50%; display: block;
+  background: var(--brand); border: 3px solid #fff;
+  box-shadow: 0 0 0 5px var(--brand-soft), var(--shadow-sm);
+  animation: sd-rider-ping 1.8s ease-out infinite;
+}
+@keyframes sd-rider-ping {
+  0% { box-shadow: 0 0 0 0 var(--brand-ring), var(--shadow-sm); }
+  70% { box-shadow: 0 0 0 10px transparent, var(--shadow-sm); }
+  100% { box-shadow: 0 0 0 0 transparent, var(--shadow-sm); }
+}
+.live-status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.share-box {
+  border: 1px solid var(--line); border-radius: var(--radius-md);
+  padding: 14px; margin: 12px 0; background: var(--surface-soft);
+}
+.share-box.sharing { border-color: var(--brand); }
+.share-on { display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--ink); margin: 0 0 6px; }
+.map-picker { margin: 12px 0; }
+.map-picker .field-label { display: block; margin-bottom: 6px; }
+.map-search input {
+  height: 44px; width: 100%; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: 0 12px; font-size: var(--text-14);
+  font-family: inherit; background: var(--surface); color: var(--ink);
+}
+.map-results {
+  list-style: none; margin: 6px 0 0; padding: 0; max-height: 180px; overflow: auto;
+  border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface);
+}
+.map-results button {
+  width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+  padding: 10px 12px; font-size: var(--text-14); color: var(--body); font-family: inherit;
+}
+.map-results button:hover { background: var(--brand-soft); color: var(--brand-active); }
+.map-picker-actions { margin-top: 8px; }
+.map-credit { margin: 4px 0 0; }
+.sd-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) {
+  .sd-rider-dot { animation: none; }
+}
+@media (max-width: 480px) {
+  .sd-map { margin-left: 0; margin-right: 0; }
+}
